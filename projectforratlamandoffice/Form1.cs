@@ -144,7 +144,8 @@ namespace projectforratlamandoffice
             dynamic allDataRange = sheet.UsedRange;
             allDataRange.Sort(allDataRange.Columns[1], Excel.XlSortOrder.xlAscending);
 
-            var arr1 = GetObjArr(selectedFile);
+            range1 = sheet.UsedRange;
+            var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
             Dictionary<object, object> dic1 = new Dictionary<object, object>();
             for (int i = 1; i <= arr1.GetLength(0); i++)
             {
@@ -171,25 +172,26 @@ namespace projectforratlamandoffice
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
 
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list1.Count; i++)
             {
-                if (list[i].ToString().Trim() == "U.P" || list[i].ToString().Trim() == "Rajasthan")
+                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan")
                 {
                     //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
-                    sheet.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
                 }
                 else
                 {
-                    sheet1.Cells[i + 1, 2].Value = dic1[list[i]];
+                    sheet1.Cells[i + 1, 2].Value = dic1[list1[i]];
                 }
 
-                sheet1.Cells[i + 1, 1].Value = list[i];
+                sheet1.Cells[i + 1, 1].Value = list1[i];
             }
 
 
             workbook.SaveAs(outputpath);
+
             workbook.Close();
-            excel.Quit();
+            excel1.Quit();
 
             // CLEAN UP.
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
