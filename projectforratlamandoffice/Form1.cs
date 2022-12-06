@@ -158,7 +158,13 @@ namespace projectforratlamandoffice
             System.Windows.Forms.Application.Exit();
         }
 
-         public void copydata()
+
+        public object[,] GetObjArr(string filename)
+        {
+
+            return valueArray; 
+        }
+            public void copydata()
         {
             string filename = "abc.txt.txt";
             string filePath = @"C:\hello\" + filename;
