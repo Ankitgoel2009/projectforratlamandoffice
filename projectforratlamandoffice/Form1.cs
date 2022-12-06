@@ -174,7 +174,7 @@ namespace projectforratlamandoffice
 
             for (int i = 0; i < list1.Count; i++)
             {
-                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan")
+                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan" || list1[i].ToString().Trim() == "Bihar" || list1[i].ToString().Trim() == "Punjab" || list1[i].ToString().Trim() == "Odisha" || list1[i].ToString().Trim() == "Chhatisgarh" || list1[i].ToString().Trim() == "West bengal" || list1[i].ToString().Trim() == "Madhya Pradesh")
                 {
                     //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
                     sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
@@ -187,6 +187,8 @@ namespace projectforratlamandoffice
                 sheet1.Cells[i + 1, 1].Value = list1[i];
             }
 
+            sheet1.Range["A1"].EntireColumn.Font.Bold = true;
+            sheet1.Range["B1"].EntireColumn.Font.Bold = true;
 
             workbook.SaveAs(outputpath);
 
