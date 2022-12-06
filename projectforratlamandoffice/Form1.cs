@@ -144,8 +144,7 @@ namespace projectforratlamandoffice
             dynamic allDataRange = sheet.UsedRange;
             allDataRange.Sort(allDataRange.Columns[1], Excel.XlSortOrder.xlAscending);
 
-            // Read all data from data range in the worksheet
-            valueArray = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+           
 
 
             wkb.Close(true);
@@ -162,7 +161,27 @@ namespace projectforratlamandoffice
         public object[,] GetObjArr(string filename)
         {
 
-            return valueArray; 
+            Excel.Application excel = null;
+            excel = new Excel.Application();
+            excel.Visible = true;
+            Excel.Workbook wkb = null;
+            wkb = Open(excel, filename);
+            Excel._Worksheet sheet = wkb.Sheets[1];
+            Excel.Range range1 = sheet.UsedRange;
+            // Read all data from data range in the worksheet
+            valueArray = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+
+
+            wkb.Close(true);
+            excel.Quit();
+            // CLEAN UP.
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+
+
+
+            return valueArray;
         }
             public void copydata()
         {
