@@ -192,9 +192,9 @@ namespace projectforratlamandoffice
             excel.Quit();
 
             // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
 
 
 
