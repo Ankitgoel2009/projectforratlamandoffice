@@ -144,7 +144,59 @@ namespace projectforratlamandoffice
             dynamic allDataRange = sheet.UsedRange;
             allDataRange.Sort(allDataRange.Columns[1], Excel.XlSortOrder.xlAscending);
 
-           
+            var arr1 = GetObjArr(selectedFile);
+            Dictionary<object, object> dic1 = new Dictionary<object, object>();
+            for (int i = 1; i <= arr1.GetLength(0); i++)
+            {
+                dic1.Add(arr1[i, 1], arr1[i, 2]);
+
+            }
+            var arr2 = GetObjArr(@"C:\Users\Public\excel2.xlsx");
+            List<object> list1 = new List<object>();
+            for (int i = 1; i <= arr2.GetLength(0); i++)
+            {
+                if (arr2[i, 1] != null && arr2[i, 2] == null)
+                {
+                    list1.Add(arr2[i, 1]);
+                }
+                if (arr2[i, 2] != null && arr2[i, 1] == null)
+                {
+                    list1.Add(arr2[i, 2]);
+                }
+
+            }
+
+            string outputpath = @"C:\Users\Public\ratlam.xlsx";
+            Excel.Application excel1 = new Excel.Application();
+            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
+            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].ToString().Trim() == "U.P" || list[i].ToString().Trim() == "Rajasthan")
+                {
+                    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
+                    sheet.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
+                }
+                else
+                {
+                    sheet1.Cells[i + 1, 2].Value = dic1[list[i]];
+                }
+
+                sheet1.Cells[i + 1, 1].Value = list[i];
+            }
+
+
+            workbook.SaveAs(outputpath);
+            workbook.Close();
+            excel.Quit();
+
+            // CLEAN UP.
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+
+
 
 
             wkb.Close(true);
