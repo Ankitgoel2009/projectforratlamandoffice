@@ -99,7 +99,7 @@ namespace projectforratlamandoffice
             sheet.Columns[2].NumberFormat = "+ 0.00 ₹";
 
 
-            //4. when found null copy value of cell 3 to cell 2 
+            //4. when found null, copy value of cell 3 to cell 2 
             for (iRow = 1; iRow <= sheet.UsedRange.Rows.Count; iRow++)
             {
                 if (sheet.Cells[iRow, 2].value == null)
