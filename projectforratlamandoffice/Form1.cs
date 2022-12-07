@@ -83,7 +83,9 @@ namespace projectforratlamandoffice
             Excel._Worksheet sheet = wkb.Sheets[1];
             // working starts from here 
             //1. setting the range for deleting the heading rows
-            Excel.Range range1 = sheet.get_Range("A1", "A9".ToString());
+            Excel.Range range1 = sheet.UsedRange;
+            var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+
             range1.EntireRow.Delete(Excel.XlDirection.xlUp);
 
             //2. count all rows and delete the last one 
@@ -145,7 +147,7 @@ namespace projectforratlamandoffice
             allDataRange.Sort(allDataRange.Columns[1], Excel.XlSortOrder.xlAscending);
 
             range1 = sheet.UsedRange;
-            var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+             arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
             Dictionary<object, object> dic1 = new Dictionary<object, object>();
             for (int i = 1; i <= arr1.GetLength(0); i++)
             {
