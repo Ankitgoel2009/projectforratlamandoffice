@@ -85,8 +85,13 @@ namespace projectforratlamandoffice
             //1. setting the range for deleting the heading rows
             Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+            Dictionary<object, object> arrdic = new Dictionary<object, object>();
+            for (int i = 1; i <= arr1.GetLength(0); i++)
+            {
+                arrdic.Add(arr1[i, 1], arr1[i, 2]);
 
-            range1.EntireRow.Delete(Excel.XlDirection.xlUp);
+            }
+
 
             //2. count all rows and delete the last one 
             var LastRow = sheet.UsedRange.Rows.Count;
