@@ -86,6 +86,15 @@ namespace projectforratlamandoffice
             Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
             Dictionary<object, object> arrdic = new Dictionary<object, object>();
+            var result = arr1.Slice(0, 3);
+
+
+
+
+
+
+
+
             for (int i = 1; i <= arr1.GetLength(0); i++)
             {
                 arrdic.Add(arr1[i, 1], arr1[i, 2]);
