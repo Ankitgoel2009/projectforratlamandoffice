@@ -64,6 +64,7 @@ namespace projectforratlamandoffice
             Cursor.Current = Cursors.Default;
 
         }
+    
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)
         {
             Excel.Workbook book = excelInstance.Workbooks.Open(
@@ -85,21 +86,31 @@ namespace projectforratlamandoffice
             //1. setting the range for deleting the heading rows
             Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
-            Dictionary<object, object> arrdic = new Dictionary<object, object>();
-            var result = arr1.Slice(0, 3);
 
 
-
-
-
-
-
-
-            for (int i = 1; i <= arr1.GetLength(0); i++)
+            var listnew = new List<(object name, object balance)>();
+            for (int i = 400; i <= arr1.GetLength(0)-1; i++)
             {
-                arrdic.Add(arr1[i, 1], arr1[i, 2]);
+                if (arr1[i, 1] != null)
+                {
+                    if (arr1[i, 2] != null && arr1[i, 3] == null)
+                    {
+                        listnew.Add((arr1[i, 1],"+ "+ arr1[i, 2]+ " ₹"));
+                    }
+                   else if (arr1[i, 2] == null && arr1[i, 3] != null)
+                    {
+                        listnew.Add((arr1[i, 1],"- "+ arr1[i, 3]+ " ₹"));
+                    }
+                }
 
             }
+
+
+
+
+
+
+
 
 
             //2. count all rows and delete the last one 
