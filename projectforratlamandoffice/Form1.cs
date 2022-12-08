@@ -86,33 +86,26 @@ namespace projectforratlamandoffice
             //1. setting the range for deleting the heading rows
             Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
-
-
-            var listnew = new List<(object name, object balance)>();
-            for (int i = 400; i <= arr1.GetLength(0)-1; i++)
+            List<object[]> listnew = new List<object[]>();
+            for (int i = 10; i <= arr1.GetLength(0) - 1; i++)
             {
                 if (arr1[i, 1] != null)
                 {
                     if (arr1[i, 2] != null && arr1[i, 3] == null)
                     {
-                        listnew.Add((arr1[i, 1],"+ "+ arr1[i, 2]+ " ₹"));
+                        listnew.Add(new object[] { arr1[i, 1], "+ " + arr1[i, 2] + " ₹" });
                     }
-                   else if (arr1[i, 2] == null && arr1[i, 3] != null)
+                    else if (arr1[i, 2] == null && arr1[i, 3] != null)
                     {
-                        listnew.Add((arr1[i, 1],"- "+ arr1[i, 3]+ " ₹"));
+                        listnew.Add(new object[] { arr1[i, 1], "- " + arr1[i, 3] + " ₹" });
                     }
+
                 }
-
             }
-
-
-
-
-
-
-
-
-
+            // commented out because i start adding from element 10 and also loop stop before lenghth -1 
+           // list.RemoveAt(list.Count - 1);
+          //  list.RemoveRange(0, 10);
+           
             //2. count all rows and delete the last one 
             var LastRow = sheet.UsedRange.Rows.Count;
             var LastCol = sheet.UsedRange.Columns.Count;
