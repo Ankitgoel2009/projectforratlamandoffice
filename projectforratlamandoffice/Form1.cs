@@ -106,33 +106,7 @@ namespace projectforratlamandoffice
            // list.RemoveAt(list.Count - 1);
           //  list.RemoveRange(0, 10);
            
-            //2. count all rows and delete the last one 
-            var LastRow = sheet.UsedRange.Rows.Count;
-            var LastCol = sheet.UsedRange.Columns.Count;
-            LastRow = LastRow + sheet.UsedRange.Row - 1;
-            ((Excel.Range)sheet.Rows[LastRow]).Delete(Excel.XlDirection.xlUp);
-
-            // 3. convert the second column to number format 
-            sheet.Columns[2].TextToColumns();
-            sheet.Columns[3].TextToColumns();
-            //sheet.Columns[2].NumberFormat = "0.00 # [$$-en-US]";
-            sheet.Columns[2].NumberFormat = "+ 0.00 ₹";
-
-
-            //4. when found null, copy value of cell 3 to cell 2 
-            for (iRow = 1; iRow <= sheet.UsedRange.Rows.Count; iRow++)
-            {
-                if (sheet.Cells[iRow, 2].value == null)
-                {
-                    sheet.Cells[iRow, 2].value = sheet.Cells[iRow, 3].value;
-                    sheet.Cells[iRow, 2].NumberFormat = "- 0.00 ₹";
-
-                }
-
-            }
-            //5.  delete column c 
-            range1 = sheet.get_Range("C1:C500");
-            range1.EntireColumn.Delete(Excel.XlDirection.xlUp);
+         
 
             // 6. copy text file data to list 
             copydata();
