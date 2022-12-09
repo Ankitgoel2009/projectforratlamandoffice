@@ -108,8 +108,12 @@ namespace projectforratlamandoffice
             // 6. copy text file data to list 
             copydata();
 
-            // filter from only index which conatins  names 
-            Filter(listnew, 1, list); // 1 is the index number which contains names 
+            // filter from only index which conatins  names and add the balance 
+            Filter(listnew, list);
+
+            // list is ready , now modify it 
+
+
 
             //3. Make bold the first column 
             sheet.Range["A1"].EntireColumn.Font.Bold = true;
@@ -143,6 +147,7 @@ namespace projectforratlamandoffice
                 dic1.Add(arr1[i, 1], arr1[i, 2]);
 
             }
+
             var arr2 = GetObjArr(@"C:\Users\Public\excel2.xlsx");
             List<object> list1 = new List<object>();
             for (int i = 1; i <= arr2.GetLength(0); i++)
@@ -261,7 +266,7 @@ namespace projectforratlamandoffice
                 }
             }
         }
-    public void Filter(List<object[]> ws, int columnIndex, List<string> values)
+    public void Filter(List<object[]> ws, List<string> values)
         {
             var result1 = ws.Select(m => m[0]).ToList();
             var result = result1.Except(list);
@@ -273,37 +278,10 @@ namespace projectforratlamandoffice
                     ws.Add(new object[] { list[i], "0 ₹"  });
                 }
             }
-            //int i = 1;
-            //// set initial position to 0 
-            //int currentposition = 0;
-
-            //for (i=1; i <= ws.Count; i++)
-            //{
-            //    string value = ws.i.this[i,columnIndex].ToString();
-            //    if (!ws.Contains(values))
-            //    {
-            //        ws.RemoveAt(i);
-            //      // remember last position 
-            //        i = currentposition;
-            //    }
-            //    else
-            //    {  
-            //        // remove the word which have been used from list too 
-            //        values.Remove(value);
-            //        currentposition = i;
-            //    }
-
-            //}
-
-            //// now the list contains those word whose balances are 0 
-            //var item = ws.Count;
-            //for (int il=0; il < values.Count; il++)
-            //{
-            //    ws.Cells[item+1, 1].Value = values[il];
+          
             //    ws.Cells[item + 1, 2].NumberFormat = " 0.00 ₹";
-            //    ws.Cells[item+1, 2].Value = "0";                
-            //    item++;
-            //}
+                         
+           
 
 
 
