@@ -113,12 +113,6 @@ namespace projectforratlamandoffice
 
             // list is ready , now modify it 
 
-
-
-            //3. Make bold the first column 
-            sheet.Range["A1"].EntireColumn.Font.Bold = true;
-            sheet.Range["B1"].EntireColumn.Font.Bold = true;
-
             // Get range of data in the worksheet
             range1 = sheet.UsedRange;            
             Borders borders = range1.Borders;
