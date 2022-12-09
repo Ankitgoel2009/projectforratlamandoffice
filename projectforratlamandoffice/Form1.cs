@@ -82,9 +82,7 @@ namespace projectforratlamandoffice
             Excel.Workbook wkb = null;
             wkb = Open(excel, selectedFile);
             Excel._Worksheet sheet = wkb.Sheets[1];
-            // working starts from here 
-            //1. setting the range for deleting the heading rows
-            Excel.Range range1 = sheet.UsedRange;
+           Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
             List<object[]> listnew = new List<object[]>();
             for (int i = 10; i <= arr1.GetLength(0) - 1; i++)
@@ -102,17 +100,16 @@ namespace projectforratlamandoffice
 
                 }
             }
-            // commented out because i start adding from element 10 and also loop stop before lenghth -1 
+            // commented out because i started adding from element 10 and also loop stops before length -1 
            // list.RemoveAt(list.Count - 1);
-          //  list.RemoveRange(0, 10);
-           
+          //  list.RemoveRange(0, 10);         
          
 
             // 6. copy text file data to list 
             copydata();
 
-            // filter only required names 
-            Filter(sheet,1, list);
+            // filter from only index which conatins  names 
+            Filter(listnew, 1, list); // 1 is the index number which contains names 
 
             //3. Make bold the first column 
             sheet.Range["A1"].EntireColumn.Font.Bold = true;
@@ -251,7 +248,7 @@ namespace projectforratlamandoffice
 
             return valueArray;
         }
-            public void copydata()
+    public void copydata()
         {
             string filename = "abc.txt.txt";
             string filePath = @"C:\hello\" + filename;
@@ -263,45 +260,51 @@ namespace projectforratlamandoffice
                     list.Add(Convert.ToString(line, CultureInfo.InvariantCulture));
                 }
             }
-
         }
-        public void Filter(Excel._Worksheet ws, int columnIndex, List<string> values)
+    public void Filter(List<object[]> ws, int columnIndex, List<string> values)
         {
-            int i = 1;
-            // set initial position to 0 
-            int currentposition = 0;
-           
-            for (i=1; i <= ws.UsedRange.Rows.Count; i++)
+            var result1 = ws.Select(m => m[0]).ToList();
+            var result = result1.Except(list);
+            ws.RemoveAll(m => result.Contains(m[0]));
+            for (int i = 0; i < list.Count; i++)
             {
-                Excel.Range range = ws.Cells[i, columnIndex] as Excel.Range;
-                string value = range.Value.ToString();
-                if (!values.Contains(value))
+                if (!result1.Contains(list[i]))
                 {
-                    range.EntireRow.Delete();
-                    // range.EntireRow.Hidden = true;
-                    //range.Delete(XlDeleteShiftDirection.xlShiftUp);
-                    // remember last position 
-                    i = currentposition;
+                    ws.Add(new object[] { list[i], "0 ₹"  });
                 }
-                else
-                {  
-                    // remove the word which have been used from list too 
-                    values.Remove(value);
-                    currentposition = i;
-                }
-                
             }
-            
-            // now the list contains those word whose balances are 0 
-            var item = ws.UsedRange.Rows.Count;
-            for (int il=0; il < values.Count; il++)
-            {
-                ws.Cells[item+1, 1].Value = values[il];
-                ws.Cells[item + 1, 2].NumberFormat = " 0.00 ₹";
-                ws.Cells[item+1, 2].Value = "0";                
-                item++;
-            }
-            
+            //int i = 1;
+            //// set initial position to 0 
+            //int currentposition = 0;
+
+            //for (i=1; i <= ws.Count; i++)
+            //{
+            //    string value = ws.i.this[i,columnIndex].ToString();
+            //    if (!ws.Contains(values))
+            //    {
+            //        ws.RemoveAt(i);
+            //      // remember last position 
+            //        i = currentposition;
+            //    }
+            //    else
+            //    {  
+            //        // remove the word which have been used from list too 
+            //        values.Remove(value);
+            //        currentposition = i;
+            //    }
+
+            //}
+
+            //// now the list contains those word whose balances are 0 
+            //var item = ws.Count;
+            //for (int il=0; il < values.Count; il++)
+            //{
+            //    ws.Cells[item+1, 1].Value = values[il];
+            //    ws.Cells[item + 1, 2].NumberFormat = " 0.00 ₹";
+            //    ws.Cells[item+1, 2].Value = "0";                
+            //    item++;
+            //}
+
 
 
         }
