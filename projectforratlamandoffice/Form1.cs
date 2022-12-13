@@ -81,8 +81,10 @@ namespace projectforratlamandoffice
             excel.Visible = true;
             Excel.Workbook wkb = null;
             wkb = Open(excel, selectedFile);
-            Excel._Worksheet sheet = wkb.Sheets[1];
-           Excel.Range range1 = sheet.UsedRange;
+            Excel._Worksheet sheet = wkb.Sheets[1];          
+            sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
+            sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
+            Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
             List<object[]> listnew = new List<object[]>();
             for (int i = 10; i <= arr1.GetLength(0) - 1; i++)
@@ -112,27 +114,7 @@ namespace projectforratlamandoffice
             Filter(listnew, list);
 
             // names are  ready , now modify it 
-
-            // Get range of data in the worksheet
-            //range1 = sheet.UsedRange;            
-            //Borders borders = range1.Borders;
-            //borders[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
-            //borders[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
-            //borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
-            //borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
-            //borders.Color = Color.Black;
-            //borders[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            //borders[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            //borders[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            //borders[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            //range1.Borders.Color = Color.Black;
-            //range1.Select();
-            //sheet.UsedRange.Select();
-
-         
-            
-
-            
+                       
             Dictionary<object, object> dic1 = new Dictionary<object, object>();
             for (int i = 0; i <= listnew.Count-1; i++)
             {
@@ -181,9 +163,11 @@ namespace projectforratlamandoffice
 
                 sheet1.Cells[i + 1, 1].Value = list1[i];
             }
+            sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
             sheet1.Columns["A:B"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
             sheet1.Range["B1"].EntireColumn.Font.Bold = true;
+            
             range1 = sheet1.UsedRange;
             Borders border = range1.Borders;
             border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
@@ -196,6 +180,7 @@ namespace projectforratlamandoffice
             border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             range1.Borders.Color = Color.Black;
+            range1.Select();
             sheet1.UsedRange.Select();
             workbook.SaveAs(outputpath);
 
@@ -272,7 +257,7 @@ namespace projectforratlamandoffice
                 }
             }
           
-            //    ws.Cells[item + 1, 2].NumberFormat = " 0.00 ₹";
+            
         }
     }
 }
