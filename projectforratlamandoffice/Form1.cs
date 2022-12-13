@@ -89,15 +89,10 @@ namespace projectforratlamandoffice
             {
                 if (arr1[i, 1] != null)
                 {
-                    if (arr1[i, 2] != null && arr1[i, 3] == null)
+                    if ((int)arr1[i, 2] > 30  )
                     {
-                        listnew.Add(new object[] { arr1[i, 1], "+ " + arr1[i, 2] + " ₹" });
-                    }
-                    else if (arr1[i, 2] == null && arr1[i, 3] != null)
-                    {
-                        listnew.Add(new object[] { arr1[i, 1], "- " + arr1[i, 3] + " ₹" });
-                    }
-
+                        listnew.Add(new object[] { arr1[i, 1] });
+                    }                  
                 }
             }
             // commented out because i started adding from element 10 and also loop stops before length -1 
