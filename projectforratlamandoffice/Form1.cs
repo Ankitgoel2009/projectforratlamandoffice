@@ -111,37 +111,36 @@ namespace projectforratlamandoffice
             // filter from only index which conatins  names and add the balance 
             Filter(listnew, list);
 
-            // list is ready , now modify it 
+            // names are  ready , now modify it 
 
             // Get range of data in the worksheet
-            range1 = sheet.UsedRange;            
-            Borders borders = range1.Borders;
-            borders[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borders[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borders.Color = Color.Black;
-            borders[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            borders[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            borders[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            borders[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            range1.Borders.Color = Color.Black;
-            range1.Select();
-            sheet.UsedRange.Select();
+            //range1 = sheet.UsedRange;            
+            //Borders borders = range1.Borders;
+            //borders[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
+            //borders[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
+            //borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            //borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
+            //borders.Color = Color.Black;
+            //borders[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            //borders[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            //borders[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            //borders[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            //range1.Borders.Color = Color.Black;
+            //range1.Select();
+            //sheet.UsedRange.Select();
 
-            // sort according to column of name 
-            dynamic allDataRange = sheet.UsedRange;
-            allDataRange.Sort(allDataRange.Columns[1], Excel.XlSortOrder.xlAscending);
+         
+            
 
-            range1 = sheet.UsedRange;
-             arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+            
             Dictionary<object, object> dic1 = new Dictionary<object, object>();
-            for (int i = 1; i <= arr1.GetLength(0); i++)
+            for (int i = 1; i <= listnew.Count-1; i++)
             {
-                dic1.Add(arr1[i, 1], arr1[i, 2]);
+                dic1.Add(listnew[i][0], listnew[i][1]);
 
             }
 
+            // data which tells which names are in which state
             var arr2 = GetObjArr(@"C:\Users\Public\excel2.xlsx");
             List<object> list1 = new List<object>();
             for (int i = 1; i <= arr2.GetLength(0); i++)
@@ -274,11 +273,6 @@ namespace projectforratlamandoffice
             }
           
             //    ws.Cells[item + 1, 2].NumberFormat = " 0.00 ₹";
-                         
-           
-
-
-
         }
     }
 }
