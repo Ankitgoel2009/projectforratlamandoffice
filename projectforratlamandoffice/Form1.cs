@@ -82,8 +82,6 @@ namespace projectforratlamandoffice
             Excel.Workbook wkb = null;
             wkb = Open(excel, selectedFile);
             Excel._Worksheet sheet = wkb.Sheets[1];          
-            sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
-            sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
             Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
             List<object[]> listnew = new List<object[]>();
