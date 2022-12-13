@@ -134,7 +134,7 @@ namespace projectforratlamandoffice
 
             
             Dictionary<object, object> dic1 = new Dictionary<object, object>();
-            for (int i = 1; i <= listnew.Count-1; i++)
+            for (int i = 0; i <= listnew.Count-1; i++)
             {
                 dic1.Add(listnew[i][0], listnew[i][1]);
 
