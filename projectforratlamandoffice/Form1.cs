@@ -84,22 +84,42 @@ namespace projectforratlamandoffice
             Excel._Worksheet sheet = wkb.Sheets[1];          
             Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+            var listname = "Vintage Flip";
             List<object[]> listnew = new List<object[]>();
+            List<string> list1 = new List<string>(); // just for sub-headings 
+            int firstSpaceIndex;
+            String firstString;
+            listnew.Add(new object[] { "VINTAGE FLIP" });
             for (int i = 10; i <= arr1.GetLength(0) - 1; i++)
             {
                 if (arr1[i, 1] != null)
                 {
                     int id = Convert.ToInt32(arr1[i, 2].ToString().Replace("Pcs", "").Trim());
                     if (id > 30)
+                    {                       
+                        listnew.Add(new object[] { arr1[i, 1].ToString().Replace(listname,"").Trim() });                       
+                    }
+                }
+            }
+
+            // ok till here 
+            // extract sub heading 
+            for (int i = 1; i < listnew.Count; i++)
+            {
+                if (true) // first time 
+                {
+                    firstSpaceIndex = listnew[i].ToString().IndexOf(" ");
+                    firstString = listnew[i].ToString().Substring(0, firstSpaceIndex);
+                    if (list1.Contains(firstString))
                     {
-                        listnew.Add(new object[] { arr1[i, 1].ToString().Replace("Vintage Flip","").Trim() });                       
+                        list1.Add(firstString); // Add to sub-heading list 
                     }
                 }
             }
             // commented out because i started adding from element 10 and also loop stops before length -1 
-           // list.RemoveAt(list.Count - 1);
-          //  list.RemoveRange(0, 10);         
-         
+            // list.RemoveAt(list.Count - 1);
+            //  list.RemoveRange(0, 10);         
+
             // names are  ready , now modify it      
 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
@@ -122,7 +142,8 @@ namespace projectforratlamandoffice
                 }
                 else
                 {
-                    sheet1.Cells[i + 1, 2].Value = dic1[list1[i]];
+                    // remove below comment 
+                  //  sheet1.Cells[i + 1, 2].Value = dic1[list1[i]];
                 }
 
                 sheet1.Cells[i + 1, 1].Value = list1[i];
