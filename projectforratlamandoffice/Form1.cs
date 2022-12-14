@@ -85,19 +85,20 @@ namespace projectforratlamandoffice
             sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
             sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
             Excel.Range range1 = sheet.UsedRange;
-            var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+            int rowindex = range1.Rows.Count;
+            int columnindex = range1.Columns.Count;
             List<object[]> listnew = new List<object[]>();
-            for (int i = 10; i <= arr1.GetLength(0) - 1; i++)
+            for (int i = 10; i <= rowindex - 1; i++)
             {
-                if (arr1[i, 1] != null)
+                if (range1.Cells[i,1].Text != "")
                 {
-                    if (arr1[i, 2] != null && arr1[i, 3] == null)
+                    if (range1.Cells[i, 2].Text != "" && range1.Cells[i, 3].Text == "")
                     {
-                        listnew.Add(new object[] { arr1[i, 1], "+ " + arr1[i, 2] + " ₹" });
+                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "+ " + range1.Cells[i, 2].Text + " ₹" });
                     }
-                    else if (arr1[i, 2] == null && arr1[i, 3] != null)
+                    else if (range1.Cells[i, 2].Text == null && range1.Cells[i, 3].Text != null)
                     {
-                        listnew.Add(new object[] { arr1[i, 1], "- " + arr1[i, 3] + " ₹" });
+                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "- " + range1.Cells[i, 3].Text + " ₹" });
                     }
 
                 }
