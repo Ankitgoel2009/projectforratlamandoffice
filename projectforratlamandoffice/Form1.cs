@@ -17,7 +17,6 @@ namespace projectforratlamandoffice
     public partial class Form1 : Form
     {
         string selectedFile;
-        int iRow, iCol = 1;
         object[,] valueArray;
         List<string> list = new List<string>();
         public Form1()
