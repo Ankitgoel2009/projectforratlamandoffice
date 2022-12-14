@@ -82,8 +82,8 @@ namespace projectforratlamandoffice
             Excel.Workbook wkb = null;
             wkb = Open(excel, selectedFile);
             Excel._Worksheet sheet = wkb.Sheets[1];          
-            sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
-            sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
+            sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             Excel.Range range1 = sheet.UsedRange;
             int rowindex = range1.Rows.Count;
             int columnindex = range1.Columns.Count;
@@ -96,7 +96,7 @@ namespace projectforratlamandoffice
                     {
                         listnew.Add(new object[] { range1.Cells[i, 1].Text, "+ " + range1.Cells[i, 2].Text + " ₹" });
                     }
-                    else if (range1.Cells[i, 2].Text == null && range1.Cells[i, 3].Text != null)
+                    else if (range1.Cells[i, 2].Text == "" && range1.Cells[i, 3].Text != "")
                     {
                         listnew.Add(new object[] { range1.Cells[i, 1].Text, "- " + range1.Cells[i, 3].Text + " ₹" });
                     }
@@ -164,7 +164,7 @@ namespace projectforratlamandoffice
 
                 sheet1.Cells[i + 1, 1].Value = list1[i];
             }
-            sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
+          //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
             sheet1.Columns["A:B"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
             sheet1.Range["B1"].EntireColumn.Font.Bold = true;
