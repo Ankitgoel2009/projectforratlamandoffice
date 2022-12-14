@@ -105,27 +105,30 @@ namespace projectforratlamandoffice
             // ok till here 
             // extract sub heading 
             for (int i = 1; i < listnew.Count; i++)
-            {
-                if (true) // first time 
-                {
+            {               
                     firstSpaceIndex = listnew[i].ToString().IndexOf(" ");
                     firstString = listnew[i].ToString().Substring(0, firstSpaceIndex);
                     if (list1.Contains(firstString))
                     {
                         list1.Add(firstString); // Add to sub-heading list 
                     }
-                }
+               
             }
-            // commented out because i started adding from element 10 and also loop stops before length -1 
-            // list.RemoveAt(list.Count - 1);
-            //  list.RemoveRange(0, 10);         
+            
 
-            // names are  ready , now modify it      
+            // List of sub-heading are  ready , now modify it      
 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
             Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
+            // create main heading 
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].EntireColumn.Font.Bold = true;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].Merge();
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].Cells.Font.Size = 20;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[ 1, 3]].Font.Italic = true;
+
 
             for (int i = 0; i < listnew.Count; i++)
             {
