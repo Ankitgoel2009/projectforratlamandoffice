@@ -89,10 +89,11 @@ namespace projectforratlamandoffice
             {
                 if (arr1[i, 1] != null)
                 {
-                    if ((int)arr1[i, 2] > 30  )
+                    int id = Convert.ToInt32(arr1[i, 2].ToString().Replace("Pcs", "").Trim());
+                    if (id > 30)
                     {
-                        listnew.Add(new object[] { arr1[i, 1] });
-                    }                  
+                        listnew.Add(new object[] { arr1[i, 1].ToString().Replace("Vintage Flip","").Trim() });                       
+                    }
                 }
             }
             // commented out because i started adding from element 10 and also loop stops before length -1 
