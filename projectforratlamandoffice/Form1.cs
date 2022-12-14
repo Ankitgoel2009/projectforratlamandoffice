@@ -100,46 +100,16 @@ namespace projectforratlamandoffice
            // list.RemoveAt(list.Count - 1);
           //  list.RemoveRange(0, 10);         
          
+            // names are  ready , now modify it      
 
-            // 6. copy text file data to list 
-            copydata();
-
-            // filter from only index which conatins  names and add the balance 
-            Filter(listnew, list);
-
-            // names are  ready , now modify it 
-                       
-            Dictionary<object, object> dic1 = new Dictionary<object, object>();
-            for (int i = 0; i <= listnew.Count-1; i++)
-            {
-                dic1.Add(listnew[i][0], listnew[i][1]);
-
-            }
-
-            // data which tells which names are in which state
-            var arr2 = GetObjArr(@"C:\Users\Public\excel2.xlsx");
-            List<object> list1 = new List<object>();
-            for (int i = 1; i <= arr2.GetLength(0); i++)
-            {
-                if (arr2[i, 1] != null && arr2[i, 2] == null)
-                {
-                    list1.Add(arr2[i, 1]);
-                }
-                if (arr2[i, 2] != null && arr2[i, 1] == null)
-                {
-                    list1.Add(arr2[i, 2]);
-                }
-
-            }
-
-            string outputpath = @"C:\Users\Public\ratlam.xlsx";
+            string outputpath = @"C:\Users\Public\VintageList.xlsx";
             Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
 
-            for (int i = 0; i < list1.Count; i++)
+            for (int i = 0; i < listnew.Count; i++)
             {
-                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan" || list1[i].ToString().Trim() == "Bihar" || list1[i].ToString().Trim() == "Punjab" || list1[i].ToString().Trim() == "Odisha" || list1[i].ToString().Trim() == "Chhatisgarh" || list1[i].ToString().Trim() == "West bengal" || list1[i].ToString().Trim() == "Madhya Pradesh" || list1[i].ToString().Trim() == "Jharkhand" || list1[i].ToString().Trim() == "Maharashtra" || list1[i].ToString().Trim() == "Market" || list1[i].ToString().Trim() == "Uttarakhand"|| list1[i].ToString().Trim() =="Assam" || list1[i].ToString().Trim() == "Tripura")
+                if (listnew[i].ToString().Trim() == "U.P" || listnew[i].ToString().Trim() == "Rajasthan" || listnew[i].ToString().Trim() == "Bihar" )
                 {
                     //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
                   
@@ -200,58 +170,6 @@ namespace projectforratlamandoffice
         }
 
 
-        public object[,] GetObjArr(string filename)
-        {
-
-            Excel.Application excel = null;
-            excel = new Excel.Application();
-            excel.Visible = true;
-            Excel.Workbook wkb = null;
-            wkb = Open(excel, filename);
-            Excel._Worksheet sheet = wkb.Sheets[1];
-            Excel.Range range1 = sheet.UsedRange;
-            // Read all data from data range in the worksheet
-            valueArray = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
-
-
-            wkb.Close(true);
-            excel.Quit();
-            // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
-
-
-
-            return valueArray;
-        }
-    public void copydata()
-        {
-            string filename = "abc.txt.txt";
-            string filePath = @"C:\hello\" + filename;
-            using (var file = new StreamReader(filePath))
-            {
-                var line = string.Empty;
-                while ((line = file.ReadLine()) != null)
-                {
-                    list.Add(Convert.ToString(line, CultureInfo.InvariantCulture));
-                }
-            }
-        }
-    public void Filter(List<object[]> ws, List<string> values)
-        {
-            var result1 = ws.Select(m => m[0]).ToList();
-            var result = result1.Except(list);
-            ws.RemoveAll(m => result.Contains(m[0]));
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (!result1.Contains(list[i]))
-                {
-                    ws.Add(new object[] { list[i], "0 ₹"  });
-                }
-            }
-          
-            
-        }
+  
     }
 }
