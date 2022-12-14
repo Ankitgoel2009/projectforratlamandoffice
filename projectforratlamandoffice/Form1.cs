@@ -87,6 +87,7 @@ namespace projectforratlamandoffice
             var listname = "Vintage Flip";
             List<object[]> listnew = new List<object[]>();
             List<string> list1 = new List<string>(); // just for sub-headings 
+            List<string> finallist = new List<string>();
             int firstSpaceIndex;
             String firstString;
             listnew.Add(new object[] { "VINTAGE FLIP" });
@@ -106,8 +107,8 @@ namespace projectforratlamandoffice
             // extract sub heading 
             for (int i = 1; i < listnew.Count; i++)
             {               
-                    firstSpaceIndex = listnew[i].ToString().IndexOf(" ");
-                    firstString = listnew[i].ToString().Substring(0, firstSpaceIndex);
+                    firstSpaceIndex = listnew[i].ToString().IndexOf(" "); // get index upto first space found
+                    firstString = listnew[i].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
                     if (list1.Contains(firstString))
                     {
                         list1.Add(firstString); // Add to sub-heading list 
@@ -115,7 +116,6 @@ namespace projectforratlamandoffice
                
             }
             
-
             // List of sub-heading are  ready , now modify it      
 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
@@ -123,25 +123,24 @@ namespace projectforratlamandoffice
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
             // create main heading 
-            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].EntireColumn.Font.Bold = true;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].Merge();
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[ 1, 2], sheet1.Cells[ 1, 3]].Cells.Font.Size = 20;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[ 1, 3]].Font.Italic = true;
+            sheet1.Cells[1, 1].Value = listnew[0];
+            // stretch it to three columns 
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].EntireColumn.Font.Bold = true;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Merge();
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Cells.Font.Size = 20;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Font.Italic = true;
 
-
-            for (int i = 0; i < listnew.Count; i++)
+            // create inner cells
+            for (int i = 1; i < listnew.Count; i++)
             {
                 if (listnew[i].ToString().Trim() == "U.P" || listnew[i].ToString().Trim() == "Rajasthan" || listnew[i].ToString().Trim() == "Bihar" )
                 {
                     //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
                   
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].EntireColumn.Font.Bold  = true;
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Cells.Font.Size = 20;
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Font.Italic = true;
-
+                    sheet1.Range[sheet1.Cells[i + 1, 1]].EntireColumn.Font.Bold  = true;
+                    sheet1.Range[sheet1.Cells[i + 1]] = XlHAlign.xlHAlignCenter;
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Cells.Font.Size = 10;
                 }
                 else
                 {
@@ -151,11 +150,11 @@ namespace projectforratlamandoffice
 
                 sheet1.Cells[i + 1, 1].Value = list1[i];
             }
-            sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0;[>=100000] ##\,##\,##0;##,##0.00";
-            sheet1.Columns["A:B"].AutoFit();
+            
+            sheet1.Columns["A:B:C"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
             sheet1.Range["B1"].EntireColumn.Font.Bold = true;
-            
+            sheet1.Range["C1"].EntireColumn.Font.Bold = true;
             range1 = sheet1.UsedRange;
             Borders border = range1.Borders;
             border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
