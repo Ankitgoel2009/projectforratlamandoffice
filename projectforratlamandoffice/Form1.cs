@@ -143,7 +143,7 @@ namespace projectforratlamandoffice
             //}
 
             // List of sub-heading are  ready , now prepare final list
-             Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>();
+            Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>();
             for (int i = 0; i < list1.Count; i++)
             {
                 string key = list1[i];
@@ -159,44 +159,59 @@ namespace projectforratlamandoffice
                 dic.Add(key, l);
             }
 
+            // use in last 
+            // replace subheading's short names with full names with 
+            // replace dictionary key string
+            // ready for output 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
             Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
             // create main heading 
             sheet1.Cells[1, 1].Value = listnew[0][0];
-            // stretch it to three columns 
-            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].EntireColumn.Font.Bold = true;
+            // stretch it to three columns and other designing 
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Bold = true;
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Merge();
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 20;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 40;
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Font.Italic = true;
             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;
+            int i2 = 0;
 
-            // create inner cells
-            for (int i = 0; i < dic.Count; i++)
+           // create inner cells
+            for (int i = 0; i < dic.Count; i++) // run upto keys/value pair
             {
-                if (listnew[i].ToString().Trim() == "U.P" || listnew[i].ToString().Trim() == "Rajasthan" || listnew[i].ToString().Trim() == "Bihar" )
-                {
-                    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
-                  
-                    sheet1.Range[sheet1.Cells[i + 1, 1]].EntireColumn.Font.Bold  = true;
-                    sheet1.Range[sheet1.Cells[i + 1]] = XlHAlign.xlHAlignCenter;
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Cells.Font.Size = 10;
-                }
-                else
-                {
-                    // remove below comment 
-                  //  sheet1.Cells[i + 1, 2].Value = dic1[list1[i]];
-                }
+                sheet1.Cells[i + 2, 1].Value = dic.Keys.ElementAt(i);
+                sheet1.Cells[i + 2, 1].Font.Bold = true;
+                sheet1.Cells[i + 2, 1].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                sheet1.Cells[i + 2, 1].Cells.Font.Size = 20;
+                sheet1.Cells[i + 2, 1].Interior.Color = Color.Blue;
 
-                sheet1.Cells[i + 1, 1].Value = list1[i];
+                // no success in below code 
+                foreach (string val in dic[sheet1.Cells[i + 2, 1].Value])
+                {
+                    sheet1.Cells[i + 2, 1].Value = val;
+                    //for (int ListIndex = 0; ListIndex < dic[dic.Keys.ElementAt(i);ListIndex++)
+                    //{
+                    //    sheet1.Cells[i + 2, 1].Value = dic.Values.ElementAt(ListIndex);
+                    // }
+                    // for (int ListIndex = 0; ListIndex < dic[].Count; ListIndex++) // for values of each keys 
+                    // {
+                    //    sheet1.Cells[i2 + 2, 1].Value = dic.Values.ElementAt(ListIndex);
+                    //    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
+
+
+                    // }
+                
+
+                    
+               // }
             }
             
 
 
 
-            sheet1.Columns["A:B:C"].AutoFit();
+           // sheet1.Columns["A:B:C"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
             sheet1.Range["B1"].EntireColumn.Font.Bold = true;
             sheet1.Range["C1"].EntireColumn.Font.Bold = true;
