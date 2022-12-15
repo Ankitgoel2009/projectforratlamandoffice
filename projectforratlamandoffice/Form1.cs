@@ -197,13 +197,6 @@ namespace projectforratlamandoffice
                // column++;
             }
 
-
-
-          
-            
-
-
-
            // sheet1.Columns["A:B:C"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
           //  sheet1.Range["B1"].EntireColumn.Font.Bold = true;
