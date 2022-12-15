@@ -102,6 +102,8 @@ namespace projectforratlamandoffice
                     }
                 }
             }
+            List<string> headingnames = new List<string> { "something", "onemore" };
+           
 
             // list of names are ready
             
@@ -114,10 +116,10 @@ namespace projectforratlamandoffice
                 {
                     if (!list1.Contains(firstString))
                     {
-                        list1.Add(firstString); // Add to sub-heading list 
+                        list1.Add(firstString.ToUpper()); // Add to sub-heading list 
                     }
                 }
-               
+
             }
 
             // List of sub-heading are  ready , now prepare final list
