@@ -108,12 +108,15 @@ namespace projectforratlamandoffice
             // extract sub heading 
             for (int i = 1; i < listnew.Count; i++)
             {               
-                    firstSpaceIndex = listnew[i][0].ToString().IndexOf(" "); // get index upto first space found
-                    firstString = listnew[i][0].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
+                firstSpaceIndex = listnew[i][0].ToString().IndexOf(" "); // get index upto first space found
+                firstString = listnew[i][0].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
+                if ()
+                {
                     if (!list1.Contains(firstString))
                     {
                         list1.Add(firstString); // Add to sub-heading list 
                     }
+                }
                
             }
 
