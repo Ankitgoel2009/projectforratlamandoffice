@@ -17,8 +17,6 @@ namespace projectforratlamandoffice
     public partial class Form1 : Form
     {
         string selectedFile;
-        int iRow, iCol = 1;
-        object[,] valueArray;
         List<string> list = new List<string>();
         public Form1()
         {
@@ -167,54 +165,50 @@ namespace projectforratlamandoffice
             Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
+
             // create main heading 
             sheet1.Cells[1, 1].Value = listnew[0][0];
             // stretch it to three columns and other designing 
             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Bold = true;
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Merge();
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 40;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 30;
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Font.Italic = true;
             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;
-            int i2 = 0;
-
-           // create inner cells
-            for (int i = 0; i < dic.Count; i++) // run upto keys/value pair
+            int column = 1;
+            int rows = 1;
+            foreach (string key in dic.Keys)
             {
-                sheet1.Cells[i + 2, 1].Value = dic.Keys.ElementAt(i);
-                sheet1.Cells[i + 2, 1].Font.Bold = true;
-                sheet1.Cells[i + 2, 1].HorizontalAlignment = XlHAlign.xlHAlignLeft;
-                sheet1.Cells[i + 2, 1].Cells.Font.Size = 20;
-                sheet1.Cells[i + 2, 1].Interior.Color = Color.Blue;
-
-                // no success in below code 
-             //   foreach (string val in dic[sheet1.Cells[i + 2, 1].Value])
-             //   {
-              //      sheet1.Cells[i + 2, 1].Value = val;
-                    //for (int ListIndex = 0; ListIndex < dic[dic.Keys.ElementAt(i);ListIndex++)
-                    //{
-                    //    sheet1.Cells[i + 2, 1].Value = dic.Values.ElementAt(ListIndex);
-                    // }
-                    // for (int ListIndex = 0; ListIndex < dic[].Count; ListIndex++) // for values of each keys 
-                    // {
-                    //    sheet1.Cells[i2 + 2, 1].Value = dic.Values.ElementAt(ListIndex);
-                    //    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
-
-
-                    // }
-                
-
-                    
-               // }
+                rows++;
+                sheet1.Cells[rows, column].Value = key;
+                sheet1.Cells[rows, column].Font.Bold = true;
+                sheet1.Cells[rows, column].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                sheet1.Cells[rows, column].Cells.Font.Size = 20;
+                sheet1.Cells[rows, column].Interior.Color = Color.Blue;
+                foreach (string value in dic[key])
+                {
+                    rows++;
+                    sheet1.Cells[rows, column].Value = value;
+                    sheet1.Cells[rows, column].Font.Bold = true;
+                    sheet1.Cells[rows, column].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                    sheet1.Cells[rows, column].Cells.Font.Size = 10;
+                    sheet1.Cells[rows, column].Interior.Color = Color.Green;
+                }
+               // column++;
             }
+
+
+
+          
             
 
 
 
            // sheet1.Columns["A:B:C"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
-            sheet1.Range["B1"].EntireColumn.Font.Bold = true;
-            sheet1.Range["C1"].EntireColumn.Font.Bold = true;
+          //  sheet1.Range["B1"].EntireColumn.Font.Bold = true;
+         //   sheet1.Range["C1"].EntireColumn.Font.Bold = true;
+            sheet1.Columns["A"].AutoFit();
             range1 = sheet1.UsedRange;
             Borders border = range1.Borders;
             border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
