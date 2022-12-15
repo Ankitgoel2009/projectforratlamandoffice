@@ -102,7 +102,8 @@ namespace projectforratlamandoffice
                     }
                 }
             }
-            List<string> headingnames = new List<string> { "something", "onemore" };
+
+           // List<string> headingnames = new List<string> { "sam", "oppo","vivo","" };// used only for text list 
            
 
             // list of names are ready
@@ -112,28 +113,46 @@ namespace projectforratlamandoffice
             {               
                 firstSpaceIndex = listnew[i][0].ToString().IndexOf(" "); // get index upto first space found
                 firstString = listnew[i][0].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
-                if ()
-                {
+                //if (headingnames.Contains(firstString)) 
+                //{
                     if (!list1.Contains(firstString))
                     {
-                        list1.Add(firstString.ToUpper()); // Add to sub-heading list 
+                        list1.Add(firstString); // Add to sub-heading list 
                     }
-                }
+                //}
+                //else
+                //{
+
+
+                //}
 
             }
 
+            // use in last 
+            // replace subheading's short names with full names  names with 
+            //for(int i = 0;i<list1.Count;i++)
+            //{
+            //    if (list1[i].StartsWith("sam", System.StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        list1[i] = "Samsung";
+            //    }
+            //    else if (list1[i].StartsWith("moto", System.StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        list1[i] = "Motorola";
+            //    }
+            //}
+
             // List of sub-heading are  ready , now prepare final list
              Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>();
-
             for (int i = 0; i < list1.Count; i++)
             {
                 string key = list1[i];
                 List<string> l = new List<string>();
-                foreach (var item in listnew)
+                for (var item=1;item<listnew.Count;item++) // deliberately starts from 1 
                 {
-                    if (item[0].ToString().Contains(key))
+                    if (listnew[item][0].ToString().StartsWith(key))
                     {
-                        l.Add(item[0].ToString().Replace(key, ""));
+                        l.Add(listnew[item][0].ToString());
                     }
 
                 }
@@ -145,16 +164,17 @@ namespace projectforratlamandoffice
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
             // create main heading 
-            sheet1.Cells[1, 1].Value = listnew[0];
+            sheet1.Cells[1, 1].Value = listnew[0][0];
             // stretch it to three columns 
-            //sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].EntireColumn.Font.Bold = true;
-            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Merge();
-            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Cells.Font.Size = 20;
-            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Font.Italic = true;
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].EntireColumn.Font.Bold = true;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Merge();
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 20;
+            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Font.Italic = true;
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;
 
             // create inner cells
-            for (int i = 1; i < listnew.Count; i++)
+            for (int i = 0; i < dic.Count; i++)
             {
                 if (listnew[i].ToString().Trim() == "U.P" || listnew[i].ToString().Trim() == "Rajasthan" || listnew[i].ToString().Trim() == "Bihar" )
                 {
@@ -173,6 +193,9 @@ namespace projectforratlamandoffice
                 sheet1.Cells[i + 1, 1].Value = list1[i];
             }
             
+
+
+
             sheet1.Columns["A:B:C"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
             sheet1.Range["B1"].EntireColumn.Font.Bold = true;
