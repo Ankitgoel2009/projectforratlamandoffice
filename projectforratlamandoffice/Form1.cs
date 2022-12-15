@@ -188,9 +188,9 @@ namespace projectforratlamandoffice
                 sheet1.Cells[i + 2, 1].Interior.Color = Color.Blue;
 
                 // no success in below code 
-                foreach (string val in dic[sheet1.Cells[i + 2, 1].Value])
-                {
-                    sheet1.Cells[i + 2, 1].Value = val;
+             //   foreach (string val in dic[sheet1.Cells[i + 2, 1].Value])
+             //   {
+              //      sheet1.Cells[i + 2, 1].Value = val;
                     //for (int ListIndex = 0; ListIndex < dic[dic.Keys.ElementAt(i);ListIndex++)
                     //{
                     //    sheet1.Cells[i + 2, 1].Value = dic.Values.ElementAt(ListIndex);
