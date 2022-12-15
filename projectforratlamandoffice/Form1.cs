@@ -87,7 +87,7 @@ namespace projectforratlamandoffice
             var listname = "Vintage Flip";
             List<object[]> listnew = new List<object[]>();
             List<string> list1 = new List<string>(); // just for sub-headings 
-            List<string> finallist = new List<string>();
+            
             int firstSpaceIndex;
             String firstString;
             listnew.Add(new object[] { "VINTAGE FLIP" });
@@ -103,20 +103,37 @@ namespace projectforratlamandoffice
                 }
             }
 
-            // ok till here 
+            // list of names are ready
+            
             // extract sub heading 
             for (int i = 1; i < listnew.Count; i++)
             {               
-                    firstSpaceIndex = listnew[i].ToString().IndexOf(" "); // get index upto first space found
-                    firstString = listnew[i].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
-                    if (list1.Contains(firstString))
+                    firstSpaceIndex = listnew[i][0].ToString().IndexOf(" "); // get index upto first space found
+                    firstString = listnew[i][0].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
+                    if (!list1.Contains(firstString))
                     {
                         list1.Add(firstString); // Add to sub-heading list 
                     }
                
             }
-            
-            // List of sub-heading are  ready , now modify it      
+
+            // List of sub-heading are  ready , now prepare final list
+             Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>();
+
+            for (int i = 0; i < list1.Count; i++)
+            {
+                string key = list1[i];
+                List<string> l = new List<string>();
+                foreach (var item in listnew)
+                {
+                    if (item[0].ToString().Contains(key))
+                    {
+                        l.Add(item[0].ToString().Replace(key, ""));
+                    }
+
+                }
+                dic.Add(key, l);
+            }
 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
             Excel.Application excel1 = new Excel.Application();
@@ -125,11 +142,11 @@ namespace projectforratlamandoffice
             // create main heading 
             sheet1.Cells[1, 1].Value = listnew[0];
             // stretch it to three columns 
-            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].EntireColumn.Font.Bold = true;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Merge();
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Cells.Font.Size = 20;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Font.Italic = true;
+            //sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].EntireColumn.Font.Bold = true;
+            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Merge();
+            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Cells.Font.Size = 20;
+            //sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 2], sheet1.Cells[1, 3]].Font.Italic = true;
 
             // create inner cells
             for (int i = 1; i < listnew.Count; i++)
