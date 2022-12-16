@@ -126,22 +126,11 @@ namespace projectforratlamandoffice
 
             }
 
-            // use in last 
-            // replace subheading's short names with full names  names with 
-            //for(int i = 0;i<list1.Count;i++)
-            //{
-            //    if (list1[i].StartsWith("sam", System.StringComparison.CurrentCultureIgnoreCase))
-            //    {
-            //        list1[i] = "Samsung";
-            //    }
-            //    else if (list1[i].StartsWith("moto", System.StringComparison.CurrentCultureIgnoreCase))
-            //    {
-            //        list1[i] = "Motorola";
-            //    }
-            //}
+      
 
             // List of sub-heading are  ready , now prepare final list
-            Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>();
+            // string comparer is used so that all evaluations on the key act according to the rules of the comparer: case-insensitive.
+            Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>(StringComparer.CurrentCultureIgnoreCase);
             for (int i = 0; i < list1.Count; i++)
             {
                 string key = list1[i];
@@ -156,10 +145,27 @@ namespace projectforratlamandoffice
                 }
                 dic.Add(key, l);
             }
+           
+            for (int keycount = 0; keycount < dic.Count; keycount++)
+            {
+                if (dic.ContainsKey("sam"))
+                {
+                    dic.Add("Samsung", dic["sam"]);
+                    dic.Remove("sam");
+                }
+                else if (dic.ContainsKey("moto"))
+                {
+                    dic.Add("Motorola", dic["moto"]);
+                    dic.Remove("moto");
+                }
+                else if (dic.ContainsKey("z"))
+                {
+                    dic.Remove("z");
+                }
+            }
 
-            // use in last 
-            // replace subheading's short names with full names with 
-            // replace dictionary key string
+       
+      
             // ready for output 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
             Excel.Application excel1 = new Excel.Application();
@@ -177,6 +183,8 @@ namespace projectforratlamandoffice
             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;
             int column = 1;
             int rows = 1;
+            var columnMax = 3;
+            var rowMax = 20;
             foreach (string key in dic.Keys)
             {
                 rows++;
@@ -192,12 +200,14 @@ namespace projectforratlamandoffice
                     sheet1.Cells[rows, column].Font.Bold = true;
                     sheet1.Cells[rows, column].HorizontalAlignment = XlHAlign.xlHAlignLeft;
                     sheet1.Cells[rows, column].Cells.Font.Size = 10;
-                    sheet1.Cells[rows, column].Interior.Color = Color.Green;
+                   // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                 }
                // column++;
             }
 
-           // sheet1.Columns["A:B:C"].AutoFit();
+          // sheet1.Columns["A:B:C"].AutoFit();
+           sheet1.Range["B1"].ColumnWidth = 20.00;
+            sheet1.Range["C1"].ColumnWidth = 20.00;
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
           //  sheet1.Range["B1"].EntireColumn.Font.Bold = true;
          //   sheet1.Range["C1"].EntireColumn.Font.Bold = true;
