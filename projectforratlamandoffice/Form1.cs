@@ -101,8 +101,7 @@ namespace projectforratlamandoffice
                 }
             }
 
-           // List<string> headingnames = new List<string> { "sam", "oppo","vivo","" };// used only for text list 
-           
+                    
 
             // list of names are ready
             
@@ -131,6 +130,7 @@ namespace projectforratlamandoffice
             // List of sub-heading are  ready , now prepare final list
             // string comparer is used so that all evaluations on the key act according to the rules of the comparer: case-insensitive.
             Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>(StringComparer.CurrentCultureIgnoreCase);
+            List<string> headingnames = new List<string> { "sam", "oppo", "vivo", "redmi","moto" };// used only for text list 
             for (int i = 0; i < list1.Count; i++)
             {
                 string key = list1[i];
@@ -143,26 +143,65 @@ namespace projectforratlamandoffice
                     }
 
                 }
-                dic.Add(key, l);
-            }
-           
-            for (int keycount = 0; keycount < dic.Count; keycount++)
-            {
-                if (dic.ContainsKey("sam"))
+                // if keyname is what you want as subheading 
+                // comment the following lines if you dont want to use other items category
+                if (headingnames.Contains(key, StringComparer.OrdinalIgnoreCase)) // comment this
+                {                                                                  // comment this
+                    if (String.Equals(key, "sam", StringComparison.OrdinalIgnoreCase))
+                    {
+                        dic.Add("Samsung", l);
+                    }
+                    else if (String.Equals(key, "moto", StringComparison.OrdinalIgnoreCase))
+                    {
+                        dic.Add("Motorola", l);
+                    }
+                    else
+                    {
+                        dic.Add(key, l);
+                    }
+                } // comment this 
+                else if (String.Equals(key, "Z", StringComparison.OrdinalIgnoreCase)) // this else-if block will move to upper block
                 {
-                    dic.Add("Samsung", dic["sam"]);
-                    dic.Remove("sam");
+                    continue;
                 }
-                else if (dic.ContainsKey("moto"))
+                else // comment this full else block
                 {
-                    dic.Add("Motorola", dic["moto"]);
-                    dic.Remove("moto");
+                        if (!dic.ContainsKey("Other models"))
+                        {
+                            dic.Add("Other Models", l);
+                        }
+                        else
+                        {
+                           foreach (var listitems in l)
+                           {
+                            dic["Other Models"].Add(listitems);
+                           }
+                        }
+                    }                  
+                
                 }
-                else if (dic.ContainsKey("z"))
-                {
-                    dic.Remove("z");
-                }
-            }
+            
+           // function for changing 
+
+            // function for changing names of samsung and vivo
+            // no need as i have used it above 
+            //for (int keycount = 0; keycount < dic.Count; keycount++)
+            //{
+            //    if (dic.ContainsKey("sam"))
+            //    {
+            //        dic.Add("Samsung", dic["sam"]);
+            //        dic.Remove("sam");
+            //    }
+            //    else if (dic.ContainsKey("moto"))
+            //    {
+            //        dic.Add("Motorola", dic["moto"]);
+            //        dic.Remove("moto");
+            //    }
+            //    else if (dic.ContainsKey("z"))
+            //    {
+            //        dic.Remove("z");
+            //    }
+            //}
 
        
       
