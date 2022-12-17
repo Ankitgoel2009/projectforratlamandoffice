@@ -239,26 +239,26 @@ namespace projectforratlamandoffice
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 30;
             sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Font.Italic = true;
             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;
-            int column = 1;
-            int rows = 1;
+            int columnnumber = 1;
+            int rownumber = 1;
             var columnMax = 3;
             var rowMaxineachcolumn = 20;
             var totalrowsmax = finaltotal;
             foreach (string key in dic.Keys)
             {
-                    rows++;               
-                    sheet1.Cells[rows, column].Value = key;
-                    sheet1.Cells[rows, column].Font.Bold = true;
-                    sheet1.Cells[rows, column].HorizontalAlignment = XlHAlign.xlHAlignLeft;
-                    sheet1.Cells[rows, column].Cells.Font.Size = 20;
-                    sheet1.Cells[rows, column].Interior.Color = Color.Blue;
+                    rownumber++;               
+                    sheet1.Cells[rownumber, columnnumber].Value = key;
+                    sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
+                    sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                    sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 20;
+                    sheet1.Cells[rownumber, columnnumber].Interior.Color = Color.Blue;
                     foreach (string value in dic[key])
                     {
-                        rows++;
-                        sheet1.Cells[rows, column].Value = value;
-                        sheet1.Cells[rows, column].Font.Bold = true;
-                        sheet1.Cells[rows, column].HorizontalAlignment = XlHAlign.xlHAlignLeft;
-                        sheet1.Cells[rows, column].Cells.Font.Size = 10;
+                    rownumber++;
+                        sheet1.Cells[rownumber, columnnumber].Value = value;
+                        sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
+                        sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                        sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 10;
                         // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                     }
                 
