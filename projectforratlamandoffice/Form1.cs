@@ -143,6 +143,11 @@ namespace projectforratlamandoffice
                     }
 
                 }
+                // code  to auto add names in subheading
+                if(l.Count > 5)
+                {
+                    headingnames.Add(key);
+                }
                 // if keyname is what you want as subheading 
                 // comment the following lines if you dont want to use other items category
                 if (headingnames.Contains(key, StringComparer.OrdinalIgnoreCase)) // comment this
@@ -154,6 +159,10 @@ namespace projectforratlamandoffice
                     else if (String.Equals(key, "moto", StringComparison.OrdinalIgnoreCase))
                     {
                         dic.Add("Motorola", l);
+                    }
+                    else if (String.Equals(key, "Z", StringComparison.OrdinalIgnoreCase)) // this else-if block will move to upper block
+                    {
+                        continue;
                     }
                     else
                     {
