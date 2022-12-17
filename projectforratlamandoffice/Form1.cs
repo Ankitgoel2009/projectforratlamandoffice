@@ -131,6 +131,7 @@ namespace projectforratlamandoffice
             // string comparer is used so that all evaluations on the key act according to the rules of the comparer: case-insensitive.
             Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>(StringComparer.CurrentCultureIgnoreCase);
             List<string> headingnames = new List<string> { "sam", "oppo", "vivo", "redmi","moto" };// used only for text list 
+            
             for (int i = 0; i < list1.Count; i++)
             {
                 string key = list1[i];
@@ -147,6 +148,7 @@ namespace projectforratlamandoffice
                 if(l.Count > 5)
                 {
                     headingnames.Add(key);
+                  
                 }
                 // if keyname is what you want as subheading 
                 // comment the following lines if you dont want to use other items category
@@ -189,8 +191,8 @@ namespace projectforratlamandoffice
                     }                  
                 
                 }
-            
-           // function for changing 
+
+            // function for changing 
 
             // function for changing names of samsung and vivo
             // no need as i have used it above 
@@ -211,9 +213,15 @@ namespace projectforratlamandoffice
             //        dic.Remove("z");
             //    }
             //}
+            // count each key and total values in each key 
+            Dictionary<string, int> count = new Dictionary<string, int>();
+            int totalelements;           
+            foreach( var keyc in dic.Keys)
+            { 
+                totalelements = dic[keyc].Count;
+                count.Add(keyc.ToString(), totalelements);
+            }
 
-       
-      
             // ready for output 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
             Excel.Application excel1 = new Excel.Application();
