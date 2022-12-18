@@ -29,25 +29,15 @@ namespace Datagridview
         /// </summary>
         private void InitializeComponent()
         {
-            this.custombutton1 = new Datagridview.custombutton();
             this.customControl11 = new Datagridview.CustomControl1();
             this.SuspendLayout();
             // 
-            // custombutton1
-            // 
-            this.custombutton1.AutoSize = true;
-            this.custombutton1.Location = new System.Drawing.Point(348, 82);
-            this.custombutton1.Name = "custombutton1";
-            this.custombutton1.Size = new System.Drawing.Size(101, 17);
-            this.custombutton1.TabIndex = 0;
-            this.custombutton1.Text = "custombutton1";
-            // 
             // customControl11
             // 
-            this.customControl11.Location = new System.Drawing.Point(361, 141);
+            this.customControl11.Location = new System.Drawing.Point(464, 230);
             this.customControl11.Name = "customControl11";
-            this.customControl11.Size = new System.Drawing.Size(189, 70);
-            this.customControl11.TabIndex = 1;
+            this.customControl11.Size = new System.Drawing.Size(278, 152);
+            this.customControl11.TabIndex = 0;
             this.customControl11.Text = "customControl11";
             // 
             // Form2
@@ -56,17 +46,14 @@ namespace Datagridview
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.customControl11);
-            this.Controls.Add(this.custombutton1);
             this.Name = "Form2";
             this.Text = "Form2";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private custombutton custombutton1;
         private CustomControl1 customControl11;
     }
 }
