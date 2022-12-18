@@ -191,7 +191,7 @@ namespace projectforratlamandoffice
                     }                  
                 
                 }
-
+          
             // function for changing 
 
             // function for changing names of samsung and vivo
@@ -223,6 +223,7 @@ namespace projectforratlamandoffice
                 count.Add(keyc.ToString(), totalelementsineachkey);
                 finaltotal += totalelementsineachkey;
             }
+
 
             // ready for output 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
