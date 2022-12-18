@@ -11,6 +11,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using Microsoft.Office.Interop.Excel;
 using System.Globalization;
+using Font = System.Drawing.Font;
 
 namespace projectforratlamandoffice
 {
@@ -22,6 +23,7 @@ namespace projectforratlamandoffice
         {
             InitializeComponent();
         }
+      
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -62,7 +64,7 @@ namespace projectforratlamandoffice
             Cursor.Current = Cursors.Default;
 
         }
-    
+
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)
         {
             Excel.Workbook book = excelInstance.Workbooks.Open(
@@ -79,13 +81,13 @@ namespace projectforratlamandoffice
             excel.Visible = true;
             Excel.Workbook wkb = null;
             wkb = Open(excel, selectedFile);
-            Excel._Worksheet sheet = wkb.Sheets[1];          
+            Excel._Worksheet sheet = wkb.Sheets[1];
             Excel.Range range1 = sheet.UsedRange;
             var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
             var listname = "Vintage Flip";
             List<object[]> listnew = new List<object[]>();
             List<string> list1 = new List<string>(); // just for sub-headings 
-            
+
             int firstSpaceIndex;
             String firstString;
             listnew.Add(new object[] { "VINTAGE FLIP" });
@@ -95,28 +97,28 @@ namespace projectforratlamandoffice
                 {
                     int id = Convert.ToInt32(arr1[i, 2].ToString().Replace("Pcs", "").Trim());
                     if (id > 30)
-                    {                       
-                        listnew.Add(new object[] { arr1[i, 1].ToString().Replace(listname,"").Trim() });                       
+                    {
+                        listnew.Add(new object[] { arr1[i, 1].ToString().Replace(listname, "").Trim() });
                     }
                 }
             }
 
-           // List<string> headingnames = new List<string> { "sam", "oppo","vivo","" };// used only for text list 
-           
+            // List<string> headingnames = new List<string> { "sam", "oppo","vivo","" };// used only for text list 
+
 
             // list of names are ready
-            
+
             // extract sub heading 
             for (int i = 1; i < listnew.Count; i++)
-            {               
+            {
                 firstSpaceIndex = listnew[i][0].ToString().IndexOf(" "); // get index upto first space found
                 firstString = listnew[i][0].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
-                //if (headingnames.Contains(firstString)) 
-                //{
-                    if (!list1.Contains(firstString))
-                    {
-                        list1.Add(firstString); // Add to sub-heading list 
-                    }
+                                                                                      //if (headingnames.Contains(firstString)) 
+                                                                                      //{
+                if (!list1.Contains(firstString))
+                {
+                    list1.Add(firstString); // Add to sub-heading list 
+                }
                 //}
                 //else
                 //{
@@ -126,7 +128,7 @@ namespace projectforratlamandoffice
 
             }
 
-      
+
 
             // List of sub-heading are  ready , now prepare final list
             // string comparer is used so that all evaluations on the key act according to the rules of the comparer: case-insensitive.
@@ -135,7 +137,7 @@ namespace projectforratlamandoffice
             {
                 string key = list1[i];
                 List<string> l = new List<string>();
-                for (var item=1;item<listnew.Count;item++) // deliberately starts from 1 
+                for (var item = 1; item < listnew.Count; item++) // deliberately starts from 1 
                 {
                     if (listnew[item][0].ToString().StartsWith(key))
                     {
@@ -145,7 +147,7 @@ namespace projectforratlamandoffice
                 }
                 dic.Add(key, l);
             }
-           
+
             for (int keycount = 0; keycount < dic.Count; keycount++)
             {
                 if (dic.ContainsKey("sam"))
@@ -164,8 +166,8 @@ namespace projectforratlamandoffice
                 }
             }
 
-       
-      
+
+
             // ready for output 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
             Excel.Application excel1 = new Excel.Application();
@@ -176,10 +178,10 @@ namespace projectforratlamandoffice
             sheet1.Cells[1, 1].Value = listnew[0][0];
             // stretch it to three columns and other designing 
             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Bold = true;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Merge();
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 30;
-            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Font.Italic = true;
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Merge();
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 30;
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Italic = true;
             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;
             int column = 1;
             int rows = 1;
@@ -200,17 +202,17 @@ namespace projectforratlamandoffice
                     sheet1.Cells[rows, column].Font.Bold = true;
                     sheet1.Cells[rows, column].HorizontalAlignment = XlHAlign.xlHAlignLeft;
                     sheet1.Cells[rows, column].Cells.Font.Size = 10;
-                   // sheet1.Cells[rows, column].Interior.Color = Color.Green;
+                    // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                 }
-               // column++;
+                // column++;
             }
 
-          // sheet1.Columns["A:B:C"].AutoFit();
-           sheet1.Range["B1"].ColumnWidth = 20.00;
+            // sheet1.Columns["A:B:C"].AutoFit();
+            sheet1.Range["B1"].ColumnWidth = 20.00;
             sheet1.Range["C1"].ColumnWidth = 20.00;
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
-          //  sheet1.Range["B1"].EntireColumn.Font.Bold = true;
-         //   sheet1.Range["C1"].EntireColumn.Font.Bold = true;
+            //  sheet1.Range["B1"].EntireColumn.Font.Bold = true;
+            //   sheet1.Range["C1"].EntireColumn.Font.Bold = true;
             sheet1.Columns["A"].AutoFit();
             range1 = sheet1.UsedRange;
             Borders border = range1.Borders;
@@ -248,8 +250,61 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
             System.Windows.Forms.Application.Exit();
         }
+        public void RenderRainbowText(string Text,char keyword,System.Windows.Forms.Label Lb)
+        {
 
+            using (System.Drawing.Graphics formGraphics = this.CreateGraphics())
+            {
+                // USED FOR RECTANGLE 
+                //  SolidBrush brush = new SolidBrush(Color.White);
+                // formGraphics.FillRectangle(brush, 0, 0,Lb.Width, Lb.Height);
+                string[] chunks = Text.Split(keyword);
+                string word = keyword.ToString();
+                // USED FOR DRAWING chunk
+                SolidBrush  brush = new SolidBrush(Color.Red);
+                SolidBrush[] brushes = new SolidBrush[] {
+                                   new SolidBrush(Color.Black) };
+                                 //  new SolidBrush(Color.Blue) };
+                                //   new SolidBrush(Color.Blue)};
+                                // new SolidBrush(Color.Purple) };
+                float x = 0;
+                for (int i = 0; i < chunks.Length; i++)
+                {
+                    formGraphics.DrawString(chunks[i], Lb.Font, brushes[0], x, 0); // brushes[i] has been replaced with brushes[0]
+                    x += (formGraphics.MeasureString(chunks[i], Lb.Font)).Width;
+                    //CODE TO MEASURE AND DRAW COMMA
+                    if (i < (chunks.Length - 1))
+                    {
+                        formGraphics.DrawString(word, Lb.Font, brush, x, 0);
+                        x += (formGraphics.MeasureString(",", Lb.Font)).Width;
+                    }
+                }
+            }
+        }
+        public void DrawString()
+        {
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+            string drawString = "Sample Text";
+            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 16);
+            System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
+            
+            float x = 150.0F;
+            float y = 50.0F;
+            System.Drawing.StringFormat drawFormat = new System.Drawing.StringFormat();
+            formGraphics.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
+            drawFont.Dispose();
+            drawBrush.Dispose();
+            formGraphics.Dispose();
+        }
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
 
-  
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            DrawString();
+            RenderRainbowText("Accounting Voucher",'V', label1);
+
+        }
     }
 }
