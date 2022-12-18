@@ -223,7 +223,18 @@ namespace projectforratlamandoffice
                 count.Add(keyc.ToString(), totalelementsineachkey);
                 finaltotal += totalelementsineachkey;
             }
+        https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html 
+            // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.
 
+
+            //while( count.ElementAt(1).Key != "samsung")
+            //{
+            //     var tempelement = count.ElementAt(1);
+            //    count.ElementAt(1) = count.ElementAt(2);
+            //    count.ElementAt(2) = tempelement;
+
+
+            //}
 
             // ready for output 
             string outputpath = @"C:\Users\Public\VintageList.xlsx";
