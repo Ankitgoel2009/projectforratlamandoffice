@@ -26,5 +26,10 @@ namespace Datagridview
         {
 
         }
+
+        private void custombutton2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

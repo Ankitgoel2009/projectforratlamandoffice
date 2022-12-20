@@ -29,17 +29,27 @@ namespace Datagridview
         /// </summary>
         private void InitializeComponent()
         {
+            this.custombutton2 = new Datagridview.custombutton();
             this.custombutton1 = new Datagridview.custombutton();
             this.textBox2 = new Datagridview.textBox();
             this.textBox1 = new Datagridview.textBox();
-            this.custombutton2 = new Datagridview.custombutton();
             this.SuspendLayout();
+            // 
+            // custombutton2
+            // 
+            this.custombutton2.Location = new System.Drawing.Point(301, 247);
+            this.custombutton2.Name = "custombutton2";
+            this.custombutton2.Size = new System.Drawing.Size(365, 120);
+            this.custombutton2.TabIndex = 3;
+            this.custombutton2.Text = "custombutton2";
+            this.custombutton2.UseVisualStyleBackColor = true;
+            this.custombutton2.Click += new System.EventHandler(this.custombutton2_Click);
             // 
             // custombutton1
             // 
-            this.custombutton1.Location = new System.Drawing.Point(345, 61);
+            this.custombutton1.Location = new System.Drawing.Point(301, 61);
             this.custombutton1.Name = "custombutton1";
-            this.custombutton1.Size = new System.Drawing.Size(321, 180);
+            this.custombutton1.Size = new System.Drawing.Size(365, 180);
             this.custombutton1.TabIndex = 2;
             this.custombutton1.Text = "Accounting Vouchers";
             this.custombutton1.UseVisualStyleBackColor = true;
@@ -58,15 +68,6 @@ namespace Datagridview
             this.textBox1.Size = new System.Drawing.Size(100, 22);
             this.textBox1.TabIndex = 0;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // custombutton2
-            // 
-            this.custombutton2.Location = new System.Drawing.Point(389, 327);
-            this.custombutton2.Name = "custombutton2";
-            this.custombutton2.Size = new System.Drawing.Size(277, 55);
-            this.custombutton2.TabIndex = 3;
-            this.custombutton2.Text = "custombutton2";
-            this.custombutton2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

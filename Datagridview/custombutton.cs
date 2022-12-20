@@ -27,19 +27,20 @@ namespace Datagridview
         public void RenderRainbowText(string Text, char keyword, Control Lb)
         {
 
-            using (System.Drawing.Graphics formGraphics = this.CreateGraphics())
-            {
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+            
                 string[] chunks = Text.Split(keyword);
                 string word = keyword.ToString();
                 // USED FOR DRAWING chunk
                 SolidBrush brush = new SolidBrush(Color.Red);
-                SolidBrush[] brushes = new SolidBrush[] {
-                                   new SolidBrush(Color.Black) };
+                SolidBrush brush1 = new SolidBrush(Color.Black);
+
+                 //SolidBrush[] brushes = new SolidBrush[] {  new SolidBrush(Color.Black) };
               
                 float x = 0;
                 for (int i = 0; i < chunks.Length; i++)
                 {
-                    formGraphics.DrawString(chunks[i], Lb.Font, brushes[0], x, 0); // brushes[i] has been replaced with brushes[0]
+                    formGraphics.DrawString(chunks[i], Lb.Font, brush1, x, 0); // brushes[i] has been replaced with brushes[0]
                     x += (formGraphics.MeasureString(chunks[i], Lb.Font)).Width;
                     //CODE TO MEASURE AND DRAW COMMA
                     if (i < (chunks.Length - 1))
@@ -48,7 +49,7 @@ namespace Datagridview
                         x += (formGraphics.MeasureString(",", Lb.Font)).Width;
                     }
                 }
-            }
+            
         }
     }
 }
