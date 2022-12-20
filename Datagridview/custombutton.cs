@@ -35,8 +35,7 @@ namespace Datagridview
                 SolidBrush brush = new SolidBrush(Color.Red);
                 SolidBrush brush1 = new SolidBrush(Color.Black);
 
-                 //SolidBrush[] brushes = new SolidBrush[] {  new SolidBrush(Color.Black) };
-              
+                 //SolidBrush[] brushes = new SolidBrush[] {  new SolidBrush(Color.Black) };              
                 float x = 0;
                 for (int i = 0; i < chunks.Length; i++)
                 {
