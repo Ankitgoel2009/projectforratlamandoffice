@@ -58,7 +58,9 @@ namespace projectforratlamandoffice
             "2. EXPRESS FLIP",
             "3. ARROW FLIP",
             "4. IMD",
-            "5. CLOTH"});
+            "5. CLOTH",
+            "6. CHROME ",
+            "7. ARIEL"});
             this.comboBox1.Location = new System.Drawing.Point(194, 32);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(401, 34);

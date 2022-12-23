@@ -24,7 +24,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             // sort dic according to list named sequence
             //  dic = dic.OrderBy(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
                        dic = dic.OrderByDescending(d => d.Value.Count).ToDictionary(x => x.Key, x => x.Value);
-             dic = dic.OrderBy(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
+             dic = dic.OrderByDescending(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
             // ready for output 
             string outputpath = @"C:\Users\Public\" +comboBox1.Text+".xlsx";            Excel.Application excel1 = new Excel.Application();            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;            // create main heading             sheet1.Cells[1, 1].Value = listnew[0][0].ToString().ToUpper();            // stretch it to three columns and other designing             sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Bold = true;            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Merge();            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 30;            sheet1.Range[sheet1.Cells[ 1, 1], sheet1.Cells[1, 3]].Font.Italic = true;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;            int columnnumber = 1;            int rownumber = 1;            var columnMax = 3;
             var remainder = 0;
