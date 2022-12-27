@@ -36,7 +36,38 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                       {
                       dic.Insert(3, "vivo", l);
                      }
-                    else if (String.Equals(key, "moto", StringComparison.OrdinalIgnoreCase))                    {                        dic.Add("Motorola", l);                    }                    else if (String.Equals(key, "Z", StringComparison.OrdinalIgnoreCase)) // this else-if block will move to upper block                    {                        continue;                    }                    else                    {                        dic.Add(key, l);                    }               // } // comment this                // else if (String.Equals(key, "Z", StringComparison.OrdinalIgnoreCase)) // this else-if block will move to upper block              //  {               //     continue;               // }                //else // comment this full else block                //{                //        if (!dic.ContainsKey("Other models"))                //        {                //            dic.Add("Other Models", l);                //        }                //        else                //        {                //           foreach (var listitems in l)                //           {                //            dic["Other Models"].Add(listitems);                //           }                //        }                //    }                                                  }                          // function for changing names of samsung and vivo            // no need as i have used it above             //for (int keycount = 0; keycount < dic.Count; keycount++)            //{            //    if (dic.ContainsKey("sam"))            //    {            //        dic.Add("Samsung", dic["sam"]);            //        dic.Remove("sam");            //    }            //    else if (dic.ContainsKey("moto"))            //    {            //        dic.Add("Motorola", dic["moto"]);            //        dic.Remove("moto");            //    }            //    else if (dic.ContainsKey("z"))            //    {            //        dic.Remove("z");            //    }            //}            // count each key and total values in each key             Dictionary<string, int> count = new Dictionary<string, int>();            int totalelementsineachkey;            int finaltotal=0;            IDictionaryEnumerator myEnumerator = dic.GetEnumerator();            foreach ( object keyc in dic.Cast<DictionaryEntry>().Key)            {                 totalelementsineachkey = dic[keyc];                count.Add(keyc.ToString(), totalelementsineachkey);                finaltotal += totalelementsineachkey;            }             //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html             // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.            List<string> listofsequence = new List<string>();            listofsequence.Add("Samsung");            listofsequence.Add("Redmi");            listofsequence.Add("Oppo");            listofsequence.Add("Vivo");            //listofsequence.Add("Tecno");            //listofsequence.Add("IPhone");            //listofsequence.Add("Infinix");            //listofsequence.Add("Itel");            //listofsequence.Add("Jio");            //listofsequence.Add("Micromax");            //listofsequence.Add("Motorola");            //listofsequence.Add("Nokia");            //listofsequence.Add("Oneplus");            //listofsequence.Add("Honour");
+                    else if (String.Equals(key, "moto", StringComparison.OrdinalIgnoreCase))                    {                        dic.Add("Motorola", l);                    }                    else if (String.Equals(key, "Z", StringComparison.OrdinalIgnoreCase)) // this else-if block will move to upper block                    {                        continue;                    }                    else                    {                        dic.Add(key, l);                    }               // } // comment this                // else if (String.Equals(key, "Z", StringComparison.OrdinalIgnoreCase)) // this else-if block will move to upper block              //  {               //     continue;               // }                //else // comment this full else block                //{                //        if (!dic.ContainsKey("Other models"))                //        {                //            dic.Add("Other Models", l);                //        }                //        else                //        {                //           foreach (var listitems in l)                //           {                //            dic["Other Models"].Add(listitems);                //           }                //        }                //    }                                                  }
+
+
+            // function for changing names of samsung and vivo
+            // no need as i have used it above 
+            //for (int keycount = 0; keycount < dic.Count; keycount++)
+            //{
+            //    if (dic.ContainsKey("sam"))
+            //    {
+            //        dic.Add("Samsung", dic["sam"]);
+            //        dic.Remove("sam");
+            //    }
+            //    else if (dic.ContainsKey("moto"))
+            //    {
+            //        dic.Add("Motorola", dic["moto"]);
+            //        dic.Remove("moto");
+            //    }
+            //    else if (dic.ContainsKey("z"))
+            //    {
+            //        dic.Remove("z");
+            //    }
+            //}
+            // count each key and total values in each key 
+            OrderedDictionary count = new OrderedDictionary();            int totalelementsineachkey;            int finaltotal=0;            ICollection keyCollection = dic.Keys;
+            ICollection valueCollection = dic.Values;            IDictionaryEnumerator myEnumerator = dic.GetEnumerator();
+
+            foreach (DictionaryEntry de in dic)
+            {
+                totalelementsineachkey = de.Key;
+            }
+            while (myEnumerator.MoveNext())
+            {                totalelementsineachkey = dic[keyc];                count.Add(myEnumerator.Key, totalelementsineachkey);                finaltotal += totalelementsineachkey;            }             //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html             // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.            List<string> listofsequence = new List<string>();            listofsequence.Add("Samsung");            listofsequence.Add("Redmi");            listofsequence.Add("Oppo");            listofsequence.Add("Vivo");            //listofsequence.Add("Tecno");            //listofsequence.Add("IPhone");            //listofsequence.Add("Infinix");            //listofsequence.Add("Itel");            //listofsequence.Add("Jio");            //listofsequence.Add("Micromax");            //listofsequence.Add("Motorola");            //listofsequence.Add("Nokia");            //listofsequence.Add("Oneplus");            //listofsequence.Add("Honour");
 
             // sort count according to list named sequences
             // count = count.OrderBy(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
