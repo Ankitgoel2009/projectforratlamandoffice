@@ -100,6 +100,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="vintage23.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
