@@ -24,13 +24,14 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
 
             // not working @jackjjun
             List<string> listofsequence = new List<string>();            listofsequence.Add("Samsung");            listofsequence.Add("Redmi");            listofsequence.Add("Oppo");            listofsequence.Add("Vivo");
-            foreach (var kvp in dic.Cast<DictionaryEntry>().Reverse())
+            foreach (var item in listofsequence)
             {
-                foreach (var item in listofsequence)
+                foreach (var kvp in dic.Cast<DictionaryEntry>().Reverse().Reverse())
                 {
                     if (item == kvp.Key.ToString())
                     {
                         dic.Remove(kvp.Key);
+
                         dic.Insert(listofsequence.IndexOf(item), kvp.Key, kvp.Value);
                     }
                 }
@@ -46,7 +47,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             }
             finaltotal = count.Cast<DictionaryEntry>().Sum(i => Convert.ToInt32(i.Value));
 
-                       //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html             // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.                
+                                    //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html             // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.                
 
             // sort count according to list named sequences
             // count = count.OrderBy(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
