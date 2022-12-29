@@ -102,15 +102,23 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 {
                     rownumber += 2;
                 }
+                if (columnnumber == 3)
+                {
+                    rownumber++;
+                    columnnumber = 1;
+                }
+                else
+                {
+                    rownumber++;
+                }
 
-                rownumber++;
                 sheet1.Cells[rownumber, columnnumber].Value = entry.Key.ToString().ToUpper();
                 sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
                 sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
                 // sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 20;
                 sheet1.Cells[rownumber, columnnumber].Interior.Color = Color.Blue;
                 foreach (string value in (List<string>)entry.Value)
-                {                    if (rownumber > rowMaxineachcolumn)                    {                        rownumber = 1;                        columnnumber++;                    }
+                {                    //if (rownumber > rowMaxineachcolumn)                    //{                    //    rownumber = 1;                    //    columnnumber++;                    //}
                     rownumber++;
                     sheet1.Cells[rownumber, columnnumber].Value = value;
                     sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
@@ -118,6 +126,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 10;
                     // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                 }                extrarow = false;
+                columnnumber++;
 
             }
 
