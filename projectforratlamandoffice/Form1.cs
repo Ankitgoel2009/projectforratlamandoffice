@@ -25,8 +25,28 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                         // create a datatype in which i can store headings as key and             // their respective data  as their values             // for this dictionary is used .             //ok block            OrderedDictionary dic = new OrderedDictionary(StringComparer.CurrentCultureIgnoreCase);  // string comparer is used so that all evaluations on the key act according to the rules of the comparer: case-insensitive.                  
             for (int i = 0; i < list1.Count; i++)            {                string key = list1[i];                List<string> l = new List<string>();                for (var item=1;item<listnew.Count;item++) // deliberately starts from 1                 {                    if (listnew[item][0].ToString().StartsWith(key))                    {                        l.Add(listnew[item][0].ToString());                    }                }                                                                         if (String.Equals(key, "sam", StringComparison.OrdinalIgnoreCase))                    {                        dic.Add("Samsung", l);                    }
                     else if (String.Equals(key, "moto", StringComparison.OrdinalIgnoreCase))                    {                        dic.Add("Motorola", l);                    }                    else if (String.Equals(key, "Z", StringComparison.OrdinalIgnoreCase)) // this else-if block will move to upper block                    {                        continue;                    }                    else                    {                        dic.Add(key, l);                    }                                                }
+               // sort in descending order         
 
-            // not working @jackjjun
+                // Create a temporary list to store the keys and values of the dictionary.
+                List<KeyValuePair<string, List<string>>> templist = new List<KeyValuePair<string, List<string>>>();
+                foreach (DictionaryEntry entry in dic)
+                {
+                    templist.Add(new KeyValuePair<string, List<string>>(entry.Key.ToString(), (List<string>)entry.Value));
+                }
+
+            // Sort the list in descending order 
+              templist.Sort((x, y) => y.Value.Count.CompareTo(x.Value.Count));
+
+            // Clear the dictionary.
+            dic.Clear();
+
+                foreach (KeyValuePair<string, List<string>> item in templist)
+                {
+                    dic.Add(item.Key.ToString(), item.Value);
+                }
+            
+           
+            // sort by listofsequence 
             List<string> listofsequence = new List<string>();            listofsequence.Add("Samsung");            listofsequence.Add("Redmi");            listofsequence.Add("Oppo");            listofsequence.Add("Vivo");
             foreach (var item in listofsequence)
             {
@@ -39,7 +59,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     }
                 }
             }
-
+        
             // ok 
             // count each key and total values in each key 
             // to be used in creating excel file later in project 
@@ -49,8 +69,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 count.Add(kvp.Key.ToString(), list.Count);
             }
             finaltotal = count.Cast<DictionaryEntry>().Sum(i => Convert.ToInt32(i.Value));
-
-                                    //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html             // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.                
+             //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html             // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.                
 
             // sort count according to list named sequences
             // count = count.OrderBy(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
@@ -71,20 +90,41 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             else
             {
                 rowMaxineachcolumn = rowMaxineachcolumn + remainder;
-            }                        //  var totalrowsmax = finaltotal;            bool extrarow = true;            //foreach (string keyvalue in dic.Keys)            //{
-            //    //if ((rownumber + dic[keyvalue].Count) > rowMaxineachcolumn)
-            //    //{
-            //    //    rownumber = 1;
-            //    //    columnnumber++;
-            //    //}
-            //    if(extrarow == false)
-            //    {
-            //        rownumber += 2;
-            //    }
-                
-            //        rownumber++;                           //        sheet1.Cells[rownumber, columnnumber].Value = keyvalue.ToUpper();            //        sheet1.Cells[rownumber, columnnumber].Font.Bold = true;            //        sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;            //       // sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 20;            //        sheet1.Cells[rownumber, columnnumber].Interior.Color = Color.Blue;            //        foreach (string value in dic[keyvalue])            //        {            //        if(rownumber > rowMaxineachcolumn)            //        {            //            rownumber = 1;            //            columnnumber++;            //        }            //            rownumber++;            //            sheet1.Cells[rownumber, columnnumber].Value = value;            //            sheet1.Cells[rownumber, columnnumber].Font.Bold = true;            //            sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;            //            sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 10;            //            // sheet1.Cells[rows, column].Interior.Color = Color.Green;            //        }            //    extrarow = false;                                          //}           //            sheet1.Range["B1"].ColumnWidth = 30.00;            sheet1.Range["C1"].ColumnWidth = 30.00;            sheet1.Range["A1"].EntireColumn.Font.Bold = true;            sheet1.Range["B1"].EntireColumn.Font.Bold = true;            sheet1.Range["C1"].EntireColumn.Font.Bold = true;            sheet1.Columns["A:C"].AutoFit();
+            }                        //  var totalrowsmax = finaltotal;            bool extrarow = true;
+            foreach (DictionaryEntry entry in dic)
+            {
+                //if ((rownumber + dic[keyvalue].Count) > rowMaxineachcolumn)
+                //{
+                //    rownumber = 1;
+                //    columnnumber++;
+                //}
+                if (extrarow == false)
+                {
+                    rownumber += 2;
+                }
+
+                rownumber++;
+                sheet1.Cells[rownumber, columnnumber].Value = entry.Key.ToString().ToUpper();
+                sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
+                sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                // sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 20;
+                sheet1.Cells[rownumber, columnnumber].Interior.Color = Color.Blue;
+                foreach (string value in (List<string>)entry.Value)
+                {                    if (rownumber > rowMaxineachcolumn)                    {                        rownumber = 1;                        columnnumber++;                    }
+                    rownumber++;
+                    sheet1.Cells[rownumber, columnnumber].Value = value;
+                    sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
+                    sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                    sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 10;
+                    // sheet1.Cells[rows, column].Interior.Color = Color.Green;
+                }                extrarow = false;
+
+            }
+
+            //
+            sheet1.Range["B1"].ColumnWidth = 30.00;            sheet1.Range["C1"].ColumnWidth = 30.00;            sheet1.Range["A1"].EntireColumn.Font.Bold = true;            sheet1.Range["B1"].EntireColumn.Font.Bold = true;            sheet1.Range["C1"].EntireColumn.Font.Bold = true;            sheet1.Columns["A:C"].AutoFit();
             // sheet1.Columns["A"].AutoFit();
-            range1 = sheet1.UsedRange;            Borders border = range1.Borders;            border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;            border[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;            border[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;            border[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;            border.Color = Color.Black;            border[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            border[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            range1.Borders.Color = Color.Black;            range1.Select();            sheet1.UsedRange.Select();            workbook.SaveAs(outputpath);            workbook.Close();            excel1.Quit();            // CLEAN UP.            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);            wkb.Close(true);            excel.Quit();            // CLEAN UP.            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);            System.Windows.Forms.Application.Exit();        }
+            range1 = sheet1.UsedRange;            Borders border = range1.Borders;            border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;            border[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;            border[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;            border[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;            border.Color = Color.Black;            border[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            border[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;            range1.Borders.Color = Color.Black;            range1.Select();            sheet1.UsedRange.Select();            workbook.SaveAs(outputpath);            workbook.Close();            excel1.Quit();            // CLEAN UP.            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);            wkb.Close(true);            excel.Quit();            // CLEAN UP.            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);            System.Windows.Forms.Application.Exit();        }
 
       
     }}
