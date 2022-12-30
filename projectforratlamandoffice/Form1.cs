@@ -91,17 +91,19 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             {
                 rowMaxineachcolumn = rowMaxineachcolumn + remainder;
             }                        //  var totalrowsmax = finaltotal;            bool extrarow = true;
-
+            
             foreach (DictionaryEntry entry in dic)
             {
+                var LastRow = sheet1.UsedRange.Rows.Count;
+                var LastCol = sheet1.UsedRange.Columns.Count;
                 //if ((rownumber + dic[keyvalue].Count) > rowMaxineachcolumn)
                 //{
                 //    rownumber = 1;
                 //    columnnumber++;
                 //}
-               // if (extrarow == false)
+                // if (extrarow == false)
                 //{
-                  //  rownumber += 2;
+                //  rownumber += 2;
                 //}
                 if (columnnumber > 3) // if you reach the last column 
                 {
@@ -110,7 +112,15 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 }
                 else
                 {
-                    rownumber++;
+                    if (rownumber == 1)
+                    {
+                        rownumber = LastRow +1;
+                        //rownumber++;
+                    }
+                    else
+                    {
+                        rownumber = LastRow++;
+                    }
                 }
                 // code for printing headings 
                 sheet1.Cells[rownumber, columnnumber].Value = entry.Key.ToString().ToUpper();
