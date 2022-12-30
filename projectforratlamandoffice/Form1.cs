@@ -186,21 +186,14 @@ namespace projectforratlamandoffice
             range1.Select();
             sheet1.UsedRange.Select();
             workbook.SaveAs(outputpath);
-
             workbook.Close();
             excel1.Quit();
-
             // CLEAN UP.
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
-
-
-
-
             wkb.Close(true);
             excel.Quit();
-
             // CLEAN UP.
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
