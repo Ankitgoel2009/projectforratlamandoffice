@@ -11,6 +11,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using Microsoft.Office.Interop.Excel;
 using System.Globalization;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Threading;
 
 namespace projectforratlamandoffice
 {
@@ -202,6 +205,45 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+
+            //// Set up Chrome driver
+            //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
+            //IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32");
+            //driver.Manage().Window.Maximize();
+            //// Navigate to Whatsapp web
+            //driver.Navigate().GoToUrl("https://web.whatsapp.com/");
+            //Thread.Sleep(30000);
+
+            //// Get list of contacts to send message to
+            //string[] contacts = { "Umesh Ji" };
+
+            //// Loop through each contact
+            //foreach (string contact in contacts)
+            //{
+            //    // Find contact in chat list
+            //    IWebElement contactElement = driver.FindElement(By.XPath($"//span[contains(text(), '{contact}')]"));
+            //    contactElement.Click();
+
+            //    // Click on attachment icon
+            //    IWebElement attachmentIcon = driver.FindElement(By.XPath("//div[@title='Attach']"));
+            //    attachmentIcon.Click();
+
+            //    // Select file to attach
+            //    IWebElement fileInput = driver.FindElement(By.XPath("//input[@accept='*']"));
+            //    fileInput.SendKeys(@"C:\Users\Public\ratlam.xlsx");
+
+            //    // Wait for file to upload
+            //    Thread.Sleep(5000);
+
+            //    // Click on send button
+            //    IWebElement sendButton = driver.FindElement(By.XPath("//span[@data-icon='send']"));
+            //    sendButton.Click();
+            //}
+
+            //// Close browser
+            //driver.Quit();
+
+
             System.Windows.Forms.Application.Exit();
         }
 
