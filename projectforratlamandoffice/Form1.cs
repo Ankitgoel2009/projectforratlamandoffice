@@ -209,35 +209,36 @@ namespace projectforratlamandoffice
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
             //IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32");
-            //driver.Manage().Window.Maximize();
-            //// Navigate to Whatsapp web
-            //driver.Navigate().GoToUrl("https://web.whatsapp.com/");
-            //Thread.Sleep(30000);
-
+            ////driver.Manage().Window.Maximize();
+            ////// Navigate to Whatsapp web
+            ////driver.Navigate().GoToUrl("https://web.whatsapp.com/");
+            //IWebElement whatsappTab = driver.FindElement(By.XPath("//title[contains(text(), 'https://web.whatsapp.com/')]"));
+            //Thread.Sleep(5000);
+            //whatsappTab.Click();
             //// Get list of contacts to send message to
             //string[] contacts = { "Umesh Ji" };
 
-            //// Loop through each contact
+            ////// Loop through each contact
             //foreach (string contact in contacts)
             //{
-            //    // Find contact in chat list
+            //    //     Find contact in chat list
             //    IWebElement contactElement = driver.FindElement(By.XPath($"//span[contains(text(), '{contact}')]"));
             //    contactElement.Click();
 
-            //    // Click on attachment icon
-            //    IWebElement attachmentIcon = driver.FindElement(By.XPath("//div[@title='Attach']"));
-            //    attachmentIcon.Click();
+            //    //    // Click on attachment icon
+            //    //    IWebElement attachmentIcon = driver.FindElement(By.XPath("//div[@title='Attach']"));
+            //    //    attachmentIcon.Click();
 
-            //    // Select file to attach
-            //    IWebElement fileInput = driver.FindElement(By.XPath("//input[@accept='*']"));
-            //    fileInput.SendKeys(@"C:\Users\Public\ratlam.xlsx");
+            //    //    // Select file to attach
+            //    //    IWebElement fileInput = driver.FindElement(By.XPath("//input[@accept='*']"));
+            //    //    fileInput.SendKeys(@"C:\Users\Public\ratlam.xlsx");
 
-            //    // Wait for file to upload
-            //    Thread.Sleep(5000);
+            //    //    // Wait for file to upload
+            //    //    Thread.Sleep(5000);
 
-            //    // Click on send button
-            //    IWebElement sendButton = driver.FindElement(By.XPath("//span[@data-icon='send']"));
-            //    sendButton.Click();
+            //    //    // Click on send button
+            //    //    IWebElement sendButton = driver.FindElement(By.XPath("//span[@data-icon='send']"));
+            //    //    sendButton.Click();
             //}
 
             //// Close browser
