@@ -52,16 +52,15 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             }
             // List of sub-heading are  ready , now prepare final list
 
-
-
-
             // create a datatype in which i can store headings as key and 
             // their respective data  as their values 
-            // for this dictionary is used . 
+            // for this dictionary is used . but 
+            //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html 
+            // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.
             //ok block
             OrderedDictionary dic = new OrderedDictionary(StringComparer.CurrentCultureIgnoreCase);  // string comparer is used so that all evaluations on the key act according to the rules of the comparer: case-insensitive.                  
             for (int i = 0; i < list1.Count; i++)            {                string key = list1[i];                List<string> l = new List<string>();                for (var item = 1; item < listnew.Count; item++) // deliberately starts from 1 
-                {                    if (listnew[item][0].ToString().StartsWith(key))                    {                        l.Add(listnew[item][0].ToString());                    }                }
+                {                    if (listnew[item][0].ToString().StartsWith(key))                    {                        l.Add(listnew[item][0].ToString());                    }                }
                 if (String.Equals(key, "sam", StringComparison.OrdinalIgnoreCase))
                 {
                     dic.Add("Samsung", l);
@@ -91,10 +90,8 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
 
             // Sort the list in descending order 
             templist.Sort((x, y) => y.Value.Count.CompareTo(x.Value.Count));
-
             // Clear the dictionary.
             dic.Clear();
-
             foreach (KeyValuePair<string, List<string>> item in templist)
             {
                 dic.Add(item.Key.ToString(), item.Value);
@@ -127,20 +124,8 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             finaltotal = count.Cast<DictionaryEntry>().Sum(i => Convert.ToInt32(i.Value));
 
 
-            //    https://www.ict.ru.ac.za/resources/thinksharply/thinksharply/dictionaries.html 
-            // the order in which a dictionary stores its pairs is unpredictable. (So the order in which we’ll get them delivered by a foreach becomes unpredictable.
 
 
-
-            // sort count according to list named sequences
-            // count = count.OrderBy(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
-
-            // sort dic according to list named sequence
-            //  dic = dic.OrderBy(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
-
-            //  dic = dic.OrderByDescending(d => d.Value.Count).ToDictionary(x => x.Key, x => x.Value);
-            //   dic = dic.OrderByDescending(d => listofsequence.IndexOf(d.Key)).ToDictionary(x => x.Key, x => x.Value);
-            // ready for output 
             string outputpath = @"C:\Users\Public\vintagelist.xlsx";            Excel.Application excel1 = new Excel.Application();            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
 
             // create main heading 
@@ -158,21 +143,12 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             {
                 rowMaxineachcolumn = rowMaxineachcolumn + remainder;
             }
-            //  var totalrowsmax = finaltotal;
-            bool extrarow = true;
-
+            
+            int rowsincolumnA;
+            int rowsincurrentcolumn;
+            int printno=1;
             foreach (DictionaryEntry entry in dic)
             {
-
-                //if ((rownumber + dic[keyvalue].Count) > rowMaxineachcolumn)
-                //{
-                //    rownumber = 1;
-                //    columnnumber++;
-                //}
-                // if (extrarow == false)
-                //{
-                //  rownumber += 2;
-                //}
                 if (columnnumber > 3) // if you reach the last column 
                 {
                     //rownumber++; // print heading in next line 
@@ -180,7 +156,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 }
                 if (columnnumber == 1)
                 {
-                    rownumber = getlastrowincolumn(sheet1, "A");
+                    rowsincolumnA= rownumber = getlastrowincolumn(sheet1, "A");
                 }
                 else if (columnnumber == 2)
                 {
@@ -189,22 +165,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 else if (columnnumber == 3)
                 {
                     rownumber = getlastrowincolumn(sheet1, "C");
-                }
-
-                else
-                {
-                    if (rownumber == 1)
-                    {
-
-                        rownumber++;
-                    }
-                    else
-                    {
-                        rownumber++;
-
-                    }
-
-                }
+                }           
                 rownumber++;
                 // code for printing headings 
                 sheet1.Cells[rownumber, columnnumber].Value = entry.Key.ToString().ToUpper();
@@ -214,11 +175,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 sheet1.Cells[rownumber, columnnumber].Interior.Color = Color.Blue;
                 foreach (string value in (List<string>)entry.Value)
                 {
-                    //if (rownumber > rowMaxineachcolumn)
-                    //{
-                    //    rownumber = 1;
-                    //    columnnumber++;
-                    //}
+                   
                     rownumber++;
                     sheet1.Cells[rownumber, columnnumber].Value = value;
                     sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
@@ -226,12 +183,10 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 10;
                     // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                 }
-                extrarow = false;
                 columnnumber++;
+                printno++;
 
             }
-
-                //
                 sheet1.Range["B1"].ColumnWidth = 30.00;
                 sheet1.Range["C1"].ColumnWidth = 30.00;
                 sheet1.Range["A1"].EntireColumn.Font.Bold = true;
