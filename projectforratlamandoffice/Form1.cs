@@ -131,10 +131,10 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             // create main heading 
             sheet1.Cells[1, 1].Value = listnew[0][0].ToString().ToUpper();
             // stretch it to three columns and other designing 
-            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Bold = true;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Merge();            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 30;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Italic = true;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;            int columnnumber = 1;            int rownumber = 1;            var columnMax = 3;
+            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Bold = true;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].HorizontalAlignment = XlHAlign.xlHAlignCenter;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Merge();            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Cells.Font.Size = 30;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Font.Italic = true;            sheet1.Range[sheet1.Cells[1, 1], sheet1.Cells[1, 3]].Interior.Color = Color.Yellow;           // max columns that i want             var columnMax = 3;
             var remainder = 0;
             var rowMaxineachcolumn = 0;
-            rowMaxineachcolumn = Math.DivRem((finaltotal + dic.Keys.Count + ((dic.Keys.Count - 1) * 2)), 3, out remainder);
+            rowMaxineachcolumn = Math.DivRem((finaltotal + dic.Keys.Count + ((dic.Keys.Count - 1) * 2)), columnMax, out remainder);
             if (remainder == 1 || remainder == 2)
             {
                 rowMaxineachcolumn = rowMaxineachcolumn + 1;
@@ -143,20 +143,17 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             {
                 rowMaxineachcolumn = rowMaxineachcolumn + remainder;
             }
-            
-            int rowsincolumnA;
-            int rowsincurrentcolumn;
-            int printno=1;
+
+            int columnnumber = 1;            int rownumber = 1;
             foreach (DictionaryEntry entry in dic)
             {
                 if (columnnumber > 3) // if you reach the last column 
                 {
-                    //rownumber++; // print heading in next line 
-                    columnnumber = 1; // get back to column 1 
+                   columnnumber = 1; // get back to column 1 
                 }
                 if (columnnumber == 1)
                 {
-                    rowsincolumnA= rownumber = getlastrowincolumn(sheet1, "A");
+                    rownumber = getlastrowincolumn(sheet1, "A");
                 }
                 else if (columnnumber == 2)
                 {
@@ -167,7 +164,8 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     rownumber = getlastrowincolumn(sheet1, "C");
                 }           
                 rownumber++;
-                // code for printing headings 
+
+                // code for printing headings ie samsung , redmi , oppo , vivo , techno etc 
                 sheet1.Cells[rownumber, columnnumber].Value = entry.Key.ToString().ToUpper();
                 sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
                 sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -184,7 +182,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                 }
                 columnnumber++;
-                printno++;
+                
 
             }
                 sheet1.Range["B1"].ColumnWidth = 30.00;
