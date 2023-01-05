@@ -124,9 +124,9 @@ namespace projectforratlamandoffice
                 dic1.Add(listnew[i][0], listnew[i][1]);
 
             }
-
+            
             // data which tells which names are in which state
-            var arr2 = GetObjArr(@"C:\Users\Public\excel2.xlsx");
+            var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
             List<object> list1 = new List<object>();
             for (int i = 1; i <= arr2.GetLength(0); i++)
             {
@@ -141,7 +141,7 @@ namespace projectforratlamandoffice
 
             }
 
-            string outputpath = @"C:\Users\Public\ratlam.xlsx";
+            string outputpath = @"C:\ratlamfile\ratlam.xlsx";
             Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
@@ -305,8 +305,8 @@ namespace projectforratlamandoffice
         }
     public void copydata()
         {
-            string filename = "abc.txt.txt";
-            string filePath = @"C:\hello\" + filename;
+            string filename = "abc.txt";
+            string filePath = @"C:\ratlamfile\" + filename;
             using (var file = new StreamReader(filePath))
             {
                 var line = string.Empty;
