@@ -145,8 +145,8 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             }
 
             int columnnumber = 1;            int rownumber = 1;
-            int c = 0;
-            int m = 0;
+           // int c = 0;
+          //  int m = 0;
             foreach (DictionaryEntry entry in dic)
             {
                 if (columnnumber > 3) // if you reach the last column 
@@ -157,21 +157,21 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 {
                     rownumber = getlastrowincolumn(sheet1, "A");
                     rownumber++;
-                    c++;
-                    if (c > 2)
-                    {
-                        columnnumber = 2;
-                    }
+                 //   c++;
+                 //   if (c > 2)
+                 //   {
+                 //       columnnumber = 2;
+                  //  }
                 }
                 else if (columnnumber == 2)
                 {
                     rownumber = getlastrowincolumn(sheet1, "B");
-                    m++;
+                  //  m++;
                     rownumber++;
-                    if (m == 2 && rownumber > 90)
-                    {
-                        columnnumber = 3;
-                    }
+                  //  if (m == 2 && rownumber > 90)
+                   // {
+                   //     columnnumber = 3;
+                  //  }
                 }
                 else if (columnnumber == 3)
                 {
@@ -179,11 +179,11 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     rownumber++;
                 }
                 // rownumber++;
-                if (rownumber >= 90)
-                {
-                    columnnumber++;
-                    rownumber = getlastrowincolumn(sheet1, "C");
-                }
+                //if (rownumber >= 90)
+                //{
+                //    columnnumber++;
+                //    rownumber = getlastrowincolumn(sheet1, "C");
+                //}
                 // code for printing headings ie samsung , redmi , oppo , vivo , techno etc 
                 sheet1.Cells[rownumber, columnnumber].Value = entry.Key.ToString().ToUpper();
                 sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
@@ -200,22 +200,22 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 10;
                     // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                 }
-                //columnnumber++;
-                if (c < 2)
-                {
-                    columnnumber++;
-                }
-                if (m == 2)
-                {
-                    if (rownumber > 90)
-                    {
-                        columnnumber = 3;
-                    }
-                    else
-                    {
-                        columnnumber = 2;
-                    }
-                }
+                columnnumber++;
+                //if (c < 2)
+                //{
+                //    columnnumber++;
+                //}
+                //if (m == 2)
+                //{
+                //    if (rownumber > 90)
+                //    {
+                //        columnnumber = 3;
+                //    }
+                //    else
+                //    {
+                //        columnnumber = 2;
+                //    }
+                //}
 
             }
                 sheet1.Range["B1"].ColumnWidth = 30.00;
