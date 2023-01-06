@@ -83,7 +83,7 @@ namespace projectforratlamandoffice
             excel.Visible = true;
             Excel.Workbook wkb = null;
             wkb = Open(excel, selectedFile);
-            Excel._Worksheet sheet = wkb.Sheets[1];          
+            Excel._Worksheet sheet = wkb.Sheets[1];
             sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             Excel.Range range1 = sheet.UsedRange;
@@ -92,7 +92,7 @@ namespace projectforratlamandoffice
             List<object[]> listnew = new List<object[]>();
             for (int i = 10; i <= rowindex - 1; i++)
             {
-                if (range1.Cells[i,1].Text != "")
+                if (range1.Cells[i, 1].Text != "")
                 {
                     if (range1.Cells[i, 2].Text != "" && range1.Cells[i, 3].Text == "")
                     {
@@ -106,9 +106,9 @@ namespace projectforratlamandoffice
                 }
             }
             // commented out because i started adding from element 10 and also loop stops before length -1 
-           // list.RemoveAt(list.Count - 1);
-          //  list.RemoveRange(0, 10);         
-         
+            // list.RemoveAt(list.Count - 1);
+            //  list.RemoveRange(0, 10);         
+
 
             // 6. copy text file data to list 
             copydata();
@@ -117,14 +117,14 @@ namespace projectforratlamandoffice
             Filter(listnew, list);
 
             // names are  ready , now modify it 
-                       
+
             Dictionary<object, object> dic1 = new Dictionary<object, object>();
-            for (int i = 0; i <= listnew.Count-1; i++)
+            for (int i = 0; i <= listnew.Count - 1; i++)
             {
                 dic1.Add(listnew[i][0], listnew[i][1]);
 
             }
-            
+
             // data which tells which names are in which state
             var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
             List<object> list1 = new List<object>();
@@ -141,18 +141,18 @@ namespace projectforratlamandoffice
 
             }
 
-            string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam"+ DateTime.UtcNow.ToString("dd-MM-yyyy")+".xlsx";
+            string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
             Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
 
             for (int i = 0; i < list1.Count; i++)
             {
-                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan" || list1[i].ToString().Trim() == "Bihar" || list1[i].ToString().Trim() == "Punjab" || list1[i].ToString().Trim() == "Odisha" || list1[i].ToString().Trim() == "Chhatisgarh" || list1[i].ToString().Trim() == "West bengal" || list1[i].ToString().Trim() == "Madhya Pradesh" || list1[i].ToString().Trim() == "Jharkhand" || list1[i].ToString().Trim() == "Maharashtra" || list1[i].ToString().Trim() == "Market" || list1[i].ToString().Trim() == "Uttarakhand"|| list1[i].ToString().Trim() =="Assam" || list1[i].ToString().Trim() == "Tripura")
+                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan" || list1[i].ToString().Trim() == "Bihar" || list1[i].ToString().Trim() == "Punjab" || list1[i].ToString().Trim() == "Odisha" || list1[i].ToString().Trim() == "Chhatisgarh" || list1[i].ToString().Trim() == "West bengal" || list1[i].ToString().Trim() == "Madhya Pradesh" || list1[i].ToString().Trim() == "Jharkhand" || list1[i].ToString().Trim() == "Maharashtra" || list1[i].ToString().Trim() == "Market" || list1[i].ToString().Trim() == "Uttarakhand" || list1[i].ToString().Trim() == "Assam" || list1[i].ToString().Trim() == "Tripura")
                 {
                     //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
-                  
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].EntireColumn.Font.Bold  = true;
+
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].EntireColumn.Font.Bold = true;
                     sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
                     sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
                     sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Cells.Font.Size = 20;
@@ -166,11 +166,11 @@ namespace projectforratlamandoffice
 
                 sheet1.Cells[i + 1, 1].Value = list1[i];
             }
-          //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
+            //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
             sheet1.Columns["A:B"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
             sheet1.Range["B1"].EntireColumn.Font.Bold = true;
-            
+
             range1 = sheet1.UsedRange;
             Borders border = range1.Borders;
             border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
@@ -200,52 +200,54 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
 
             // not working too 
-          //  System.Environment.SetEnvironmentVariable("restart.browser.each.scenario", "false");
+            //  System.Environment.SetEnvironmentVariable("restart.browser.each.scenario", "false");
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
-          //  IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32");
-            ////driver.Manage().Window.Maximize();
-            ////// Navigate to Whatsapp web
-            ////driver.Navigate().GoToUrl("https://web.whatsapp.com/");
-          //  IReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+            //var options = new ChromeOptions();
+            //options.AddArguments(@"user-data-dir=C:\Users\Umesh Aggarwal\AppData\Local\Google\Chrome\User Data");
+            //IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
+            //////driver.Manage().Window.Maximize();
+            //////// Navigate to Whatsapp web
+            //driver.Navigate().GoToUrl("https://web.whatsapp.com/");
+            //IReadOnlyCollection<string> windowHandles = driver.WindowHandles;
 
-           // Find already opened window with Chrome
-           // string chromeWindow = "";
-          //  foreach (string window in windowHandles)
-          //  {
-          //      driver.SwitchTo().Window(window);
+            //// Find already opened window with Chrome
+            //string chromeWindow = "";
+            //foreach (string window in windowHandles)
+            //{
+            //    driver.SwitchTo().Window(window);
             //    if (driver.Title.Contains("Google Chrome"))
-              //  {
-            ////        chromeWindow = window;
-            ////        break;
-            ////    }
-            ////}
+            //    {
+            //        chromeWindow = window;
+            //        break;
+            //    }
+            //}
 
-            ////// Switch to Chrome window
-            ////driver.SwitchTo().Window(chromeWindow);
+            //// Switch to Chrome window
+            //driver.SwitchTo().Window(chromeWindow);
 
-            ////// Get all open tabs in Chrome window
-            ////IReadOnlyCollection<string> tabHandles = driver.WindowHandles;
+            //// Get all open tabs in Chrome window
+            //IReadOnlyCollection<string> tabHandles = driver.WindowHandles;
 
-            ////// Find already opened tab of Whatsapp web
-            ////string whatsappTab = "";
-            ////foreach (string tab in tabHandles)
-            ////{
-            ////    driver.SwitchTo().Window(tab);
-            ////    if (driver.Title.Contains("Whatsapp"))
-            ////    {
-            ////        whatsappTab = tab;
-            ////        break;
-            ////    }
-            ////}
+            //// Find already opened tab of Whatsapp web
+            //string whatsappTab = "";
+            //foreach (string tab in tabHandles)
+            //{
+            //    driver.SwitchTo().Window(tab);
+            //    if (driver.Title.Contains("Whatsapp"))
+            //    {
+            //        whatsappTab = tab;
+            //        break;
+            //    }
+            //}
 
             ////// Switch to Whatsapp tab
-            ////driver.SwitchTo().Window(whatsappTab);
-            //IWebElement whatsappTab = driver.FindElement(By.XPath("//title[contains(text(), 'whatsapp')]"));
-            //Thread.Sleep(5000);
-            //whatsappTab.Click();
-            // Get list of contacts to send message to
-            // string[] contacts = { "Umesh Ji" };
+            //driver.SwitchTo().Window(whatsappTab);
+            //// IWebElement whatsappTab = driver.FindElement(By.XPath("//title[contains(text(), 'whatsapp')]"));
+            //// Thread.Sleep(5000);
+            ////  whatsappTab.Click();
+            ////   Get list of contacts to send message to
+            //string[] contacts = { "Umesh Ji" };
 
             ////// Loop through each contact
             //foreach (string contact in contacts)
@@ -254,29 +256,29 @@ namespace projectforratlamandoffice
             //    IWebElement contactElement = driver.FindElement(By.XPath($"//span[contains(text(), '{contact}')]"));
             //    contactElement.Click();
 
-      //      // Click on attachment icon
-      //      IWebElement attachmentIcon = driver.FindElement(By.XPath("//div[@title='Attach']"));
-      //      attachmentIcon.Click();
+            //    // Click on attachment icon
+            //    IWebElement attachmentIcon = driver.FindElement(By.XPath("//div[@title='Attach']"));
+            //    attachmentIcon.Click();
 
-      //      // Select file to attach
-      //      IWebElement fileInput = driver.FindElement(By.XPath("//input[@accept='*']"));
-      //      fileInput.SendKeys(@"C:\Users\Public\ratlam.xlsx");
+            //    // Select file to attach
+            //    IWebElement fileInput = driver.FindElement(By.XPath("//input[@accept='*']"));
+            //    fileInput.SendKeys(@"C:\Users\Public\ratlam.xlsx");
 
-      //      // Wait for file to upload
-      //      Thread.Sleep(5000);
+            //    // Wait for file to upload
+            //    Thread.Sleep(5000);
 
-      //      // Click on send button
-      //      IWebElement sendButton = driver.FindElement(By.XPath("//span[@data-icon='send']"));
-      //      sendButton.Click();
-      // // }
+            //    // Click on send button
+            //    IWebElement sendButton = driver.FindElement(By.XPath("//span[@data-icon='send']"));
+            //    sendButton.Click();
+            //    // }
 
-      ////  Close browser
-      //  driver.Quit();
+            //    //  Close browser
+            //    driver.Quit();
 
 
-            System.Windows.Forms.Application.Exit();
-        }
-
+                System.Windows.Forms.Application.Exit();
+            }
+        
 
         public object[,] GetObjArr(string filename)
         {
