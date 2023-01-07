@@ -122,10 +122,6 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 count.Add(kvp.Key.ToString(), list.Count);
             }
             finaltotal = count.Cast<DictionaryEntry>().Sum(i => Convert.ToInt32(i.Value));
-
-
-
-
             string outputpath = @"C:\Users\Public\vintagelist.xlsx";            Excel.Application excel1 = new Excel.Application();            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
 
             // create main heading 
@@ -145,52 +141,49 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             }
 
             int columnnumber = 1;            int rownumber = 1;
-           // int c = 0;
-          //  int m = 0;
-            foreach (DictionaryEntry entry in dic)
+            bool nextcolumn = true;
+            int rowsinpreviouscolumn=0;
+            int rowsincurrentcolumn=0;
+
+
+            for (int i = 0; i < dic.Count; i++)
             {
                 if (columnnumber > 3) // if you reach the last column 
                 {
                    columnnumber = 1; // get back to column 1 
+                  
                 }
-                if (columnnumber == 1)
-                {
-                    rownumber = getlastrowincolumn(sheet1, "A");
-                    rownumber++;
-                 //   c++;
-                 //   if (c > 2)
-                 //   {
-                 //       columnnumber = 2;
-                  //  }
-                }
-                else if (columnnumber == 2)
-                {
-                    rownumber = getlastrowincolumn(sheet1, "B");
-                  //  m++;
-                    rownumber++;
-                  //  if (m == 2 && rownumber > 90)
-                   // {
-                   //     columnnumber = 3;
-                  //  }
-                }
-                else if (columnnumber == 3)
-                {
-                    rownumber = getlastrowincolumn(sheet1, "C");
-                    rownumber++;
-                }
-                // rownumber++;
-                //if (rownumber >= 90)
-                //{
-                //    columnnumber++;
-                //    rownumber = getlastrowincolumn(sheet1, "C");
-                //}
+             
+                    if (columnnumber == 1)
+                    {
+                        rownumber = getlastrowincolumn(sheet1, "A");
+                        rownumber++;
+                    
+                    }
+                    else if (columnnumber == 2)
+                    {
+                        rownumber = getlastrowincolumn(sheet1, "B");
+                       
+                        rownumber++;
+                     
+                    }
+                    else if (columnnumber == 3)
+                    {
+                        rownumber = getlastrowincolumn(sheet1, "C");
+                        rownumber++;
+                    }
+               
+             
+                string key = ((DictionaryEntry)dic.Cast<DictionaryEntry>().ElementAt(i)).Key.ToString();
                 // code for printing headings ie samsung , redmi , oppo , vivo , techno etc 
-                sheet1.Cells[rownumber, columnnumber].Value = entry.Key.ToString().ToUpper();
+                sheet1.Cells[rownumber, columnnumber].Value = key.ToUpper();
                 sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
                 sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
                 // sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 20;
-                sheet1.Cells[rownumber, columnnumber].Interior.Color = Color.Blue;
-                foreach (string value in (List<string>)entry.Value)
+                sheet1.Cells[rownumber, columnnumber].Interior.Color =  System.Drawing.Color.FromArgb(172, 185, 202);
+
+                List<string> values = (List<string>)dic[key];
+                foreach (string value in values)
                 {
                    
                     rownumber++;
@@ -200,22 +193,50 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 10;
                     // sheet1.Cells[rows, column].Interior.Color = Color.Green;
                 }
-                columnnumber++;
-                //if (c < 2)
-                //{
-                //    columnnumber++;
-                //}
-                //if (m == 2)
-                //{
-                //    if (rownumber > 90)
-                //    {
-                //        columnnumber = 3;
-                //    }
-                //    else
-                //    {
-                //        columnnumber = 2;
-                //    }
-                //}
+                if (i + 1 < dic.Count)
+                {
+                   
+                    string nextKey = (string)dic.Cast<DictionaryEntry>().ElementAt(i + 1).Key;
+                    if (!listofsequence.Contains(nextKey))
+                    {
+                        // Print the number of values for this key.
+                        int countofnextkey_valuepair = ((((DictionaryEntry)dic.Cast<DictionaryEntry>().ElementAt(i + 1)).Value as List<string>).Count) + 1;
+                        if(nextcolumn == true)
+                        {
+                            columnnumber++;
+                            nextcolumn = false;
+                        }
+                        else if(nextcolumn == false)
+                        {
+                            
+                            if(columnnumber ==2)
+                            {
+                                rowsinpreviouscolumn = getlastrowincolumn(sheet1, "A");
+                                rowsincurrentcolumn = getlastrowincolumn(sheet1, "B");
+
+                            }
+                            else if(columnnumber==3)
+                            {
+                                rowsinpreviouscolumn = getlastrowincolumn(sheet1, "B");
+                                rowsincurrentcolumn = getlastrowincolumn(sheet1, "C");
+                            }
+                            if (rowsinpreviouscolumn < rowsincurrentcolumn + countofnextkey_valuepair )
+                            {
+                                columnnumber++;
+                                
+                            }
+                            else
+                            {
+                                rownumber = rownumber + 2;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        columnnumber++;
+                    }
+                }
+              
 
             }
                 sheet1.Range["B1"].ColumnWidth = 30.00;
@@ -259,7 +280,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
         public static int getlastrow(Worksheet ws)
         {
             return ws.Cells.Find("*", SearchOrder: XlSearchOrder.xlByRows, SearchDirection: XlSearchDirection.xlPrevious).Row;
-        }
+          }
         public static int getlastrowincolumn(Worksheet ws, string column)
         {
             for (int x = getlastrow(ws); x > 0; x--)
