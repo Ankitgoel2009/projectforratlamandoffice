@@ -148,7 +148,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             int rowsinpreviouscolumn=0;
             int rowsincurrentcolumn=0;
 
-
+            // code block for looping in dictionary 
             for (int i = 0; i < dic.Count; i++)
             {
                 if (columnnumber > 3) // if you reach the last column 
@@ -165,8 +165,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                     }
                     else if (columnnumber == 2)
                     {
-                        rownumber = getlastrowincolumn(sheet1, "B");
-                       
+                        rownumber = getlastrowincolumn(sheet1, "B");                       
                         rownumber++;
                      
                     }
@@ -175,10 +174,10 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                         rownumber = getlastrowincolumn(sheet1, "C");
                         rownumber++;
                     }
-               
-             
-                string key = ((DictionaryEntry)dic.Cast<DictionaryEntry>().ElementAt(i)).Key.ToString();
+
+
                 // code for printing headings ie samsung , redmi , oppo , vivo , techno etc 
+                string key = ((DictionaryEntry)dic.Cast<DictionaryEntry>().ElementAt(i)).Key.ToString();               
                 sheet1.Cells[rownumber, columnnumber].Value = key.ToUpper();
                 sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
                 sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
