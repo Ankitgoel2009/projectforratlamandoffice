@@ -30,13 +30,13 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             Excel.Range range1 = sheet.UsedRange;
 
             // start
-            var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);            var listname = "Vintage Flip";
+            var arr1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);            var listname = comboBox1.SelectedItem.ToString();
 
             // step 1 .  listnew contains all the names of all the models above 60 
             // ok block 
             List<object[]> listnew = new List<object[]>();            listnew.Add(new object[] { listname });            for (int i = 10; i <= arr1.GetLength(0) - 1; i++)            {
                 // replace pcs from second row and convert to int 
-                if (arr1[i, 1] != null)                {                    int id = Convert.ToInt32(arr1[i, 2].ToString().Replace("Pcs", "").Trim());                    if (id > 60) // remove below 60 pcs 
+                if (arr1[i, 1] != null)                {                    int id = Convert.ToInt32(arr1[i, 2].ToString().Replace("Pcs", "").Trim());                    if (id > Convert.ToInt32(comboBox2.SelectedItem)) // remove below 60 pcs 
                     {
                         listnew.Add(new object[] { CaseInsenstiveReplace(arr1[i, 1].ToString(), listname, "").Trim() });
                     }                }            }
@@ -49,8 +49,12 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             for (int i = 1; i < listnew.Count; i++)            {
                 firstSpaceIndex = listnew[i][0].ToString().IndexOf(" "); // get index upto first space found
                 firstString = listnew[i][0].ToString().Substring(0, firstSpaceIndex); // get string upto first space found
-                if (!list1.Contains(firstString)) // if not previously present in list 
-                {                    list1.Add(firstString); // Add to sub-heading list 
+                if (list1.Contains(firstString, StringComparer.CurrentCultureIgnoreCase)) // if not previously present in list 
+                {                    continue;                   // list1.Add(firstString); 
+                }
+                else
+                {
+                    list1.Add(firstString); // Add to sub-heading list 
                 }
             }
             // List of sub-heading are  ready , now prepare final list
@@ -153,27 +157,23 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             {
                 if (columnnumber > 3) // if you reach the last column 
                 {
-                   columnnumber = 1; // get back to column 1 
-                  
-                }
-             
+                   columnnumber = 1; // get back to column 1                   
+                }             
                     if (columnnumber == 1)
                     {
                         rownumber = getlastrowincolumn(sheet1, "A");
-                        rownumber++;
-                    
+                        rownumber++;  // start printing from row2                  
                     }
                     else if (columnnumber == 2)
                     {
                         rownumber = getlastrowincolumn(sheet1, "B");                       
-                        rownumber++;
-                     
-                    }
+                        rownumber++;  // start printing from row2                   
+                }
                     else if (columnnumber == 3)
                     {
                         rownumber = getlastrowincolumn(sheet1, "C");
-                        rownumber++;
-                    }
+                        rownumber++; // start printing from row2
+                }
 
 
                 // code for printing headings ie samsung , redmi , oppo , vivo , techno etc 
@@ -188,7 +188,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 foreach (string value in values)
                 {
                    
-                    rownumber++;
+                    rownumber++; // change row 
                     sheet1.Cells[rownumber, columnnumber].Value = value;
                     sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
                     sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -213,13 +213,13 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                             
                             if(columnnumber ==2)
                             {
-                                rowsinpreviouscolumn = getlastrowincolumn(sheet1, "A");
+                                rowsinpreviouscolumn = getlastrowincolumn(sheet1, "A")-2; // use getlastrowincolumn(sheet1, "A")-2; here if row exceeds 
                                 rowsincurrentcolumn = getlastrowincolumn(sheet1, "B");
 
                             }
                             else if(columnnumber==3)
                             {
-                                rowsinpreviouscolumn = getlastrowincolumn(sheet1, "B");
+                                rowsinpreviouscolumn = getlastrowincolumn(sheet1, "B")-2; // use getlastrowincolumn(sheet1, "B")-2; here if row exceeds 
                                 rowsincurrentcolumn = getlastrowincolumn(sheet1, "C");
                             }
                             if (rowsinpreviouscolumn < rowsincurrentcolumn + countofnextkey_valuepair )

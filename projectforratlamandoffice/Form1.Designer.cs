@@ -94,10 +94,10 @@ namespace projectforratlamandoffice
             this.comboBox1.ItemHeight = 26;
             this.comboBox1.Items.AddRange(new object[] {
             "----SELECT VARIETY BELOW----",
-            "1. VINTAGE FLIP",
+            "VINTAGE FLIP",
             "2. EXPRESS FLIP",
             "3. ARROW FLIP",
-            "4. IMD",
+            "IMD",
             "5. CLOTH",
             "6. CHROME ",
             "7. ARIEL"});
