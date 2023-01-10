@@ -122,7 +122,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 count.Add(kvp.Key.ToString(), list.Count);
             }
             finaltotal = count.Cast<DictionaryEntry>().Sum(i => Convert.ToInt32(i.Value));
-            string outputpath = @"C:\Users\Public"+comboBox1.Text+".xlsx";            Excel.Application excel1 = new Excel.Application();            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
+            string outputpath = @"C:\Users\Public\"+comboBox1.Text+".xlsx";            Excel.Application excel1 = new Excel.Application();            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
 
             // create main heading 
             sheet1.Cells[1, 1].Value = listnew[0][0].ToString().ToUpper();
