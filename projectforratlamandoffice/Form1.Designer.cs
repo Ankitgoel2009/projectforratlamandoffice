@@ -54,6 +54,7 @@ namespace projectforratlamandoffice
             this.button2.TabIndex = 8;
             this.button2.Text = "CREATE EXCEL FILE";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
@@ -83,6 +84,7 @@ namespace projectforratlamandoffice
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(89, 34);
             this.comboBox2.TabIndex = 6;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // comboBox1
             // 

@@ -304,6 +304,16 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
      
     }
