@@ -307,7 +307,10 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            // Set cursor as hourglass
+            Cursor.Current = Cursors.WaitCursor;            dowork();
+            // Set cursor as default arrow
+            Cursor.Current = Cursors.Default;
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
