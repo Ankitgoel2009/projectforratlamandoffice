@@ -8,6 +8,12 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
         }        void OpenKeywordsFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)        {            OpenFileDialog fileDialog = sender as OpenFileDialog;            selectedFile = System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName);            if (string.IsNullOrEmpty(selectedFile) || selectedFile.Contains(".lnk"))            {                MessageBox.Show("Please select a valid Excel File");                e.Cancel = true;            }            return;        }        private void button1_Click(object sender, EventArgs e)        {            OpenFileDialog choofdlog = new OpenFileDialog();            choofdlog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);            choofdlog.Multiselect = false;            choofdlog.ValidateNames = true;            choofdlog.DereferenceLinks = false; // Will return .lnk in shortcuts.
             choofdlog.Filter = "Excel |*.xlsx";            choofdlog.FilterIndex = 1;            choofdlog.FileOk += new System.ComponentModel.CancelEventHandler(OpenKeywordsFileDialog_FileOk);            DialogResult result = choofdlog.ShowDialog();            if (result == DialogResult.OK)            {                selectedFile = choofdlog.FileName;
             }
+            else if (result == DialogResult.Cancel)
+            {
+                //User pressed cancel
+                comboBox1.SelectedIndex = 0;
+                return;
+            }
             // Set cursor as hourglass
             Cursor.Current = Cursors.WaitCursor;
             dowork();
