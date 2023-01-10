@@ -181,7 +181,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 sheet1.Cells[rownumber, columnnumber].Value = key.ToUpper();
                 sheet1.Cells[rownumber, columnnumber].Font.Bold = true;
                 sheet1.Cells[rownumber, columnnumber].HorizontalAlignment = XlHAlign.xlHAlignLeft;
-                // sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 20;
+                sheet1.Cells[rownumber, columnnumber].Cells.Font.Size = 20;
                 sheet1.Cells[rownumber, columnnumber].Interior.Color =  System.Drawing.Color.FromArgb(172, 185, 202);
 
                 List<string> values = (List<string>)dic[key];
@@ -238,15 +238,19 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                         columnnumber++;
                     }
                 }
-              
+
 
             }
-                sheet1.Range["B1"].ColumnWidth = 30.00;
-                sheet1.Range["C1"].ColumnWidth = 30.00;
+            sheet1.Columns["A:C"].AutoFit();
+            sheet1.Columns["A:A"].ColumnWidth = 40.57;
+            sheet1.Columns["B:B"].ColumnWidth = 40.57;
+            sheet1.Columns["C:C"].ColumnWidth = 40.57;
+           // sheet1.Range["B1"].ColumnWidth = 30.00;
+               // sheet1.Range["C1"].ColumnWidth = 30.00;
                 sheet1.Range["A1"].EntireColumn.Font.Bold = true;
                 sheet1.Range["B1"].EntireColumn.Font.Bold = true;
                 sheet1.Range["C1"].EntireColumn.Font.Bold = true;
-                sheet1.Columns["A:C"].AutoFit();
+               
                 // sheet1.Columns["A"].AutoFit();
                 range1 = sheet1.UsedRange;
                 Borders border = range1.Borders;
