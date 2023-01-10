@@ -312,7 +312,19 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (comboBox2.SelectedIndex >= 0)
+            {
+                button2.Visible = true;
 
+
+            }
+            else
+            {
+                button1.Enabled = false;
+                label1.Visible = false;
+                comboBox2.Visible = false;
+                button2.Visible = false;
+            }
         }
     }
      
