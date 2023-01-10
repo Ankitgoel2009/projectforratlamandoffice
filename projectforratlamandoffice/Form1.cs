@@ -15,11 +15,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 comboBox1.SelectedIndex = 0;
                 return;
             }
-            // Set cursor as hourglass
-            Cursor.Current = Cursors.WaitCursor;
-            dowork();
-            // Set cursor as default arrow
-            Cursor.Current = Cursors.Default;        }
+                }
 
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)        {            Excel.Workbook book = excelInstance.Workbooks.Open(                fileName, updateLinks, readOnly,                Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,                Type.Missing, editable, Type.Missing, Type.Missing, Type.Missing,                Type.Missing, Type.Missing);            return book;        }
         // METHOD TO LOOK and REPLACE SIMILAR LOOKING strings  
