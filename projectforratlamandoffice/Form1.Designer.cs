@@ -95,12 +95,11 @@ namespace projectforratlamandoffice
             this.comboBox1.Items.AddRange(new object[] {
             "----SELECT VARIETY BELOW----",
             "VINTAGE FLIP",
-            "2. EXPRESS FLIP",
-            "3. ARROW FLIP",
+            "EXPRESS FLIPARROW FLIP",
             "IMD",
-            "5. CLOTH",
-            "6. CHROME ",
-            "7. ARIEL"});
+            "CLOTH",
+            "CHROME ",
+            "ARIEL"});
             this.comboBox1.Location = new System.Drawing.Point(194, 27);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(401, 34);

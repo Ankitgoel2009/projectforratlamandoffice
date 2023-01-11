@@ -310,7 +310,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox1.SelectedIndex == 1 || comboBox1.SelectedIndex == 2 || comboBox1.SelectedIndex == 3
-               || comboBox1.SelectedIndex == 4 || comboBox1.SelectedIndex == 5)
+               || comboBox1.SelectedIndex == 4 || comboBox1.SelectedIndex == 5 || comboBox1.SelectedIndex == 6)
             {
                 button1.Enabled = true;
             }
