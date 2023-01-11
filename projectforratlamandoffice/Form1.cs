@@ -112,7 +112,8 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             {
                 foreach (var kvp in dic.Cast<DictionaryEntry>().Reverse().Reverse())
                 {
-                    if (item == kvp.Key.ToString())
+                   // if (item == kvp.Key.ToString())
+                   if(String.Equals(item, kvp.Key.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
                         dic.Remove(kvp.Key);
                         dic.Insert(listofsequence.IndexOf(item), kvp.Key, kvp.Value);
@@ -200,7 +201,7 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 {
                    
                     string nextKey = (string)dic.Cast<DictionaryEntry>().ElementAt(i + 1).Key;
-                    if (!listofsequence.Contains(nextKey))
+                    if (!listofsequence.Contains(nextKey, StringComparer.CurrentCultureIgnoreCase))
                     {
                         // Print the number of values for this key.
                         int countofnextkey_valuepair = ((((DictionaryEntry)dic.Cast<DictionaryEntry>().ElementAt(i + 1)).Value as List<string>).Count) + 1;
