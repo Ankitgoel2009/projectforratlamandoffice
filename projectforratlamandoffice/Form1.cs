@@ -67,7 +67,8 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             //ok block
             OrderedDictionary dic = new OrderedDictionary(StringComparer.CurrentCultureIgnoreCase);  // string comparer is used so that all evaluations on the key act according to the rules of the comparer: case-insensitive.                  
             for (int i = 0; i < list1.Count; i++)            {                string key = list1[i];                List<string> l = new List<string>();                for (var item = 1; item < listnew.Count; item++) // deliberately starts from 1 
-                {                    if (listnew[item][0].ToString().StartsWith(key))                    {                        l.Add(listnew[item][0].ToString());                    }                }
+                {                    if (listnew[item][0].ToString().StartsWith(key, StringComparison.OrdinalIgnoreCase))                    {                        l.Add(listnew[item][0].ToString());
+                    }                }
                 if (String.Equals(key, "sam", StringComparison.OrdinalIgnoreCase))
                 {
                     dic.Add("Samsung", l);
@@ -305,7 +306,6 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             }
             return 1;
         }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox1.SelectedIndex == 1 || comboBox1.SelectedIndex == 2 || comboBox1.SelectedIndex == 3
@@ -320,7 +320,6 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
                 comboBox2.Visible = false;
             }
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             // Set cursor as hourglass
@@ -328,7 +327,6 @@ namespace projectforratlamandoffice{    public partial class Form1 : Form    
             // Set cursor as default arrow
             Cursor.Current = Cursors.Default;
         }
-
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox2.SelectedIndex >= 0)
