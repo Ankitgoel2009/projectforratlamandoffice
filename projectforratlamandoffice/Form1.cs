@@ -205,9 +205,14 @@ namespace projectforratlamandoffice
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
             //var options = new ChromeOptions();
             //options.AddArguments(@"user-data-dir=C:\Users\Umesh Aggarwal\AppData\Local\Google\Chrome\User Data");
+            //options.AddArguments("--profile-directory=Profile 1");
+            //options.AddArguments("--disable-extensions");
+            //options.AddArguments("--headless");
+            //options.AddArguments("--no-sandbox", "--disable-dev-shm-usage");
             //IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
-            //////driver.Manage().Window.Maximize();
-            //////// Navigate to Whatsapp web
+
+            //driver.Manage().Window.Maximize();
+            ////////// Navigate to Whatsapp web
             //driver.Navigate().GoToUrl("https://web.whatsapp.com/");
             //IReadOnlyCollection<string> windowHandles = driver.WindowHandles;
 
