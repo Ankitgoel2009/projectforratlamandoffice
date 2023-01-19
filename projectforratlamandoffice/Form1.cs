@@ -203,17 +203,22 @@ namespace projectforratlamandoffice
             //  System.Environment.SetEnvironmentVariable("restart.browser.each.scenario", "false");
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
-            //var options = new ChromeOptions();
-            //options.AddArguments(@"user-data-dir=C:\Users\Umesh Aggarwal\AppData\Local\Google\Chrome\User Data");
-            //options.AddArguments("--profile-directory=Profile 1");
+            ///// add chromedriver to environment variables 
+            ///chromedriver -version  // check before 
+            /////cd "C:\Program Files\Google\Chrome\Application"
+            /// chrome.exe --remote-debugging-port=9222 --user-data-dir=D:\chromedata
+            /// 
+            var options = new ChromeOptions();
+            options.DebuggerAddress= "127.0.0.1:9222";
+             //options.AddArguments("--profile-directory=Profile 1");
             //options.AddArguments("--disable-extensions");
             //options.AddArguments("--headless");
             //options.AddArguments("--no-sandbox", "--disable-dev-shm-usage");
-            //IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
+            IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
 
             //driver.Manage().Window.Maximize();
             ////////// Navigate to Whatsapp web
-            //driver.Navigate().GoToUrl("https://web.whatsapp.com/");
+            driver.Navigate().GoToUrl("https://web.whatsapp.com/");
             //IReadOnlyCollection<string> windowHandles = driver.WindowHandles;
 
             //// Find already opened window with Chrome
