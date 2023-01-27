@@ -14,6 +14,7 @@ using System.Globalization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
+using System.Diagnostics;
 
 namespace projectforratlamandoffice
 {
@@ -207,18 +208,25 @@ namespace projectforratlamandoffice
             ///chromedriver -version  // check before 
             /////cd "C:\Program Files\Google\Chrome\Application"
             /// chrome.exe --remote-debugging-port=9222 --user-data-dir=D:\chromedata
-            /// 
-            var options = new ChromeOptions();
-            options.DebuggerAddress= "127.0.0.1:9222";
-             //options.AddArguments("--profile-directory=Profile 1");
+            ///
+           // Process proc = new Process();
+            // before copying below please note c:\ instaedof c 
+            //proc.StartInfo.FileName = @"C\Program Files\Google\Chrome\Application\chrome.exe";
+            // to avoid typing above query add path of chrome to environmane varibale 
+            //proc.StartInfo.Arguments = "--remote-debugging-port=9222 --user-data-dir=D:\\chromedata";
+           // proc.Start();
+
+         //   var options = new ChromeOptions();
+         //   options.DebuggerAddress= "127.0.0.1:9222";
+            //options.AddArguments("--profile-directory=Profile 1");
             //options.AddArguments("--disable-extensions");
             //options.AddArguments("--headless");
             //options.AddArguments("--no-sandbox", "--disable-dev-shm-usage");
-            IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
+         //   IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
 
-            //driver.Manage().Window.Maximize();
+           // driver.Manage().Window.Maximize();
             ////////// Navigate to Whatsapp web
-            driver.Navigate().GoToUrl("https://web.whatsapp.com/");
+         //   driver.Navigate().GoToUrl("https://web.whatsapp.com/");
             //IReadOnlyCollection<string> windowHandles = driver.WindowHandles;
 
             //// Find already opened window with Chrome
@@ -286,7 +294,7 @@ namespace projectforratlamandoffice
             //    driver.Quit();
 
 
-                System.Windows.Forms.Application.Exit();
+            System.Windows.Forms.Application.Exit();
             }
         
 
