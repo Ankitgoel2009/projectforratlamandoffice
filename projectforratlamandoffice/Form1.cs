@@ -68,7 +68,7 @@ namespace projectforratlamandoffice
             Cursor.Current = Cursors.Default;
 
         }
-    
+
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)
         {
             Excel.Workbook book = excelInstance.Workbooks.Open(
@@ -78,193 +78,33 @@ namespace projectforratlamandoffice
                 Type.Missing, Type.Missing);
             return book;
         }
+        Excel.Application excel = null;
+        Excel.Workbook wkb = null;
+        Excel._Worksheet sheet = null;
+        Excel.Range range1 = null;
+        int rowindex, columnindex;
         void dowork()
         {
-            Excel.Application excel = null;
             excel = new Excel.Application();
             excel.Visible = true;
-            Excel.Workbook wkb = null;
+
             wkb = Open(excel, selectedFile);
-            Excel._Worksheet sheet = wkb.Sheets[1];
+            sheet = wkb.Sheets[1];
             sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
-            Excel.Range range1 = sheet.UsedRange;
-            int rowindex = range1.Rows.Count;
-            int columnindex = range1.Columns.Count;
+            range1 = sheet.UsedRange;
+            rowindex = range1.Rows.Count;
+            columnindex = range1.Columns.Count;
 
-            // prepare all customers file 
-            string outputpathforoffice = @"C:\ratlamfile\office-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-            Excel.Application excelforofice = new Excel.Application();
-            Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
-            Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
-            int row = 1;
-            int column = 1;
-            for (int i = 10; i <= rowindex - 1; i++)                         
-            {
-                string valueA = (string)range1.Cells[i, 1].Value;
-                if (range1.Cells[i, 2].Value != null)
-                {
-                    decimal valueB = (decimal)range1.Cells[i, 2].Value;
-                    if (valueB > 1000)
-                    {
-                        if (column > 4)
-                        {
-                            column = 1;
-                            row += 1;
-                        }
-                        sheetforoffice.Cells[row, column].Value = valueA;
-                        sheetforoffice.Cells[row, ++column].Value = valueB;
-                        column++;
-                    }
-                }
-            }
-            sheetforoffice.Columns["A:D"].AutoFit();
-            sheetforoffice.Columns[1].ColumnWidth = 36;
-            sheetforoffice.Columns[2].ColumnWidth = 14.44;
-            sheetforoffice.Columns[3].ColumnWidth = 37.44;
-            sheetforoffice.Columns[4].ColumnWidth = 14.67;
-            // Set the row height for a range of rows
-            Excel.Range rowRange = sheetforoffice.Range["58:" + sheetforoffice.Cells[sheetforoffice.Rows.Count, 1].End[Excel.XlDirection.xlUp].Row];
-            rowRange.RowHeight = 9.80;
-            rowRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-
-            sheetforoffice.Range["A:D"].EntireColumn.Font.Bold = true;
-            sheetforoffice.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
-            sheetforoffice.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
-            Range rangeforoffice = sheetforoffice.UsedRange;
-            Borders borderforoffice = rangeforoffice.Borders;
-            borderforoffice[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borderforoffice[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borderforoffice[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borderforoffice[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
-            borderforoffice.Color = Color.Black;
-            borderforoffice[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            borderforoffice[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            borderforoffice[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            borderforoffice[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            rangeforoffice.Borders.Color = Color.Black;
-
-            rangeforoffice.Select();
-            sheetforoffice.UsedRange.Select();
-            workbookforoffice.SaveAs(outputpathforoffice);
-            workbookforoffice.Close();
-            excelforofice.Quit();
-            // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelforofice);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbookforoffice);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheetforoffice);
+            Thread t1 = new Thread(Method1);
+            Thread t2 = new Thread(Method2);
+            t1.Start();
+            t2.Start();
 
 
-            // listnew will contain all the data from the row 10 upto the last row excluding the final total row 
-            List<object[]> listnew = new List<object[]>();
-            for (int i = 10; i <= rowindex - 1; i++)
-            {
-                if (range1.Cells[i, 1].Text != "")
-                {
-                    if (range1.Cells[i, 2].Text != "" && range1.Cells[i, 3].Text == "")
-                    {
-                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "+ " + range1.Cells[i, 2].Text + " ₹" });
-                    }
-                    else if (range1.Cells[i, 2].Text == "" && range1.Cells[i, 3].Text != "")
-                    {
-                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "- " + range1.Cells[i, 3].Text + " ₹" });
-                    }
-
-                }
-            }
-            // commented out because i started adding from element 10 and also loop stops before length -1 
-            // list.RemoveAt(list.Count - 1);
-            //  list.RemoveRange(0, 10);         
-
-
-            // 6. copy text file names to a variable called list 
-            copydata();
-
-            // filter from only index which conatins  names and add the balance 
-            Filter(listnew, list);
-
-            // names are  ready , now modify it 
-
-            Dictionary<object, object> dic1 = new Dictionary<object, object>();
-            for (int i = 0; i <= listnew.Count - 1; i++)
-            {
-                dic1.Add(listnew[i][0], listnew[i][1]);
-
-            }
-
-            // data which tells which names are in which state
-            var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
-            List<object> list1 = new List<object>();
-            for (int i = 1; i <= arr2.GetLength(0); i++)
-            {
-                if (arr2[i, 1] != null && arr2[i, 2] == null)
-                {
-                    list1.Add(arr2[i, 1]);
-                }
-                if (arr2[i, 2] != null && arr2[i, 1] == null)
-                {
-                    list1.Add(arr2[i, 2]);
-                }
-
-            }
-
-            string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-            Excel.Application excel1 = new Excel.Application();
-            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
-            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
-
-            for (int i = 0; i < list1.Count; i++)
-            {
-                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan" || list1[i].ToString().Trim() == "Bihar" || list1[i].ToString().Trim() == "Punjab" || list1[i].ToString().Trim() == "Odisha" || list1[i].ToString().Trim() == "Chhatisgarh" || list1[i].ToString().Trim() == "West bengal" || list1[i].ToString().Trim() == "Madhya Pradesh" || list1[i].ToString().Trim() == "Jharkhand" || list1[i].ToString().Trim() == "Maharashtra" || list1[i].ToString().Trim() == "Market" || list1[i].ToString().Trim() == "Uttarakhand" || list1[i].ToString().Trim() == "Assam" || list1[i].ToString().Trim() == "Tripura")
-                {
-                    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
-
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].EntireColumn.Font.Bold = true;
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Cells.Font.Size = 20;
-                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Font.Italic = true;
-
-                }
-                else
-                {
-                    sheet1.Cells[i + 1, 2].Value = dic1[list1[i]];                                            
-                }
-
-                sheet1.Cells[i + 1, 1].Value = list1[i];
-            }
-            //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
-            sheet1.Columns["A:B"].AutoFit();
-            sheet1.Range["A1"].EntireColumn.Font.Bold = true;
-            sheet1.Range["B1"].EntireColumn.Font.Bold = true;
-
-            range1 = sheet1.UsedRange;
-            Borders border = range1.Borders;
-            border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border.Color = Color.Black;
-            border[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            border[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            range1.Borders.Color = Color.Black;
-            range1.Select();
-            sheet1.UsedRange.Select();
-            workbook.SaveAs(outputpath);
-            workbook.Close();
-            excel1.Quit();
-            // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
-            wkb.Close(true);
-            excel.Quit();
-            // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+            // wait for both threads to finish
+            t1.Join();
+            t2.Join();
 
             // not working too 
             //  System.Environment.SetEnvironmentVariable("restart.browser.each.scenario", "false");
@@ -359,31 +199,31 @@ namespace projectforratlamandoffice
             //    //  Close browser
             //    driver.Quit();
 
-           // dowork1();
+            // dowork1();
             System.Windows.Forms.Application.Exit();
-            }
-     //void   dowork1()
-     //   {
-     //       string filePath = selectedFile;
-     //       Application excelApp = new Application();
-     //       Workbook workbook = excelApp.Workbooks.Open(filePath);
-     //       Worksheet worksheet = workbook.Worksheets[1];
-     //       Range columnB = worksheet.Range["B:B"];
-     //       Range filteredData = columnB.SpecialCells(XlCellType.xlCellTypeConstants, XlSpecialCellsValue.xlNumbers);
+        }
+        //void   dowork1()
+        //   {
+        //       string filePath = selectedFile;
+        //       Application excelApp = new Application();
+        //       Workbook workbook = excelApp.Workbooks.Open(filePath);
+        //       Worksheet worksheet = workbook.Worksheets[1];
+        //       Range columnB = worksheet.Range["B:B"];
+        //       Range filteredData = columnB.SpecialCells(XlCellType.xlCellTypeConstants, XlSpecialCellsValue.xlNumbers);
 
-     //       int count = columnB.Rows.Count;
-     //       for (int i = count; i >= 1; i--)
-     //       {
-     //           if ((filteredData.Cells[i, 1].Value2 == null) || (double)filteredData.Cells[i, 1].Value < 1000)
-     //           {
-     //               filteredData.Cells[i, 1].EntireRow.Delete();
-     //           }
-     //       }
+        //       int count = columnB.Rows.Count;
+        //       for (int i = count; i >= 1; i--)
+        //       {
+        //           if ((filteredData.Cells[i, 1].Value2 == null) || (double)filteredData.Cells[i, 1].Value < 1000)
+        //           {
+        //               filteredData.Cells[i, 1].EntireRow.Delete();
+        //           }
+        //       }
 
-     //       workbook.Save();
-     //       workbook.Close();   
-     //       excelApp.Quit();
-     //   }
+        //       workbook.Save();
+        //       workbook.Close();   
+        //       excelApp.Quit();
+        //   }
 
         public object[,] GetObjArr(string filename)
         {
@@ -429,7 +269,7 @@ namespace projectforratlamandoffice
         // filter function will match the data in the listnew variable and the data in the list variable 
         // after that it removes the data from the listnew which are not in list 
         // and at the same time add the results with rs 0 if they are not in ws 
-    public void Filter(List<object[]> ws, List<string> values)
+        public void Filter(List<object[]> ws, List<string> values)
         {
             var result1 = ws.Select(m => m[0]).ToList();
             var result = result1.Except(list);
@@ -438,9 +278,190 @@ namespace projectforratlamandoffice
             {
                 if (!result1.Contains(list[i]))
                 {
-                    ws.Add(new object[] { list[i], "0 ₹"  });
+                    ws.Add(new object[] { list[i], "0 ₹" });
                 }
             }
+        }
+
+        public void Method1()
+        {
+            // prepare all customers file 
+            string outputpathforoffice = @"C:\ratlamfile\office-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
+            Excel.Application excelforofice = new Excel.Application();
+            Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
+            Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
+            int row = 1;
+            int column = 1;
+            for (int i = 10; i <= rowindex - 1; i++)
+            {
+                string valueA = (string)range1.Cells[i, 1].Value;
+                if (range1.Cells[i, 2].Value != null)
+                {
+                    decimal valueB = (decimal)range1.Cells[i, 2].Value;
+                    if (valueB > 1000)
+                    {
+                        if (column > 4)
+                        {
+                            column = 1;
+                            row += 1;
+                        }
+                        sheetforoffice.Cells[row, column].Value = valueA;
+                        sheetforoffice.Cells[row, ++column].Value = valueB;
+                        column++;
+                    }
+                }
+            }
+            sheetforoffice.Columns["A:D"].AutoFit();
+            sheetforoffice.Columns[1].ColumnWidth = 36;
+            sheetforoffice.Columns[2].ColumnWidth = 14.44;
+            sheetforoffice.Columns[3].ColumnWidth = 37.44;
+            sheetforoffice.Columns[4].ColumnWidth = 14.67;
+            // Set the row height for a range of rows
+            Excel.Range rowRange = sheetforoffice.Range["58:" + sheetforoffice.Cells[sheetforoffice.Rows.Count, 1].End[Excel.XlDirection.xlUp].Row];
+            rowRange.RowHeight = 9.80;
+            rowRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+            sheetforoffice.Range["A:D"].EntireColumn.Font.Bold = true;
+            sheetforoffice.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
+            sheetforoffice.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
+            Range rangeforoffice = sheetforoffice.UsedRange;
+            Borders borderforoffice = rangeforoffice.Borders;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice.Color = Color.Black;
+            borderforoffice[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            borderforoffice[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            borderforoffice[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            borderforoffice[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            rangeforoffice.Borders.Color = Color.Black;
+
+            rangeforoffice.Select();
+            sheetforoffice.UsedRange.Select();
+            workbookforoffice.SaveAs(outputpathforoffice);
+            workbookforoffice.Close();
+            excelforofice.Quit();
+            // CLEAN UP.
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelforofice);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbookforoffice);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheetforoffice);
+
+        }
+        public void Method2()
+        {
+
+
+            // listnew will contain all the data from the row 10 upto the last row excluding the final total row 
+            List<object[]> listnew = new List<object[]>();
+            for (int i = 10; i <= rowindex - 1; i++)
+            {
+                if (range1.Cells[i, 1].Text != "")
+                {
+                    if (range1.Cells[i, 2].Text != "" && range1.Cells[i, 3].Text == "")
+                    {
+                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "+ " + range1.Cells[i, 2].Text + " ₹" });
+                    }
+                    else if (range1.Cells[i, 2].Text == "" && range1.Cells[i, 3].Text != "")
+                    {
+                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "- " + range1.Cells[i, 3].Text + " ₹" });
+                    }
+
+                }
+            }
+            // commented out because i started adding from element 10 and also loop stops before length -1 
+            // list.RemoveAt(list.Count - 1);
+            //  list.RemoveRange(0, 10);         
+
+
+            // 6. copy text file names to a variable called list 
+            copydata();
+
+            // filter from only index which conatins  names and add the balance 
+            Filter(listnew, list);
+
+            // names are  ready , now modify it 
+
+            Dictionary<object, object> dic1 = new Dictionary<object, object>();
+            for (int i = 0; i <= listnew.Count - 1; i++)
+            {
+                dic1.Add(listnew[i][0], listnew[i][1]);
+
+            }
+
+            // data which tells which names are in which state
+            var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
+            List<object> list1 = new List<object>();
+            for (int i = 1; i <= arr2.GetLength(0); i++)
+            {
+                if (arr2[i, 1] != null && arr2[i, 2] == null)
+                {
+                    list1.Add(arr2[i, 1]);
+                }
+                if (arr2[i, 2] != null && arr2[i, 1] == null)
+                {
+                    list1.Add(arr2[i, 2]);
+                }
+
+            }
+
+            string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
+            Excel.Application excel1 = new Excel.Application();
+            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
+            Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
+
+            for (int i = 0; i < list1.Count; i++)
+            {
+                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan" || list1[i].ToString().Trim() == "Bihar" || list1[i].ToString().Trim() == "Punjab" || list1[i].ToString().Trim() == "Odisha" || list1[i].ToString().Trim() == "Chhatisgarh" || list1[i].ToString().Trim() == "West bengal" || list1[i].ToString().Trim() == "Madhya Pradesh" || list1[i].ToString().Trim() == "Jharkhand" || list1[i].ToString().Trim() == "Maharashtra" || list1[i].ToString().Trim() == "Market" || list1[i].ToString().Trim() == "Uttarakhand" || list1[i].ToString().Trim() == "Assam" || list1[i].ToString().Trim() == "Tripura")
+                {
+                    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
+
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].EntireColumn.Font.Bold = true;
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Merge();
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Cells.Font.Size = 20;
+                    sheet1.Range[sheet1.Cells[i + 1, 1], sheet1.Cells[i + 1, 2]].Font.Italic = true;
+
+                }
+                else
+                {
+                    sheet1.Cells[i + 1, 2].Value = dic1[list1[i]];
+                }
+
+                sheet1.Cells[i + 1, 1].Value = list1[i];
+            }
+            //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
+            sheet1.Columns["A:B"].AutoFit();
+            sheet1.Range["A1"].EntireColumn.Font.Bold = true;
+            sheet1.Range["B1"].EntireColumn.Font.Bold = true;
+
+            range1 = sheet1.UsedRange;
+            Borders border = range1.Borders;
+            border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
+            border[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
+            border[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            border[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
+            border.Color = Color.Black;
+            border[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            border[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            range1.Borders.Color = Color.Black;
+            range1.Select();
+            sheet1.UsedRange.Select();
+            workbook.SaveAs(outputpath);
+            workbook.Close();
+            excel1.Quit();
+            // CLEAN UP.
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
+            wkb.Close(true);
+            excel.Quit();
+            // CLEAN UP.
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
         }
     }
 }
