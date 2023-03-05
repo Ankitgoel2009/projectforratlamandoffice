@@ -56,7 +56,9 @@ namespace projectforratlamandoffice
 
             DialogResult result = choofdlog.ShowDialog();
             if (result == DialogResult.OK)
-            {                
+            {
+                selectedFile = choofdlog.FileName;
+
                 // Set cursor as hourglass
                 Cursor.Current = Cursors.WaitCursor;
                 dowork();
@@ -103,19 +105,19 @@ namespace projectforratlamandoffice
              rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
 
-           // Thread t1 = new Thread(Method1);
-           // Thread t2 = new Thread(Method2);
-            Thread t3 = new Thread(method3);
-           // t1.Start();
-          //  t2.Start();
-            t3.Start();
+            Thread t1 = new Thread(Method1);
+            //Thread t2 = new Thread(Method2);
+           // Thread t3 = new Thread(method3);
+            t1.Start();
+           // t2.Start();
+           // t3.Start();
 
 
             // wait for both threads to finish
-          //  t1.Join();
-           // t2.Join();
-            t3.Join();
-          
+            t1.Join();
+            // t2.Join();
+            // t3.Join();
+
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
             ///// add chromedriver to environment variables 
@@ -206,34 +208,16 @@ namespace projectforratlamandoffice
 
             //    //  Close browser
             //    driver.Quit();
+            wkb.Close(true);
+            excel.Quit();
+            // CLEAN UP.
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
 
-            // dowork1();
             System.Windows.Forms.Application.Exit();
         }
-        //void   dowork1()
-        //   {
-        //       string filePath = selectedFile;
-        //       Application excelApp = new Application();
-        //       Workbook workbook = excelApp.Workbooks.Open(filePath);
-        //       Worksheet worksheet = workbook.Worksheets[1];
-        //       Range columnB = worksheet.Range["B:B"];
-        //       Range filteredData = columnB.SpecialCells(XlCellType.xlCellTypeConstants, XlSpecialCellsValue.xlNumbers);
-
-        //       int count = columnB.Rows.Count;
-        //       for (int i = count; i >= 1; i--)
-        //       {
-        //           if ((filteredData.Cells[i, 1].Value2 == null) || (double)filteredData.Cells[i, 1].Value < 1000)
-        //           {
-        //               filteredData.Cells[i, 1].EntireRow.Delete();
-        //           }
-        //       }
-
-        //       workbook.Save();
-        //       workbook.Close();   
-        //       excelApp.Quit();
-        //   }
-
-        // valueArray;
+     
         public object[,] GetObjArr(string filename)
         {
             Excel.Application excel = null;
@@ -311,7 +295,7 @@ namespace projectforratlamandoffice
         {
             // prepare all customers file 
             string outputpathforoffice = @"C:\ratlamfile\office-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-            Excel.Application excelforofice = new Excel.Application();
+           // Excel.Application excelforofice = new Excel.Application();
             Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
             int row = 1;
@@ -365,9 +349,9 @@ namespace projectforratlamandoffice
             sheetforoffice.UsedRange.Select();
             workbookforoffice.SaveAs(outputpathforoffice);
             workbookforoffice.Close();
-            excelforofice.Quit();
+           // excelforofice.Quit();
             // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelforofice);
+          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(excelforofice);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbookforoffice);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheetforoffice);
 
@@ -478,12 +462,7 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet3);
-            wkb.Close(true);
-            excel.Quit();
-            // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+          
         }
 
 
@@ -588,11 +567,14 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
             wkb.Close(true);
-            excel.Quit();
+
+
+
+          //  excel.Quit();
             // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
+          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
         }
 
         List<string> textnamesforharshit = new List<string>();
