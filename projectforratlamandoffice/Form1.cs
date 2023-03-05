@@ -10,12 +10,12 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using Microsoft.Office.Interop.Excel;
-using System.Globalization;
+using System.Globalization;                                                           
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
 using System.Diagnostics;
-using Application = Microsoft.Office.Interop.Excel.Application;
+//using Application = Microsoft.Office.Interop.Excel.Application;
 
 namespace projectforratlamandoffice
 {
@@ -54,17 +54,20 @@ namespace projectforratlamandoffice
             choofdlog.FilterIndex = 1;
             choofdlog.FileOk += new System.ComponentModel.CancelEventHandler(OpenKeywordsFileDialog_FileOk);
 
-
-            if (choofdlog.ShowDialog() == DialogResult.OK)
-            {
-                selectedFile = choofdlog.FileName;
-
+            DialogResult result = choofdlog.ShowDialog();
+            if (result == DialogResult.OK)
+            {                
+                // Set cursor as hourglass
+                Cursor.Current = Cursors.WaitCursor;
+                dowork();
+                // Set cursor as default arrow
+                Cursor.Current = Cursors.Default;
             }
-            // Set cursor as hourglass
-            Cursor.Current = Cursors.WaitCursor;
-            dowork();
-            // Set cursor as default arrow
-            Cursor.Current = Cursors.Default;
+            else if (result == DialogResult.Cancel)
+            {
+                // Handle the case when the user clicks the Cancel button
+                MessageBox.Show("You have cancelled the file selection.");
+            }
 
         }
 
@@ -100,16 +103,16 @@ namespace projectforratlamandoffice
              rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
 
-            //Thread t1 = new Thread(Method1);
-            //Thread t2 = new Thread(Method2);
+           // Thread t1 = new Thread(Method1);
+           // Thread t2 = new Thread(Method2);
             Thread t3 = new Thread(method3);
-            //t1.Start();
-            //t2.Start();
+           // t1.Start();
+          //  t2.Start();
             t3.Start();
 
 
             // wait for both threads to finish
-            //t1.Join();
+          //  t1.Join();
            // t2.Join();
             t3.Join();
           
