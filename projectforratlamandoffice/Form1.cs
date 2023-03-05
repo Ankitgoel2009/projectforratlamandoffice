@@ -106,16 +106,16 @@ namespace projectforratlamandoffice
             columnindex = range1.Columns.Count;
 
             Thread t1 = new Thread(Method1);
-            //Thread t2 = new Thread(Method2);
+            Thread t2 = new Thread(Method2);
            // Thread t3 = new Thread(method3);
             t1.Start();
-           // t2.Start();
+            t2.Start();
            // t3.Start();
 
 
             // wait for both threads to finish
             t1.Join();
-            // t2.Join();
+             t2.Join();
             // t3.Join();
 
             //// Set up Chrome driver
@@ -412,7 +412,7 @@ namespace projectforratlamandoffice
             }
 
             string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-            Excel.Application excel1 = new Excel.Application();
+           // Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet3 = (Excel.Worksheet)workbook.ActiveSheet;
 
@@ -457,9 +457,9 @@ namespace projectforratlamandoffice
             sheet3.UsedRange.Select();
             workbook.SaveAs(outputpath);
             workbook.Close();
-            excel1.Quit();
+          //  excel1.Quit();
             // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
+           // System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet3);
           
@@ -515,7 +515,7 @@ namespace projectforratlamandoffice
 
 
             string outputpath = @"C:\ratlamfile\Harshit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-            Excel.Application excel1 = new Excel.Application();
+          //  Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet1 = (Excel.Worksheet)workbook.ActiveSheet;
 
@@ -561,9 +561,9 @@ namespace projectforratlamandoffice
             sheet1.UsedRange.Select();
             workbook.SaveAs(outputpath);
             workbook.Close();
-            excel1.Quit();
+           //  excel1.Quit();
             // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
+           // System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
             wkb.Close(true);
