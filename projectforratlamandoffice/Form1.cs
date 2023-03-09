@@ -88,10 +88,7 @@ namespace projectforratlamandoffice
         Excel.Workbook wkb = null;
         Excel._Worksheet sheet = null;
         Excel.Range range1 = null;
-        int rowindex, columnindex;
-
-        
-      
+        int rowindex, columnindex;     
         void dowork()
         {
             excel = new Excel.Application();
@@ -102,21 +99,21 @@ namespace projectforratlamandoffice
             sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             range1 = sheet.UsedRange; // returns range till grandtotal 
-             rowindex = range1.Rows.Count;
+            rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
 
             Thread t1 = new Thread(Method1);
             Thread t2 = new Thread(Method2);
-           // Thread t3 = new Thread(method3);
+            Thread t3 = new Thread(method3);
             t1.Start();
             t2.Start();
-           // t3.Start();
+            t3.Start();
 
 
             // wait for both threads to finish
             t1.Join();
              t2.Join();
-            // t3.Join();
+             t3.Join();
 
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
@@ -214,7 +211,6 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
-
             System.Windows.Forms.Application.Exit();
         }
      
@@ -566,7 +562,7 @@ namespace projectforratlamandoffice
            // System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
-            wkb.Close(true);
+          //  wkb.Close(true);
 
 
 
