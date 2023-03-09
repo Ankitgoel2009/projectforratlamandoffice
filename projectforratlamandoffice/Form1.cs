@@ -213,52 +213,39 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
             System.Windows.Forms.Application.Exit();
         }
-     
+
+        private object lockObject = new object();
+
         public object[,] GetObjArr(string filename)
         {
-            Excel.Application excel = null;
-            excel = new Excel.Application();
-            excel.Visible = true;
-            Excel.Workbook wkb = null;
-            wkb = Open(excel, filename);
-            Excel._Worksheet sheet = wkb.Sheets[1];
-            Excel.Range range1 = sheet.UsedRange;
-            // Read all data from data range in the worksheet
-            object[,] valueArray = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
-            wkb.Close(true);
-            excel.Quit();
-            // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
-            return valueArray;
+            lock (lockObject)
+            {
+                Excel.Application excel = null;
+                excel = new Excel.Application();
+                excel.Visible = true;
+                Excel.Workbook wkb = null;
+                wkb = Open(excel, filename);
+                Excel._Worksheet sheet = wkb.Sheets[1];
+                Excel.Range range1 = sheet.UsedRange;
+                // Read all data from data range in the worksheet
+                object[,] valueArray = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+                wkb.Close(true);
+                excel.Quit();
+                // CLEAN UP.
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+                return valueArray;
+            }
         }
-        public object[,] GetObjArr1(string filename)
-        {
-            Excel.Application excel = null;
-            excel = new Excel.Application();
-            excel.Visible = true;
-            Excel.Workbook wkb = null;
-            wkb = Open(excel, filename);
-            Excel._Worksheet sheet = wkb.Sheets[1];
-            Excel.Range range1 = sheet.UsedRange;
-            // Read all data from data range in the worksheet
-            object[,] valueArray1 = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
-            wkb.Close(true);
-            excel.Quit();
-            // CLEAN UP.
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
-            return valueArray1;
-        }
+     
 
         // copydata function will drop the data in the abc.txt file into the list variable 
 
         List<string> list = new List<string>();
         public void copydata()
         {
-            string filename = "ankitjinames.txt";
+           string filename = "ankitjinames.txt";
             string filePath = @"C:\ratlamfile\" + filename;
             using (var file = new StreamReader(filePath))
             {
@@ -392,7 +379,7 @@ namespace projectforratlamandoffice
             }
 
             // data which tells which names are in which state
-            var arr2 = GetObjArr1(@"C:\ratlamfile\statewisenames.xlsx");
+            var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
             List<object> list1 = new List<object>();
             for (int i = 1; i <= arr2.GetLength(0); i++)
             {
@@ -562,15 +549,7 @@ namespace projectforratlamandoffice
            // System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet1);
-          //  wkb.Close(true);
-
-
-
-          //  excel.Quit();
-            // CLEAN UP.
-          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+          
         }
 
         List<string> textnamesforharshit = new List<string>();
