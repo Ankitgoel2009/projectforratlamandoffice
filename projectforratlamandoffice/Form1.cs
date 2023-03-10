@@ -220,21 +220,21 @@ namespace projectforratlamandoffice
         {
             lock (lockObject)
             {
-                Excel.Application excel = null;
-                excel = new Excel.Application();
-                excel.Visible = true;
-                Excel.Workbook wkb = null;
-                wkb = Open(excel, filename);
-                Excel._Worksheet sheet = wkb.Sheets[1];
-                Excel.Range range1 = sheet.UsedRange;
+                Excel.Application tempexcel = null;
+                tempexcel = new Excel.Application();
+                tempexcel.Visible = true;
+                Excel.Workbook tempwkb = null;
+                tempwkb = Open(tempexcel, filename);
+                Excel._Worksheet tempsheet = tempwkb.Sheets[1];
+                Excel.Range temprange = tempsheet.UsedRange;
                 // Read all data from data range in the worksheet
-                object[,] valueArray = (object[,])range1.get_Value(XlRangeValueDataType.xlRangeValueDefault);
-                wkb.Close(true);
-                excel.Quit();
+                object[,] valueArray = (object[,])temprange.get_Value(XlRangeValueDataType.xlRangeValueDefault);
+                tempwkb.Close(true);
+                tempexcel.Quit();
                 // CLEAN UP.
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(wkb);
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(tempexcel);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(tempwkb);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(tempsheet);
                 return valueArray;
             }
         }
