@@ -97,23 +97,24 @@ namespace projectforratlamandoffice
             wkb = Open(excel, selectedFile);
             sheet = wkb.Sheets[1];
             sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
-            sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            sheet.Range["G1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            sheet.Range["H1"].EntireColumn.NumberFormat = "DD/MM/YYYY";
             range1 = sheet.UsedRange; // returns range till grandtotal 
             rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
-
-            Thread t1 = new Thread(Method1);
-            Thread t2 = new Thread(Method2);
-            Thread t3 = new Thread(method3);
-            t1.Start();
-            t2.Start();
-            t3.Start();
+            Method1();
+          //  Thread t1 = new Thread(Method1);
+           // Thread t2 = new Thread(Method2);
+          //  Thread t3 = new Thread(method3);
+         //   t1.Start();
+         //   t2.Start();
+         //   t3.Start();
 
 
             // wait for both threads to finish
-            t1.Join();
-             t2.Join();
-             t3.Join();
+         //   t1.Join();
+           //  t2.Join();
+           //  t3.Join();
 
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
@@ -276,45 +277,130 @@ namespace projectforratlamandoffice
 
         public void Method1()
         {
+            // sort the source range 
+            int lastRow = range1.Row + range1.Rows.Count - 1;
+            int lastColumn = range1.Column + range1.Columns.Count - 1;
+            // Sort the first column in ascending order, starting from row 3
+            Excel.Range sortRange = sheet.Range[sheet.Cells[4, 1], sheet.Cells[lastRow, lastColumn]];
+
+            // Define the sort keys (sort by column 1 ascending)
+            Excel.SortFields sortFields = sheet.Sort.SortFields;
+            Excel.SortField sortField1 = sortFields.Add(sortRange.Columns[1], Excel.XlSortOn.xlSortOnValues, Excel.XlSortOrder.xlAscending);
+
+            // Apply the sort
+            sheet.Sort.SetRange(sortRange);
+            sheet.Sort.Header = Excel.XlYesNoGuess.xlNo;
+            sheet.Sort.MatchCase = false;
+            sheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
+            sheet.Sort.SortMethod = Excel.XlSortMethod.xlPinYin;
+            sheet.Sort.Apply();
+
+
             // prepare all customers file 
             string outputpathforoffice = @"C:\ratlamfile\office-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
            // Excel.Application excelforofice = new Excel.Application();
             Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
-            Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
+            Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;         
+
+
             int row = 1;
             int column = 1;
             for (int i = 4; i <= rowindex - 1; i++)
             {
                 string valueA = (string)range1.Cells[i, 1].Value;
-                if (range1.Cells[i, 2].Value != null)
+                if (range1.Cells[i, 2].Value != null && !valueA.ToLower().Contains("udaan"))
                 {
-                    decimal valueB = (decimal)range1.Cells[i, 2].Value;
-                    if (valueB > 1000)
+                    decimal valueB = (decimal)range1.Cells[i, 2].Value; // take the value in second column and convert to decimal 
+                    string valueC = range1.Cells[i, 7].Value;
+                    DateTime? valueD = range1.Cells[i, 8].Value as DateTime?;
+                    if (valueD == null)
                     {
-                        if (column > 4)
+                        valueD = new DateTime(2022, 11, 15);
+                    }
+
+
+                    if (valueB > 1000) // if the value in second column ie current balance is greater than 1000
+                    {
+                        if (column > 6) //if the column number exceeds 6 then 
                         {
-                            column = 1;
-                            row += 1;
+                            column = 1;  // revert back to column 1 
+                            row += 1;   // and change row 
                         }
                         sheetforoffice.Cells[row, column].Value = valueA;
                         sheetforoffice.Cells[row, ++column].Value = valueB;
+                        if (valueC == null)
+                        {
+                            sheetforoffice.Cells[row, ++column].Valve = "More than 1 month";
+                        }
+                        else
+                        {
+                            sheetforoffice.Cells[row, ++column].Value = valueC;
+                        }
+                    
+                            sheetforoffice.Cells[row, ++column].Value = valueD;
+                      
                         column++;
                     }
                 }
             }
-            sheetforoffice.Columns["A:D"].AutoFit();
-            sheetforoffice.Columns[1].ColumnWidth = 36;
-            sheetforoffice.Columns[2].ColumnWidth = 14.44;
-            sheetforoffice.Columns[3].ColumnWidth = 37.44;
-            sheetforoffice.Columns[4].ColumnWidth = 14.44;
+
+            string fileContents = File.ReadAllText(@"C:\ratlamfile\newnames.txt");
+
+            // Split the file contents by colon and newline characters
+            string[] lines = fileContents.Split(new char[] { ':', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Create a dictionary to store the name mappings
+            Dictionary<string, string> nameMappings = new Dictionary<string, string>();
+
+            // Add the name mappings to the dictionary
+            for (int i = 0; i < lines.Length; i += 2)
+            {
+                string name = lines[i].Trim();
+                string replacement = lines[i + 1].Trim();
+                nameMappings[name] = replacement;
+            }
+
+            // Get the range of cells in column A starting from row 4
+            Excel.Range range = sheetforoffice.Range["A4", sheetforoffice.Cells[sheetforoffice.UsedRange.Rows.Count, "A"]];
+
+            // Get the values in the range as a 2D array
+            object[,] values = range.Value;
+
+            // Replace the names in the array using the nameMappings dictionary
+            for (int i = 1; i <= values.GetLength(0); i++)
+            {
+                if (values[i, 1] != null)
+                {
+                    string name = values[i, 1].ToString().Trim();
+                    if (nameMappings.ContainsKey(name))
+                    {
+                        values[i, 1] = nameMappings[name];
+                    }
+                }
+            }
+
+            // Set the values in the range to the modified array
+            range.Value = values;
+            //sheetforoffice.Columns[1].ColumnWidth = 25;
+            //sheetforoffice.Columns[2].ColumnWidth = 8.25;
+            //sheetforoffice.Columns[3].ColumnWidth = 9.72;
+            //sheetforoffice.Columns[4].ColumnWidth = 9.56;
+            //sheetforoffice.Columns[5].ColumnWidth = 25;
+            //sheetforoffice.Columns[6].ColumnWidth = 8.25;
+            //sheetforoffice.Columns[7].ColumnWidth = 9.72;
+            //sheetforoffice.Columns[8].ColumnWidth = 9.56; ;
+
+
             // Set the row height for a range of rows
             Excel.Range rowRange = sheetforoffice.Range["59:" + sheetforoffice.Cells[sheetforoffice.Rows.Count, 1].End[Excel.XlDirection.xlUp].Row];
             rowRange.RowHeight = 9.80;
             rowRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
 
-            sheetforoffice.Range["A:D"].EntireColumn.Font.Bold = true;
+            sheetforoffice.Range["A:H"].EntireColumn.Font.Bold = true;
             sheetforoffice.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
-            sheetforoffice.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
+            sheetforoffice.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
+            sheetforoffice.Range["F1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
+            sheetforoffice.Range["G1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
             Range rangeforoffice = sheetforoffice.UsedRange;
             Borders borderforoffice = rangeforoffice.Borders;
             borderforoffice[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
@@ -327,7 +413,7 @@ namespace projectforratlamandoffice
             borderforoffice[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             borderforoffice[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             rangeforoffice.Borders.Color = Color.Black;
-
+            sheetforoffice.Columns["A:H"].AutoFit(); // after bold , now autofit , not before making bold  
             rangeforoffice.Select();
             sheetforoffice.UsedRange.Select();
             workbookforoffice.SaveAs(outputpathforoffice);
