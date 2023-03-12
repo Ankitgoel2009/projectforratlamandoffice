@@ -283,7 +283,7 @@ namespace projectforratlamandoffice
             Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
             int row = 1;
             int column = 1;
-            for (int i = 10; i <= rowindex - 1; i++)
+            for (int i = 4; i <= rowindex - 1; i++)
             {
                 string valueA = (string)range1.Cells[i, 1].Value;
                 if (range1.Cells[i, 2].Value != null)
