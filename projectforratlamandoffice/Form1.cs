@@ -103,18 +103,18 @@ namespace projectforratlamandoffice
             rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
             Method1();
-          //  Thread t1 = new Thread(Method1);
-           // Thread t2 = new Thread(Method2);
-          //  Thread t3 = new Thread(method3);
-         //   t1.Start();
-         //   t2.Start();
-         //   t3.Start();
+            //  Thread t1 = new Thread(Method1);
+            // Thread t2 = new Thread(Method2);
+            //  Thread t3 = new Thread(method3);
+            //   t1.Start();
+            //   t2.Start();
+            //   t3.Start();
 
 
             // wait for both threads to finish
-         //   t1.Join();
-           //  t2.Join();
-           //  t3.Join();
+            //   t1.Join();
+            //  t2.Join();
+            //  t3.Join();
 
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
@@ -206,6 +206,7 @@ namespace projectforratlamandoffice
 
             //    //  Close browser
             //    driver.Quit();
+            wkb.Save();
             wkb.Close(true);
             excel.Quit();
             // CLEAN UP.
@@ -300,10 +301,17 @@ namespace projectforratlamandoffice
             string outputpathforoffice = @"C:\ratlamfile\office-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
            // Excel.Application excelforofice = new Excel.Application();
             Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
-            Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;         
+            Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
 
-
-            int row = 1;
+            sheetforoffice.Cells[1, 1].Value = "Name";
+            sheetforoffice.Cells[1, 2].Value = "Current Balance";
+            sheetforoffice.Cells[1, 3].Value = "Last Payment";
+            sheetforoffice.Cells[1, 4].Value = "Last Payment Date";
+            sheetforoffice.Cells[1, 5].Value = "Name";
+            sheetforoffice.Cells[1, 6].Value = "Current Balance";
+            sheetforoffice.Cells[1, 7].Value = "Last Payment";
+            sheetforoffice.Cells[1, 8].Value = "Last Payment Date";
+            int row = 2;
             int column = 1;
             for (int i = 4; i <= rowindex - 1; i++)
             {
@@ -321,7 +329,7 @@ namespace projectforratlamandoffice
 
                     if (valueB > 1000) // if the value in second column ie current balance is greater than 1000
                     {
-                        if (column > 6) //if the column number exceeds 6 then 
+                        if (column > 8) //if the column number exceeds 6 then 
                         {
                             column = 1;  // revert back to column 1 
                             row += 1;   // and change row 
@@ -361,8 +369,8 @@ namespace projectforratlamandoffice
             }
 
             // Get the range of cells in column A starting from row 4
-            Excel.Range range = sheetforoffice.Range["A4", sheetforoffice.Cells[sheetforoffice.UsedRange.Rows.Count, "A"]];
-
+          //  Excel.Range range = sheetforoffice.Range["A1", sheetforoffice.Cells[sheetforoffice.UsedRange.Rows.Count, "A"]];
+            Excel.Range range = sheetforoffice.UsedRange;
             // Get the values in the range as a 2D array
             object[,] values = range.Value;
 
@@ -375,6 +383,14 @@ namespace projectforratlamandoffice
                     if (nameMappings.ContainsKey(name))
                     {
                         values[i, 1] = nameMappings[name];
+                    }
+                }
+                if (values[i, 5] != null)
+                {
+                    string name = values[i, 5].ToString().Trim();
+                    if (nameMappings.ContainsKey(name))
+                    {
+                        values[i, 5] = nameMappings[name];
                     }
                 }
             }
