@@ -103,6 +103,7 @@ namespace projectforratlamandoffice
             rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
             Method1();
+            Method2();
             //  Thread t1 = new Thread(Method1);
             // Thread t2 = new Thread(Method2);
             //  Thread t3 = new Thread(method3);
@@ -441,6 +442,9 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(sheetforoffice);
 
         }
+
+
+        // for ankit 
         public void Method2()
         {
             // listnew will contain all the data from the row 10 upto the last row excluding the final total row 
