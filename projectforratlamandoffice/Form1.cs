@@ -96,14 +96,14 @@ namespace projectforratlamandoffice
             // return instance of excel file by sending its path 
             wkb = Open(excel, selectedFile);
             sheet = wkb.Sheets[1];
-            sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
-            sheet.Range["G1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
-            sheet.Range["H1"].EntireColumn.NumberFormat = "DD/MM/YYYY";
+           // sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+          //  sheet.Range["G1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+           // sheet.Range["H1"].EntireColumn.NumberFormat = "DD/MM/YYYY";
             range1 = sheet.UsedRange; // returns range till grandtotal 
             rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
             Method1();
-            Method2();
+           // Method2();
             //  Thread t1 = new Thread(Method1);
             // Thread t2 = new Thread(Method2);
             //  Thread t3 = new Thread(method3);
@@ -283,7 +283,7 @@ namespace projectforratlamandoffice
             int lastRow = range1.Row + range1.Rows.Count - 1;
             int lastColumn = range1.Column + range1.Columns.Count - 1;
             // Sort the first column in ascending order, starting from row 3
-            Excel.Range sortRange = sheet.Range[sheet.Cells[4, 1], sheet.Cells[lastRow, lastColumn]];
+            Excel.Range sortRange = sheet.Range[sheet.Cells[3, 1], sheet.Cells[lastRow-1, lastColumn]];
 
             // Define the sort keys (sort by column 1 ascending)
             Excel.SortFields sortFields = sheet.Sort.SortFields;
@@ -299,57 +299,85 @@ namespace projectforratlamandoffice
 
 
             // prepare all customers file 
-            string outputpathforoffice = @"C:\ratlamfile\office-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
+            string outputpathforoffice = @"C:\ratlamfile\officeNew-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
            // Excel.Application excelforofice = new Excel.Application();
             Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
 
             sheetforoffice.Cells[1, 1].Value = "Name";
-            sheetforoffice.Cells[1, 2].Value = "Current Balance";
+            sheetforoffice.Cells[1, 2].Value = "Net Balance";
             sheetforoffice.Cells[1, 3].Value = "Last Payment";
             sheetforoffice.Cells[1, 4].Value = "Last Payment Date";
             sheetforoffice.Cells[1, 5].Value = "Name";
-            sheetforoffice.Cells[1, 6].Value = "Current Balance";
+            sheetforoffice.Cells[1, 6].Value = "Net Balance";
             sheetforoffice.Cells[1, 7].Value = "Last Payment";
             sheetforoffice.Cells[1, 8].Value = "Last Payment Date";
+
             int row = 2;
             int column = 1;
-            for (int i = 4; i <= rowindex - 1; i++)
+            for (int i = 3; i <= rowindex - 1; i++)
             {
                 string valueA = (string)range1.Cells[i, 1].Value;
-                if (range1.Cells[i, 2].Value != null && !valueA.ToLower().Contains("udaan"))
+                if (range1.Cells[i, 11].Value != null && range1.Cells[i, 11].Value > 1000 && !valueA.ToLower().Contains("udaan"))
                 {
-                    decimal valueB = (decimal)range1.Cells[i, 2].Value; // take the value in second column and convert to decimal 
-                    string valueC = range1.Cells[i, 7].Value;
+                    decimal valueB; // = (decimal)range1.Cells[i, 11].Value; // take the value in second column and convert to decimal 
+                    string cellValue = range1.Cells[i, 11].Value.ToString();
+
+                    // Check if the cell value contains the string "cr"
+                    if (cellValue.Contains("Cr"))
+                    {
+                        // Remove the "cr" from the cell value and convert it to a decimal
+                         valueB = decimal.Parse(cellValue.Replace("Cr", "")) * -1;
+
+                        // Set the cell value to the new value
+                       // range1.Cells[i, 11].Value = valueB;
+                    }
+                    else
+                    {
+                        // Convert the cell value to a decimal
+                        valueB = (decimal)range1.Cells[i, 11].Value;
+
+                        // Set the cell value to the new value
+                      //  range1.Cells[i, 11].Value = valueB;
+                    }
+
+                    sheetforoffice.Cells[row, column].Value = valueA;
+                    sheetforoffice.Cells[row, ++column].Value = valueB;
+
+                    decimal valueC;
+                    if (range1.Cells[i, 10].Value == null)
+                    {
+                        valueC = 0; // set a default value if needed
+                        range1.Cells[i, 10].Value = "Before 15-nov-2022";
+                        sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 10].Value;
+                    }
+                    else
+                    {
+                        sheetforoffice.Cells[row, ++column].Value = valueC = (decimal)range1.Cells[i, 10].Value;
+                    }
                     DateTime? valueD = range1.Cells[i, 8].Value as DateTime?;
                     if (valueD == null)
                     {
-                        valueD = new DateTime(2022, 11, 15);
+                        range1.Cells[i, 8].Value = "Before 15-nov-2022";
+                        sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 8].Value;
+                    }
+                    else
+                    {
+                        sheetforoffice.Cells[row, ++column].Value = valueD;
                     }
 
-
-                    if (valueB > 1000) // if the value in second column ie current balance is greater than 1000
-                    {
-                        if (column > 8) //if the column number exceeds 6 then 
+                    //if (valueB > 1000) // if the value in second column ie current balance is greater than 1000
+                    //{
+                    column++;
+                    if (column > 8) //if the column number exceeds 6 then 
                         {
                             column = 1;  // revert back to column 1 
                             row += 1;   // and change row 
-                        }
-                        sheetforoffice.Cells[row, column].Value = valueA;
-                        sheetforoffice.Cells[row, ++column].Value = valueB;
-                        if (valueC == null)
-                        {
-                            sheetforoffice.Cells[row, ++column].Valve = "More than 1 month";
-                        }
-                        else
-                        {
-                            sheetforoffice.Cells[row, ++column].Value = valueC;
-                        }
+                        }                     
                     
-                            sheetforoffice.Cells[row, ++column].Value = valueD;
                       
-                        column++;
-                    }
+                        
+                   // }
                 }
             }
 
