@@ -320,14 +320,14 @@ namespace projectforratlamandoffice
                 string valueA = (string)range1.Cells[i, 1].Value;
                 if (range1.Cells[i, 11].Value != null && range1.Cells[i, 11].Value > 1000 && !valueA.ToLower().Contains("udaan"))
                 {
-                    decimal valueB; // = (decimal)range1.Cells[i, 11].Value; // take the value in second column and convert to decimal 
-                    string cellValue = range1.Cells[i, 11].Value.ToString();
-
+                    decimal valueB; // = (decima                                                                                                                                       l)range1.Cells[i, 11].Value; // take the value in second column and convert to decimal 
+                    string cellValue = range1.Cells[i, 11].NumberFormat.ToString();
+                    cellValue = cellValue.Replace("\"", "");
                     // Check if the cell value contains the string "cr"
                     if (cellValue.Contains("Cr"))
                     {
                         // Remove the "cr" from the cell value and convert it to a decimal
-                         valueB = decimal.Parse(cellValue.Replace("Cr", "")) * -1;
+                         valueB = (decimal)range1.Cells[i, 11].Value * -1;
 
                         // Set the cell value to the new value
                        // range1.Cells[i, 11].Value = valueB;
