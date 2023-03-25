@@ -305,20 +305,20 @@ namespace projectforratlamandoffice
             Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
 
             sheetforoffice.Cells[1, 1].Value = "Name";
-            sheetforoffice.Cells[1, 2].Value = "Net Balance";
-            sheetforoffice.Cells[1, 3].Value = "Last Payment";
-            sheetforoffice.Cells[1, 4].Value = "Last Payment Date";
+            sheetforoffice.Cells[1, 2].Value = "C. Balance";
+            sheetforoffice.Cells[1, 3].Value = "L. Payment";
+            sheetforoffice.Cells[1, 4].Value = "L. Payment Date";
             sheetforoffice.Cells[1, 5].Value = "Name";
-            sheetforoffice.Cells[1, 6].Value = "Net Balance";
-            sheetforoffice.Cells[1, 7].Value = "Last Payment";
-            sheetforoffice.Cells[1, 8].Value = "Last Payment Date";
+            sheetforoffice.Cells[1, 6].Value = "C. Balance";
+            sheetforoffice.Cells[1, 7].Value = "L. Payment";
+            sheetforoffice.Cells[1, 8].Value = "L. Payment Date";
 
             int row = 2;
             int column = 1;
             for (int i = 3; i <= rowindex - 1; i++)
             {
                 string valueA = (string)range1.Cells[i, 1].Value;
-                if (range1.Cells[i, 11].Value != null && range1.Cells[i, 11].Value > 1000 && !valueA.ToLower().Contains("udaan"))
+                if (range1.Cells[i, 11].Value != null && range1.Cells[i, 11].Value > 1000 && !valueA.ToLower().Contains("udaan")&&!valueA.ToLower().Contains("shop"))
                 {
                     decimal valueB; // = (decima                                                                                                                                       l)range1.Cells[i, 11].Value; // take the value in second column and convert to decimal 
                     string cellValue = range1.Cells[i, 11].NumberFormat.ToString();
@@ -348,7 +348,7 @@ namespace projectforratlamandoffice
                     if (range1.Cells[i, 10].Value == null)
                     {
                         valueC = 0; // set a default value if needed
-                        range1.Cells[i, 10].Value = "Before 15-nov-2022";
+                        range1.Cells[i, 10].Value = "B/F 15/11/2022";
                         sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 10].Value;
                     }
                     else
@@ -358,7 +358,7 @@ namespace projectforratlamandoffice
                     DateTime? valueD = range1.Cells[i, 8].Value as DateTime?;
                     if (valueD == null)
                     {
-                        range1.Cells[i, 8].Value = "Before 15-nov-2022";
+                        range1.Cells[i, 8].Value = "B/F 15/11/2022";
                         sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 8].Value;
                     }
                     else
@@ -437,9 +437,9 @@ namespace projectforratlamandoffice
 
 
             // Set the row height for a range of rows
-            Excel.Range rowRange = sheetforoffice.Range["59:" + sheetforoffice.Cells[sheetforoffice.Rows.Count, 1].End[Excel.XlDirection.xlUp].Row];
-            rowRange.RowHeight = 9.80;
-            rowRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+          //  Excel.Range rowRange = sheetforoffice.Range["59:" + sheetforoffice.Cells[sheetforoffice.Rows.Count, 1].End[Excel.XlDirection.xlUp].Row];
+          //  rowRange.RowHeight = 9.80;
+          //  rowRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
 
             sheetforoffice.Range["A:H"].EntireColumn.Font.Bold = true;
             sheetforoffice.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
@@ -484,7 +484,8 @@ namespace projectforratlamandoffice
                     if (range1.Cells[i, 2].Text != "" && range1.Cells[i, 3].Text == "")
                     {
                         listnew.Add(new object[] { range1.Cells[i, 1].Text, "+ " + range1.Cells[i, 2].Text + " ₹" });
-                    }
+                    } 
+                                                                                                                
                     else if (range1.Cells[i, 2].Text == "" && range1.Cells[i, 3].Text != "")
                     {
                         listnew.Add(new object[] { range1.Cells[i, 1].Text, "- " + range1.Cells[i, 3].Text + " ₹" });
