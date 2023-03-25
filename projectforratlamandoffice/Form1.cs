@@ -283,7 +283,7 @@ namespace projectforratlamandoffice
             int lastRow = range1.Row + range1.Rows.Count - 1;
             int lastColumn = range1.Column + range1.Columns.Count - 1;
             // Sort the first column in ascending order, starting from row 3
-            Excel.Range sortRange = sheet.Range[sheet.Cells[3, 1], sheet.Cells[lastRow-1, lastColumn]];
+            Excel.Range sortRange = sheet.Range[sheet.Cells[3, 1], sheet.Cells[lastRow - 1, lastColumn]];
 
             // Define the sort keys (sort by column 1 ascending)
             Excel.SortFields sortFields = sheet.Sort.SortFields;
@@ -313,7 +313,7 @@ namespace projectforratlamandoffice
             sheetforoffice.Cells[1, 7].Value = "L. Payment";
             sheetforoffice.Cells[1, 8].Value = "L. Payment Date";
 
-            int row = 2;
+            int row =2 ;
             int column = 1;
             for (int i = 3; i <= rowindex - 1; i++)
             {
