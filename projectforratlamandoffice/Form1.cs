@@ -600,7 +600,6 @@ namespace projectforratlamandoffice
                     {
                         initialoutputlistforharshit.Add(new object[] { range1.Cells[i, 1].Text, "- " + range1.Cells[i, 3].Text + " ₹" });
                     }
-
                 }
             }
 
