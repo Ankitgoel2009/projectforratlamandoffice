@@ -286,16 +286,16 @@ namespace projectforratlamandoffice
             Excel.Range sortRange = sheet.Range[sheet.Cells[3, 1], sheet.Cells[lastRow - 1, lastColumn]];
 
             // Define the sort keys (sort by column 1 ascending)
-            Excel.SortFields sortFields = sheet.Sort.SortFields;
-            Excel.SortField sortField1 = sortFields.Add(sortRange.Columns[1], Excel.XlSortOn.xlSortOnValues, Excel.XlSortOrder.xlAscending);
+            //Excel.SortFields sortFields = sheet.Sort.SortFields;
+            //Excel.SortField sortField1 = sortFields.Add(sortRange.Columns[1], Excel.XlSortOn.xlSortOnValues, Excel.XlSortOrder.xlAscending);
 
-            // Apply the sort
-            sheet.Sort.SetRange(sortRange);
-            sheet.Sort.Header = Excel.XlYesNoGuess.xlNo;
-            sheet.Sort.MatchCase = false;
-            sheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
-            sheet.Sort.SortMethod = Excel.XlSortMethod.xlPinYin;
-            sheet.Sort.Apply();
+            //// Apply the sort
+            //sheet.Sort.SetRange(sortRange);
+            //sheet.Sort.Header = Excel.XlYesNoGuess.xlNo;
+            //sheet.Sort.MatchCase = false;
+            //sheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
+            //sheet.Sort.SortMethod = Excel.XlSortMethod.xlPinYin;
+            //sheet.Sort.Apply();
 
 
             // prepare all customers file 
