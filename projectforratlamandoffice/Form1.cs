@@ -540,7 +540,7 @@ namespace projectforratlamandoffice
             border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             range1.Borders.Color = Color.Black;
-            range1.Select();
+          //  range1.Select();
             sheet1.UsedRange.Select();
             workbook.SaveAs(outputpath);
             workbook.Close();
