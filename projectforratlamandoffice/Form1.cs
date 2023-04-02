@@ -279,6 +279,60 @@ namespace projectforratlamandoffice
 
         public void Method1()
         {
+
+            // Create a dictionary to store data
+            Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
+
+            // Loop through each cell in the used range starting from row 3
+            for (int startrow = 3; startrow <= rowindex; startrow++)
+            {
+                Excel.Range range1 = sheet.UsedRange;
+                Excel.Range valueCell = range1.Cells[startrow, 11];
+                string valueofcolumn11 = valueCell.Value != null ? valueCell.Value.ToString() : "";
+                if (string.IsNullOrEmpty(valueofcolumn11))
+                {
+                    // Skip the whole row if column 11 is null or empty
+                    continue;
+                }
+                // Get key value from first column
+                // Excel.Range keyCell = range1.Cells[startrow, 1];
+                // string key = keyCell.Value != null ? keyCell.Value.ToString() : "";
+
+                // Create dictionary to store values for this row
+              //  List<object> allvalues = new List<object>();
+
+
+                // Loop through remaining columns and add values to dictionary
+                //for (int startcolumn = 3; startcolumn <= columnindex; startcolumn++)
+                //{
+                //    if (startcolumn != 5 && startcolumn != 9)
+                //    {
+                        
+                        List<object> valuesinlist = new List<object>();
+                        for (int col = 3; col <= columnindex; col++)
+                        {
+                            if (col != 5 && col != 9)
+                            {
+                                object value = range1.Cells[startcolumn, startrow].Value;
+                                valuesinlist.Add(value);
+                            }
+                        }
+                        data.Add(key, valuesinlist);
+                //    }
+                //}
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             // sort the source range 
             int lastRow = range1.Row + range1.Rows.Count - 1;
             int lastColumn = range1.Column + range1.Columns.Count - 1;
