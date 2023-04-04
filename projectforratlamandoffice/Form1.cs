@@ -282,50 +282,133 @@ namespace projectforratlamandoffice
 
             // Create a dictionary to store data
             Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
-
+            
             // Loop through each cell in the used range starting from row 3
-            for (int startrow = 3; startrow <= rowindex; startrow++)
-            {
-                Excel.Range range1 = sheet.UsedRange;
-                Excel.Range valueCell = range1.Cells[startrow, 11];
-                string valueofcolumn11 = valueCell.Value != null ? valueCell.Value.ToString() : "";
-                if (string.IsNullOrEmpty(valueofcolumn11))
+            for (int startrow = 3; startrow <= rowindex-1; startrow++)
+            {               
+                decimal valueofcolumn11; 
+                string cellValue = range1.Cells[startrow, 11].NumberFormat.ToString();
+                cellValue = cellValue.Replace("\"", "");
+                //// Check if the cell value contains the string "cr"
+                if (cellValue.Contains("Cr"))
                 {
-                    // Skip the whole row if column 11 is null or empty
-                    continue;
+                    // Remove the "cr" from the cell value and convert it to a decimal
+                    valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value * -1;
+
                 }
+                else
+                {
+                    // Convert the cell value to a decimal
+                    valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value;
+                }
+             
                 // Get key value from first column
-                // Excel.Range keyCell = range1.Cells[startrow, 1];
-                // string key = keyCell.Value != null ? keyCell.Value.ToString() : "";
-
-                // Create dictionary to store values for this row
-              //  List<object> allvalues = new List<object>();
-
+                 string key = range1.Cells[startrow, 1].Value.ToString();
 
                 // Loop through remaining columns and add values to dictionary
-                //for (int startcolumn = 3; startcolumn <= columnindex; startcolumn++)
-                //{
-                //    if (startcolumn != 5 && startcolumn != 9)
-                //    {
-                        
+               
                         List<object> valuesinlist = new List<object>();
-                        for (int col = 3; col <= columnindex; col++)
+                        for (int startcol = 3; startcol <= columnindex; startcol++)
                         {
-                            if (col != 5 && col != 9)
-                            {
-                                object value = range1.Cells[startcolumn, startrow].Value;
+                         if (startcol == 11)
+                          {
+                           valuesinlist.Add(valueofcolumn11);
+                          }
+                         else if (startcol != 5 && startcol != 9)
+                            { 
+                             object value = range1.Cells[startrow, startcol].Value;
                                 valuesinlist.Add(value);
                             }
                         }
                         data.Add(key, valuesinlist);
-                //    }
-                //}
+                
+            }
+            // Sort the dictionary by key in alphabetical order
+            data = data.OrderBy(d => d.Key).ToDictionary(d => d.Key, d => d.Value);
+
+            Excel.Workbook workbook1 = excel.Workbooks.Add();
+            Excel.Workbook workbook2 = excel.Workbooks.Add();
+            Excel.Workbook workbook3 = excel.Workbooks.Add();
+
+            // Set the worksheet names
+            Excel._Worksheet worksheet1 = (Excel.Worksheet)workbook1.ActiveSheet;
+            worksheet1.Name = "Office";
+            Excel._Worksheet worksheet2 = (Excel.Worksheet)workbook2.ActiveSheet;
+            worksheet2.Name = "Ankit";
+            Excel._Worksheet worksheet3 = (Excel.Worksheet)workbook3.ActiveSheet;
+            worksheet3.Name = "Harsheet";
+
+            // Add headers to worksheet2
+            Excel.Range headerRange2 = worksheet2.Range["A1:D1"];
+            headerRange2.Merge();
+            headerRange2.Value = "Ankit ji This week";
+            headerRange2.Font.Bold = true;
+            headerRange2.Font.Size = 18;
+            headerRange2.Interior.Color = System.Drawing.Color.Yellow;
+
+            worksheet2.Cells[2, 1] = "Name";
+            worksheet2.Cells[2, 2] = "Current Balance";
+            worksheet2.Cells[2, 3] = "Total Sales";
+            worksheet2.Cells[2, 4] = "Total Receipt";
+            worksheet2.Range["A2:D2"].Font.Bold = true;
+
+            // Add headers to worksheet3
+            Excel.Range headerRange3 = worksheet3.Range["A1:D1"];
+            headerRange3.Merge();
+            headerRange3.Value = "Harsheet ji this week";
+            headerRange3.Font.Bold = true;
+            headerRange3.Font.Size = 18;
+            headerRange3.Interior.Color = System.Drawing.Color.Yellow;
+
+            worksheet3.Cells[2, 1] = "Name";
+            worksheet3.Cells[2, 2] = "Current Balance";
+            worksheet3.Cells[2, 3] = "Total Sales";
+            worksheet3.Cells[2, 4] = "Total Receipt";
+            worksheet3.Range["A2:D2"].Font.Bold = true;
+
+            // Import data into worksheet2
+            int rowofdestinationfiles = 3;
+            foreach (var item in data)
+            {
+                string key = item.Key;
+                List<object> values1 = item.Value;
+
+                // Set name value
+                worksheet2.Cells[rowofdestinationfiles, 1] = key;
+
+                // Set current balance value
+                worksheet2.Cells[rowofdestinationfiles, 2] = values1[0];
+
+                // Set total sales value
+                worksheet2.Cells[rowofdestinationfiles, 3] = values1[1];
+
+                // Set total receipt value
+                worksheet2.Cells[rowofdestinationfiles, 4] = values1[2];
+
+                rowofdestinationfiles++;
             }
 
+            // Import data into worksheet3
+            rowofdestinationfiles = 3;
+            foreach (var item in data)
+            {
+                string key = item.Key;
+                List<object> values1 = item.Value;
 
+                // Set name value
+                worksheet3.Cells[rowofdestinationfiles, 1] = key;
 
+                // Set current balance value
+                worksheet3.Cells[rowofdestinationfiles, 2] = values1[0];
 
+                // Set total sales value
+                worksheet3.Cells[rowofdestinationfiles, 3] = values1[1];
 
+                // Set total receipt value
+                worksheet3.Cells[rowofdestinationfiles, 4] = values1[2];
+
+                rowofdestinationfiles++;
+            }
 
 
 
