@@ -219,6 +219,7 @@ namespace projectforratlamandoffice
 
         private object lockObject = new object();
 
+        // opens an excel and returns an objevt array 
         public object[,] GetObjArr(string filename)
         {
             lock (lockObject)
@@ -241,14 +242,14 @@ namespace projectforratlamandoffice
                 return valueArray;
             }
         }
-     
 
-        // copydata function will drop the data in the abc.txt file into the list variable 
+
+        // copydata function will drop the data in the ankitjinames.txt file into the list variable 
 
         List<string> list = new List<string>();
-        public void copydata()
+        public void copydata(string nameoffile)
         {
-           string filename = "ankitjinames.txt";
+           string filename = nameoffile;
             string filePath = @"C:\ratlamfile\" + filename;
             using (var file = new StreamReader(filePath))
             {
@@ -263,24 +264,25 @@ namespace projectforratlamandoffice
         // filter function will match the data in the listnew variable and the data in the list variable 
         // after that it removes the data from the listnew which are not in list 
         // and at the same time add the results with rs 0 if they are not in ws 
-        public void Filter(List<object[]> ws, List<string> values)
+        public void Filter(Dictionary<string, List<object>> copydata, List<string> listofnames)
         {
-            var result1 = ws.Select(m => m[0]).ToList();
-            var result = result1.Except(list);
-            ws.RemoveAll(m => result.Contains(m[0]));
-            for (int i = 0; i < list.Count; i++)
+            var keysToRemove = copydata.Keys.Except(listofnames).ToList();
+            foreach (var key in keysToRemove)
             {
-                if (!result1.Contains(list[i]))
-                {
-                    ws.Add(new object[] { list[i], "0 ₹" });
-                }
+                copydata.Remove(key);
+            }
+
+            var keysToAdd = listofnames.Except(copydata.Keys);
+            foreach (var key in keysToAdd)
+            {
+                copydata.Add(key, new List<object> { 0 });
             }
         }
 
         public void Method1()
         {
 
-            // Create a dictionary to store data
+            // Create a source dictionary to store data
             Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
             
             // Loop through each cell in the used range starting from row 3
@@ -326,18 +328,32 @@ namespace projectforratlamandoffice
             // Sort the dictionary by key in alphabetical order
             data = data.OrderBy(d => d.Key).ToDictionary(d => d.Key, d => d.Value);
 
-            Excel.Workbook workbook1 = excel.Workbooks.Add();
-            Excel.Workbook workbook2 = excel.Workbooks.Add();
-            Excel.Workbook workbook3 = excel.Workbooks.Add();
+            // copy desired names into a list 
+            copydata("ankitjinames.txt");
 
-            // Set the worksheet names
-            Excel._Worksheet worksheet1 = (Excel.Worksheet)workbook1.ActiveSheet;
-            worksheet1.Name = "Office";
+            // create a new dictionary so that the modifications will not reflect in orginal dictionary 
+            Dictionary<string, List<object>> dataCopy = new Dictionary<string, List<object>>(data);
+
+            Filter(dataCopy, list);
+
+            // data which tells which names are in which state
+            var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
+            List<object> listofstatewisenamesforankit = new List<object>();
+            for (int i = 1; i <= arr2.GetLength(0); i++)
+            {
+                if (arr2[i, 1] != null && arr2[i, 2] == null)
+                {
+                    listofstatewisenamesforankit.Add(arr2[i, 1]);
+                }
+                if (arr2[i, 2] != null && arr2[i, 1] == null)
+                {
+                    listofstatewisenamesforankit.Add(arr2[i, 2]);
+                }
+            }
+
+            Excel.Workbook workbook2 = excel.Workbooks.Add();
             Excel._Worksheet worksheet2 = (Excel.Worksheet)workbook2.ActiveSheet;
             worksheet2.Name = "Ankit";
-            Excel._Worksheet worksheet3 = (Excel.Worksheet)workbook3.ActiveSheet;
-            worksheet3.Name = "Harsheet";
-
             // Add headers to worksheet2
             Excel.Range headerRange2 = worksheet2.Range["A1:D1"];
             headerRange2.Merge();
@@ -351,6 +367,57 @@ namespace projectforratlamandoffice
             worksheet2.Cells[2, 3] = "Total Sales";
             worksheet2.Cells[2, 4] = "Total Receipt";
             worksheet2.Range["A2:D2"].Font.Bold = true;
+
+            //string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
+
+            for (int i = 0; i < listofstatewisenamesforankit.Count; i++)
+            {
+                if (listofstatewisenamesforankit[i].ToString().Trim() == "U.P" || listofstatewisenamesforankit[i].ToString().Trim() == "Rajasthan" || listofstatewisenamesforankit[i].ToString().Trim() == "Bihar" || listofstatewisenamesforankit[i].ToString().Trim() == "Punjab" || listofstatewisenamesforankit[i].ToString().Trim() == "Odisha" || listofstatewisenamesforankit[i].ToString().Trim() == "Chhatisgarh" || listofstatewisenamesforankit[i].ToString().Trim() == "West bengal" || listofstatewisenamesforankit[i].ToString().Trim() == "Madhya Pradesh" || listofstatewisenamesforankit[i].ToString().Trim() == "Jharkhand" || listofstatewisenamesforankit[i].ToString().Trim() == "Maharashtra" || listofstatewisenamesforankit[i].ToString().Trim() == "Market" || listofstatewisenamesforankit[i].ToString().Trim() == "Uttarakhand" || listofstatewisenamesforankit[i].ToString().Trim() == "Assam" || listofstatewisenamesforankit[i].ToString().Trim() == "Tripura")
+                {
+                    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
+
+                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].EntireColumn.Font.Bold = true;
+                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].Merge();
+                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].Cells.Font.Size = 20;
+                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].Font.Italic = true;
+
+                }
+                else
+                {
+                   // worksheet2.Cells[i + 1, 2].Value = dataCopy[listofstatewisenamesforankit[i]];
+                }
+
+                worksheet2.Cells[i + 1, 1].Value = listofstatewisenamesforankit[i];
+            }
+
+
+
+
+
+            // prepare file 
+            Excel.Workbook workbook1 = excel.Workbooks.Add();
+            
+            Excel.Workbook workbook3 = excel.Workbooks.Add();
+
+            // Set the worksheet names
+            Excel._Worksheet worksheet1 = (Excel.Worksheet)workbook1.ActiveSheet;
+            worksheet1.Name = "Office";
+           
+            Excel._Worksheet worksheet3 = (Excel.Worksheet)workbook3.ActiveSheet;
+            worksheet3.Name = "Harsheet";
+
+         
+
+
+
+
+
+
+
+
+
+
 
             // Add headers to worksheet3
             Excel.Range headerRange3 = worksheet3.Range["A1:D1"];
@@ -377,13 +444,13 @@ namespace projectforratlamandoffice
                 worksheet2.Cells[rowofdestinationfiles, 1] = key;
 
                 // Set current balance value
-                worksheet2.Cells[rowofdestinationfiles, 2] = values1[0];
+                worksheet2.Cells[rowofdestinationfiles, 2] = values1[6];
 
                 // Set total sales value
-                worksheet2.Cells[rowofdestinationfiles, 3] = values1[1];
+                worksheet2.Cells[rowofdestinationfiles, 3] = values1[0];
 
                 // Set total receipt value
-                worksheet2.Cells[rowofdestinationfiles, 4] = values1[2];
+                worksheet2.Cells[rowofdestinationfiles, 4] = values1[3];
 
                 rowofdestinationfiles++;
             }
@@ -399,18 +466,18 @@ namespace projectforratlamandoffice
                 worksheet3.Cells[rowofdestinationfiles, 1] = key;
 
                 // Set current balance value
-                worksheet3.Cells[rowofdestinationfiles, 2] = values1[0];
+                worksheet3.Cells[rowofdestinationfiles, 2] = values1[6];
 
                 // Set total sales value
-                worksheet3.Cells[rowofdestinationfiles, 3] = values1[1];
+                worksheet3.Cells[rowofdestinationfiles, 3] = values1[0];
 
                 // Set total receipt value
-                worksheet3.Cells[rowofdestinationfiles, 4] = values1[2];
+                worksheet3.Cells[rowofdestinationfiles, 4] = values1[3];
 
                 rowofdestinationfiles++;
             }
 
-
+            
 
 
 
@@ -637,10 +704,10 @@ namespace projectforratlamandoffice
 
 
             // 6. copy text file names to a variable called list 
-            copydata();
+            copydata("ankitjinames.txt");
 
             // filter from only index which conatins  names and add the balance 
-            Filter(listnew, list);
+          //  Filter(listnew);
 
             // names are  ready , now modify it 
 
