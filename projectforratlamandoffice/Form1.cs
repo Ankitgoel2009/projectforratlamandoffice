@@ -355,18 +355,19 @@ namespace projectforratlamandoffice
             Excel._Worksheet worksheet2 = (Excel.Worksheet)workbook2.ActiveSheet;
             worksheet2.Name = "Ankit";
             // Add headers to worksheet2
-            Excel.Range headerRange2 = worksheet2.Range["A1:D1"];
+            Excel.Range headerRange2 = worksheet2.Range["A1:E1"];
             headerRange2.Merge();
             headerRange2.Value = "Ankit ji This week";
             headerRange2.Font.Bold = true;
             headerRange2.Font.Size = 18;
             headerRange2.Interior.Color = System.Drawing.Color.Yellow;
 
-            worksheet2.Cells[2, 1] = "Name";
-            worksheet2.Cells[2, 2] = "Current Balance";
-            worksheet2.Cells[2, 3] = "Total Sales";
-            worksheet2.Cells[2, 4] = "Total Receipt";
-            worksheet2.Range["A2:D2"].Font.Bold = true;
+            worksheet2.Cells[2, 1] = "State";
+            worksheet2.Cells[2, 2] = "Party Name";
+            worksheet2.Cells[2, 3] = "Current Balance";
+            worksheet2.Cells[2, 4] = "Total Sales";
+            worksheet2.Cells[2, 5] = "Total Receipt";
+            worksheet2.Range["A2:E2"].Font.Bold = true;
 
             //string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
 
