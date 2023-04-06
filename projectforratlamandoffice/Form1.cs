@@ -377,19 +377,27 @@ namespace projectforratlamandoffice
                 {
                     //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
 
-                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].EntireColumn.Font.Bold = true;
-                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].Merge();
-                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].Cells.Font.Size = 20;
-                    worksheet2.Range[worksheet2.Cells[i + 1, 1], worksheet2.Cells[i + 1, 4]].Font.Italic = true;
+                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].EntireColumn.Font.Bold = true;
+                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].Merge();
+                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].Cells.Font.Size = 20;
+                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].Font.Italic = true;
 
                 }
                 else
                 {
-                   // worksheet2.Cells[i + 1, 2].Value = dataCopy[listofstatewisenamesforankit[i]];
-                }
+                    int rowIndex = i + 3; // or whatever row index you want to use
+                    int colIndex = 2; // or whatever column index you want to use
+                    List<object> finalvalues = dataCopy[listofstatewisenamesforankit[i].ToString()];
+                    for (int j = 0; j < finalvalues.Count; j++)
+                    {
+                        worksheet2.Cells[rowIndex, colIndex + j + 1].Value = finalvalues[j];
+                    }
 
-                worksheet2.Cells[i + 1, 1].Value = listofstatewisenamesforankit[i];
+                   // worksheet2.Cells[i + 3, 2].Value = dataCopy[listofstatewisenamesforankit[i].ToString()];
+                }
+                //
+                worksheet2.Cells[i + 3, 1].Value = listofstatewisenamesforankit[i].ToString();
             }
 
 
