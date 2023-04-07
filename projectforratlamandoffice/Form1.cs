@@ -275,7 +275,7 @@ namespace projectforratlamandoffice
             var keysToAdd = listofnames.Except(copydata.Keys);
             foreach (var key in keysToAdd)
             {
-                copydata.Add(key, new List<object> { 0 });
+                copydata.Add(key, new List<object> { 0,0,0,0,0,0,0 });
             }
         }
 
@@ -312,16 +312,25 @@ namespace projectforratlamandoffice
                         List<object> valuesinlist = new List<object>();
                         for (int startcol = 3; startcol <= columnindex; startcol++)
                         {
-                         if (startcol == 11)
-                          {
-                           valuesinlist.Add(valueofcolumn11);
-                          }
-                         else if (startcol != 5 && startcol != 9)
-                            { 
-                             object value = range1.Cells[startrow, startcol].Value;
-                                valuesinlist.Add(value);
-                            }
-                        }
+                    if (startcol == 11)
+                    {
+                        // Add the Rupee symbol to the value and add it to the list
+                        string value = valueofcolumn11 != null ? "₹" + valueofcolumn11.ToString() : "No records found";
+                        valuesinlist.Add(value);
+                    }
+                    else if (startcol != 5 && startcol != 9)
+                    {
+                        // Add the Rupee symbol to the value and add it to the list
+                        object value = range1.Cells[startrow, startcol].Value;
+                        string stringValue = value != null ? "₹" + value.ToString() : "No records found";
+                        valuesinlist.Add(stringValue);
+                    }
+                    else
+                    {
+                        // Add null value to the list
+                        valuesinlist.Add(null);
+                    }
+                }
                         data.Add(key, valuesinlist);
                 
             }
@@ -362,47 +371,40 @@ namespace projectforratlamandoffice
             headerRange2.Font.Size = 18;
             headerRange2.Interior.Color = System.Drawing.Color.Yellow;
 
-            worksheet2.Cells[2, 1] = "State";
-            worksheet2.Cells[2, 2] = "Party Name";
-            worksheet2.Cells[2, 3] = "Current Balance";
-            worksheet2.Cells[2, 4] = "Total Sales";
-            worksheet2.Cells[2, 5] = "Total Receipt";
-            worksheet2.Range["A2:E2"].Font.Bold = true;
-
             //string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-
+            List<string> states = new List<string>() { "U.P", "Rajasthan", "Bihar", "Punjab", "Odisha", "Chhatisgarh", "West bengal", "Madhya Pradesh", "Jharkhand", "Maharashtra", "Market", "Uttarakhand", "Assam", "Tripura" };
+            int currowIndex = 2; // starting row index
             for (int i = 0; i < listofstatewisenamesforankit.Count; i++)
             {
-                if (listofstatewisenamesforankit[i].ToString().Trim() == "U.P" || listofstatewisenamesforankit[i].ToString().Trim() == "Rajasthan" || listofstatewisenamesforankit[i].ToString().Trim() == "Bihar" || listofstatewisenamesforankit[i].ToString().Trim() == "Punjab" || listofstatewisenamesforankit[i].ToString().Trim() == "Odisha" || listofstatewisenamesforankit[i].ToString().Trim() == "Chhatisgarh" || listofstatewisenamesforankit[i].ToString().Trim() == "West bengal" || listofstatewisenamesforankit[i].ToString().Trim() == "Madhya Pradesh" || listofstatewisenamesforankit[i].ToString().Trim() == "Jharkhand" || listofstatewisenamesforankit[i].ToString().Trim() == "Maharashtra" || listofstatewisenamesforankit[i].ToString().Trim() == "Market" || listofstatewisenamesforankit[i].ToString().Trim() == "Uttarakhand" || listofstatewisenamesforankit[i].ToString().Trim() == "Assam" || listofstatewisenamesforankit[i].ToString().Trim() == "Tripura")
+                if (states.Contains(listofstatewisenamesforankit[i].ToString().Trim()))
                 {
-                    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
+                    
+                    worksheet2.Cells[currowIndex, 1].Value = listofstatewisenamesforankit[i].ToString();
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].EntireColumn.Font.Bold = true;
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].HorizontalAlignment = XlHAlign.xlHAlignCenter;                    
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Cells.Font.Size = 20;
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Font.Italic = true;
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Merge();
 
-                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].EntireColumn.Font.Bold = true;
-                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].Merge();
-                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].Cells.Font.Size = 20;
-                    worksheet2.Range[worksheet2.Cells[i + 3, 1], worksheet2.Cells[i + 3, 5]].Font.Italic = true;
+                    worksheet2.Cells[currowIndex+1, 1] = "Party Name";
+                    worksheet2.Cells[currowIndex+1, 2] = "Current Balance";
+                    worksheet2.Cells[currowIndex+1, 3] = "Total Sales";
+                    worksheet2.Cells[currowIndex+1, 4] = "Total Receipt";
+                    //  worksheet2.Range["A2:E2"].Font.Bold = true;
+                    currowIndex += 2; // move to next row
 
                 }
                 else
                 {
-                    int rowIndex = i + 3; // or whatever row index you want to use
-                    int colIndex = 2; // or whatever column index you want to use
                     List<object> finalvalues = dataCopy[listofstatewisenamesforankit[i].ToString()];
-                    for (int j = 0; j < finalvalues.Count; j++)
-                    {
-                        worksheet2.Cells[rowIndex, colIndex + j + 1].Value = finalvalues[j];
-                    }
-
-                   // worksheet2.Cells[i + 3, 2].Value = dataCopy[listofstatewisenamesforankit[i].ToString()];
+                    worksheet2.Cells[currowIndex, 1 ].Value = listofstatewisenamesforankit[i].ToString();
+                    worksheet2.Cells[currowIndex, 2].Value = finalvalues[6];
+                    worksheet2.Cells[currowIndex, 3].Value = finalvalues[0];
+                    worksheet2.Cells[currowIndex, 4].Value = finalvalues[3];
+                    // worksheet2.Cells[rowIndex, colIndex + 4].Value = finalvalues[3];
+                    currowIndex++; // move to next row
                 }
-                //
-                worksheet2.Cells[i + 3, 1].Value = listofstatewisenamesforankit[i].ToString();
             }
-
-
-
-
 
             // prepare file 
             Excel.Workbook workbook1 = excel.Workbooks.Add();
