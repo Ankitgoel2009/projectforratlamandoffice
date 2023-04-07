@@ -43,6 +43,7 @@ namespace projectforratlamandoffice
             }
             return;
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog choofdlog = new OpenFileDialog();
@@ -70,7 +71,6 @@ namespace projectforratlamandoffice
                 // Handle the case when the user clicks the Cancel button
                 MessageBox.Show("You have cancelled the file selection.");
             }
-
         }
 
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)
@@ -275,7 +275,7 @@ namespace projectforratlamandoffice
             var keysToAdd = listofnames.Except(copydata.Keys);
             foreach (var key in keysToAdd)
             {
-                copydata.Add(key, new List<object> { 0,0,0,0,0,0,0 });
+                copydata.Add(key, new List<object> { "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "Try Again" });
             }
         }
 
@@ -312,23 +312,24 @@ namespace projectforratlamandoffice
                         List<object> valuesinlist = new List<object>();
                         for (int startcol = 3; startcol <= columnindex; startcol++)
                         {
-                         if (startcol == 11)
-                          {
-                           valuesinlist.Add(valueofcolumn11);
-                          }
-                         else if (startcol != 5 && startcol != 9)
-                            { 
-                             object value = range1.Cells[startrow, startcol].Value;
+                            if (startcol == 11)
+                             {
+                             string value = valueofcolumn11 != null ? valueofcolumn11.ToString("N") + " ₹" : "No records found";
+                             valuesinlist.Add(value);
+                             }
+                    else if (startcol != 5 && startcol != 9)
+                    {
+                        object value = range1.Cells[startrow, startcol].Value;
                         if (value == null || string.IsNullOrEmpty(value.ToString()))
                         {
                             valuesinlist.Add("No records found");
                         }
                         else
                         {
-                            valuesinlist.Add(value);
+                            valuesinlist.Add(value.ToString());
                         }
                     }
-                        }
+                }
                         data.Add(key, valuesinlist);
                 
             }
