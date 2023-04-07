@@ -312,25 +312,23 @@ namespace projectforratlamandoffice
                         List<object> valuesinlist = new List<object>();
                         for (int startcol = 3; startcol <= columnindex; startcol++)
                         {
-                    if (startcol == 11)
-                    {
-                        // Add the Rupee symbol to the value and add it to the list
-                        string value = valueofcolumn11 != null ? "₹" + valueofcolumn11.ToString() : "No records found";
-                        valuesinlist.Add(value);
+                         if (startcol == 11)
+                          {
+                           valuesinlist.Add(valueofcolumn11);
+                          }
+                         else if (startcol != 5 && startcol != 9)
+                            { 
+                             object value = range1.Cells[startrow, startcol].Value;
+                        if (value == null || string.IsNullOrEmpty(value.ToString()))
+                        {
+                            valuesinlist.Add("No records found");
+                        }
+                        else
+                        {
+                            valuesinlist.Add(value);
+                        }
                     }
-                    else if (startcol != 5 && startcol != 9)
-                    {
-                        // Add the Rupee symbol to the value and add it to the list
-                        object value = range1.Cells[startrow, startcol].Value;
-                        string stringValue = value != null ? "₹" + value.ToString() : "No records found";
-                        valuesinlist.Add(stringValue);
-                    }
-                    else
-                    {
-                        // Add null value to the list
-                        valuesinlist.Add(null);
-                    }
-                }
+                        }
                         data.Add(key, valuesinlist);
                 
             }
