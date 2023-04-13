@@ -21,13 +21,11 @@ namespace projectforratlamandoffice
 {
     public partial class Form1 : Form
     {
-        string selectedFile;
-        
+        string selectedFile;        
         public Form1()
         {
             InitializeComponent();
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -36,21 +34,21 @@ namespace projectforratlamandoffice
         {
             OpenFileDialog fileDialog = sender as OpenFileDialog;
             selectedFile = System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName);
-            if (string.IsNullOrEmpty(selectedFile) || selectedFile.Contains(".lnk"))
+            if (string.IsNullOrEmpty(selectedFile) || selectedFile.EndsWith(".lnk"))
             {
-                MessageBox.Show("Please select a valid Excel File");
+                MessageBox.Show("Please select a valid Excel file (*.xlsx).");
                 e.Cancel = true;
             }
             return;
         }
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog choofdlog = new OpenFileDialog();
             choofdlog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             choofdlog.Multiselect = false;
             choofdlog.ValidateNames = true;
             choofdlog.DereferenceLinks = false; // Will return .lnk in shortcuts.
-            choofdlog.Filter = "Excel |*.xlsx";
+            choofdlog.Filter = "Excel files (*.xlsx)|*.xlsx";
             choofdlog.FilterIndex = 1;
             choofdlog.FileOk += new System.ComponentModel.CancelEventHandler(OpenKeywordsFileDialog_FileOk);
 
@@ -60,19 +58,23 @@ namespace projectforratlamandoffice
                 selectedFile = choofdlog.FileName;
 
                 // Set cursor as hourglass
-                Cursor.Current = Cursors.WaitCursor;
-                dowork();
+                this.Cursor = Cursors.WaitCursor;
+
+                await Task.Run(() =>
+                {
+                    // Do work on a background thread
+                    dowork();
+                });
+
                 // Set cursor as default arrow
-                Cursor.Current = Cursors.Default;
+                this.Cursor = Cursors.Default;
             }
             else if (result == DialogResult.Cancel)
             {
                 // Handle the case when the user clicks the Cancel button
                 MessageBox.Show("You have cancelled the file selection.");
             }
-
         }
-
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)
         {
             Excel.Workbook book = excelInstance.Workbooks.Open(
@@ -88,14 +90,17 @@ namespace projectforratlamandoffice
         Excel.Workbook wkb = null;
         Excel._Worksheet sheet = null;
         Excel.Range range1 = null;
-        int rowindex, columnindex;     
-        void dowork()
+        int rowindex, columnindex;
+        async void dowork()
         {
             excel = new Excel.Application();
             excel.Visible = true;
-            // return instance of excel file by sending its path 
-            wkb = Open(excel, selectedFile);
-            sheet = wkb.Sheets[1];
+            wkb = await Task.Run(() =>
+            {
+                // Open the selected Excel file on a background thread
+                return Open(excel, selectedFile);
+            });
+            sheet = wkb.Sheets[1];           
             sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             sheet.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             range1 = sheet.UsedRange; // returns range till grandtotal 
@@ -328,7 +333,7 @@ namespace projectforratlamandoffice
             borderforoffice[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             rangeforoffice.Borders.Color = Color.Black;
 
-            rangeforoffice.Select();
+           // rangeforoffice.Select();
             sheetforoffice.UsedRange.Select();
             workbookforoffice.SaveAs(outputpathforoffice);
             workbookforoffice.Close();
@@ -436,7 +441,7 @@ namespace projectforratlamandoffice
             border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             range1.Borders.Color = Color.Black;
-            range1.Select();
+           // range1.Select();
             sheet3.UsedRange.Select();
             workbook.SaveAs(outputpath);
             workbook.Close();
