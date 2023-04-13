@@ -318,7 +318,7 @@ namespace projectforratlamandoffice
             for (int i = 3; i <= rowindex - 1; i++)
             {
                 string valueA = (string)range1.Cells[i, 1].Value;
-                if (range1.Cells[i, 11].Value != null && /*range1.Cells[i, 11].Value > 1000 &&*/ !valueA.ToLower().Contains("udaan")/*&&!valueA.ToLower().Contains("shop")*/)
+                if (range1.Cells[i, 11].Value != null && range1.Cells[i, 11].Value > 1000 && !valueA.ToLower().Contains("udaan")/*&&!valueA.ToLower().Contains("shop")*/)
                 {
                     decimal valueB; // = (decimal)range1.Cells[i, 11].Value; // take the value in second column and convert to decimal 
                     string cellValue = range1.Cells[i, 11].NumberFormat.ToString();
