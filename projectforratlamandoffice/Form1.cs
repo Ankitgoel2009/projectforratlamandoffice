@@ -347,6 +347,7 @@ namespace projectforratlamandoffice
         public void Method2()
         {
             // listnew will contain all the data from the row 10 upto the last row excluding the final total row 
+            // and with their signs 
             List<object[]> listnew = new List<object[]>();
             for (int i = 10; i <= rowindex - 1; i++)
             {
