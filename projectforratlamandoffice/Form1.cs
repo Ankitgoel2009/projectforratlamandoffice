@@ -107,18 +107,18 @@ namespace projectforratlamandoffice
             rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
 
-            Thread t1 = new Thread(Method1);
+          //  Thread t1 = new Thread(Method1);
             Thread t2 = new Thread(Method2);
-            Thread t3 = new Thread(method3);
-            t1.Start();
+         //   Thread t3 = new Thread(method3);
+          //  t1.Start();
             t2.Start();
-            t3.Start();
+          //  t3.Start();
 
 
             // wait for both threads to finish
-            t1.Join();
+          //  t1.Join();
              t2.Join();
-             t3.Join();
+          //   t3.Join();
 
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
@@ -425,6 +425,50 @@ namespace projectforratlamandoffice
 
                 sheet3.Cells[i + 1, 1].Value = list1[i];
             }
+
+            int lastRow = sheet3.Cells.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
+            // Define a variable to store the total value
+            double total = 0;
+
+            // Loop through each cell in column B, starting from the second row
+            for (int i = 2; i <= lastRow + 1; i++)
+            {
+                // Get the value in the cell as a string
+                string stringValue = sheet3.Cells[i, 2].Value?.ToString();
+
+                // If the value is not null or empty
+                if (!string.IsNullOrEmpty(stringValue))
+                {
+                    // Remove any currency symbols, commas, and the "+" sign from the string
+                   stringValue = stringValue.Replace("₹", "").Replace(",", "").Replace(" ", "").Replace("+", "").Trim();
+                    // Parse the string value as a decimal
+                    double value = double.Parse(stringValue);
+
+                    // If the value is negative, subtract it from the total
+                    if (value < 0)
+                    {
+                        total -= (value * -1);
+                    }
+                    // Otherwise, add it to the total
+                    else
+                    {
+                        total += value;
+                    }
+                }
+            }
+            // Add a new row at the end with "Grand Total" in the first cell and "Balance" in the second cell
+       
+            sheet3.Cells[lastRow + 2, 1].Value = "Grand Total";
+            string formattedTotal = string.Format("{0:#,##,##,###} ₹", total);
+
+            // Set the value of the cell with the formatted total
+            sheet3.Cells[lastRow + 2, 2].Value = formattedTotal;
+
+            var cell = sheet3.Cells[lastRow + 2, 2];
+            cell.Font.Size = 14;
+            cell.Font.Color = Color.Red.ToArgb();
+            cell.Interior.Color = Color.Yellow.ToArgb();
+
             //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
             sheet3.Columns["A:B"].AutoFit();
             sheet3.Range["A1"].EntireColumn.Font.Bold = true;
