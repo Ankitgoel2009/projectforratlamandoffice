@@ -425,7 +425,8 @@ namespace projectforratlamandoffice
 
                 sheet3.Cells[i + 1, 1].Value = list1[i];
             }
-            int lastRow = sheet3.Cells.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
+            // support for grandtotal
+          /*  int lastRow = sheet3.Cells.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
             // Define a variable to store the total value
             double total = 0;
 
@@ -457,7 +458,7 @@ namespace projectforratlamandoffice
             }
             // Add a new row at the end with "Grand Total" in the first cell and "Balance" in the second cell
 
-            sheet3.Cells[lastRow + 2, 1].Value = "Grand Total";
+           sheet3.Cells[lastRow + 2, 1].Value = "Grand Total";
             string formattedTotal = string.Format("{0:#,##,##,###} ₹", total);
 
             // Set the value of the cell with the formatted total
@@ -466,7 +467,7 @@ namespace projectforratlamandoffice
             var cell = sheet3.Cells[lastRow + 2, 2];
             cell.Font.Size = 14;
             cell.Font.Color = Color.Red.ToArgb();
-            cell.Interior.Color = Color.Yellow.ToArgb();
+            cell.Interior.Color = Color.Yellow.ToArgb();*/
             //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
             sheet3.Columns["A:B"].AutoFit();
             sheet3.Range["A1"].EntireColumn.Font.Bold = true;
@@ -571,7 +572,7 @@ namespace projectforratlamandoffice
 
                 sheet1.Cells[i + 1, 1].Value = listforharshit[i];
             }
-            int lastRow = sheet1.Cells.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
+         /*   int lastRow = sheet1.Cells.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
             // Define a variable to store the total value
             double total = 0;
 
@@ -612,7 +613,7 @@ namespace projectforratlamandoffice
             var cell = sheet1.Cells[lastRow + 2, 2];
             cell.Font.Size = 14;
             cell.Font.Color = Color.Red.ToArgb();
-            cell.Interior.Color = Color.Yellow.ToArgb();
+            cell.Interior.Color = Color.Yellow.ToArgb();*/
             //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
             sheet1.Columns["A:B"].AutoFit();
             sheet1.Range["A1"].EntireColumn.Font.Bold = true;
