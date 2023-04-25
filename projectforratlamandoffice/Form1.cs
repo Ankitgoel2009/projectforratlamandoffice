@@ -314,20 +314,20 @@ namespace projectforratlamandoffice
                         {
                             if (startcol == 11)
                              {
-                             string value = valueofcolumn11 != null ? valueofcolumn11.ToString("N") + " ₹" : "No records found";
-                             valuesinlist.Add(value);
-                             }
-                    else if (startcol != 5 && startcol != 9)
-                    {
-                        object value = range1.Cells[startrow, startcol].Value;
-                        if (value == null || string.IsNullOrEmpty(value.ToString()))
-                        {
-                            valuesinlist.Add("No records found");
+                             string value = valueofcolumn11.ToString("N") + " ₹";
+                              valuesinlist.Add(value);
                         }
-                        else
-                        {
+                         else if (startcol != 5 && startcol != 9) // read every column except column 5 and column 9
+                         {
+                         object value = range1.Cells[startrow, startcol].Value;
+                         if (value == null || string.IsNullOrEmpty(value.ToString()))
+                         {
+                            valuesinlist.Add("B/F 15-11-2022");
+                         }
+                         else
+                         {
                             valuesinlist.Add(value.ToString());
-                        }
+                         }
                     }
                 }
                         data.Add(key, valuesinlist);
@@ -336,13 +336,20 @@ namespace projectforratlamandoffice
             // Sort the dictionary by key in alphabetical order
             data = data.OrderBy(d => d.Key).ToDictionary(d => d.Key, d => d.Value);
 
+           
+
+
             // copy desired names into a list 
             copydata("ankitjinames.txt");
 
             // create a new dictionary so that the modifications will not reflect in orginal dictionary 
             Dictionary<string, List<object>> dataCopy = new Dictionary<string, List<object>>(data);
 
+          
+
             Filter(dataCopy, list);
+
+            //upto here good 
 
             // data which tells which names are in which state
             var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
@@ -363,9 +370,9 @@ namespace projectforratlamandoffice
             Excel._Worksheet worksheet2 = (Excel.Worksheet)workbook2.ActiveSheet;
             worksheet2.Name = "Ankit";
             // Add headers to worksheet2
-            Excel.Range headerRange2 = worksheet2.Range["A1:E1"];
+            Excel.Range headerRange2 = worksheet2.Range["A1:G1"];
             headerRange2.Merge();
-            headerRange2.Value = "Ankit ji This week";
+            headerRange2.Value = "Sales + payment report from 15-11-2022 -Ankit ji";
             headerRange2.Font.Bold = true;
             headerRange2.Font.Size = 18;
             headerRange2.Interior.Color = System.Drawing.Color.Yellow;
@@ -377,18 +384,19 @@ namespace projectforratlamandoffice
             {
                 if (states.Contains(listofstatewisenamesforankit[i].ToString().Trim()))
                 {
-                    
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Merge();
                     worksheet2.Cells[currowIndex, 1].Value = listofstatewisenamesforankit[i].ToString();
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].EntireColumn.Font.Bold = true;
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].HorizontalAlignment = XlHAlign.xlHAlignCenter;                    
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Cells.Font.Size = 20;
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Font.Italic = true;
-                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Merge();
+                    
 
                     worksheet2.Cells[currowIndex+1, 1] = "Party Name";
                     worksheet2.Cells[currowIndex+1, 2] = "Current Balance";
                     worksheet2.Cells[currowIndex+1, 3] = "Total Sales";
                     worksheet2.Cells[currowIndex+1, 4] = "Total Receipt";
+                    worksheet2.Cells[currowIndex + 1, 5] = "Last payment Date";
                     //  worksheet2.Range["A2:E2"].Font.Bold = true;
                     currowIndex += 2; // move to next row
 
@@ -396,10 +404,22 @@ namespace projectforratlamandoffice
                 else
                 {
                     List<object> finalvalues = dataCopy[listofstatewisenamesforankit[i].ToString()];
-                    worksheet2.Cells[currowIndex, 1 ].Value = listofstatewisenamesforankit[i].ToString();
+                    string stringValue = finalvalues[4].ToString();
+                    DateTime dateValue;
+                    if (DateTime.TryParse(stringValue, out dateValue)) // try to convert cell value to DateTime
+                    {
+                        worksheet2.Cells[currowIndex, 5].Value = dateValue.ToString("dd-MM-yyyy"); // format DateTime without time
+                    }
+                    else
+                    {
+                        worksheet2.Cells[currowIndex, 5].Value = stringValue; // use string value as it is
+                    }
+                    worksheet2.Cells[currowIndex, 1].Value = listofstatewisenamesforankit[i].ToString();
                     worksheet2.Cells[currowIndex, 2].Value = finalvalues[6];
                     worksheet2.Cells[currowIndex, 3].Value = finalvalues[0];
                     worksheet2.Cells[currowIndex, 4].Value = finalvalues[3];
+
+
                     // worksheet2.Cells[rowIndex, colIndex + 4].Value = finalvalues[3];
                     currowIndex++; // move to next row
                 }
