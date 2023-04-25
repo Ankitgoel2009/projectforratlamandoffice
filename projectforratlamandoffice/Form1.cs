@@ -275,7 +275,7 @@ namespace projectforratlamandoffice
             var keysToAdd = listofnames.Except(copydata.Keys);
             foreach (var key in keysToAdd)
             {
-                copydata.Add(key, new List<object> { "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "Try Again" });
+                copydata.Add(key, new List<object> { "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", 0 });
             }
         }
 
@@ -322,7 +322,7 @@ namespace projectforratlamandoffice
                          object value = range1.Cells[startrow, startcol].Value;
                          if (value == null || string.IsNullOrEmpty(value.ToString()))
                          {
-                            valuesinlist.Add("B/F 15-11-2022");
+                            valuesinlist.Add("check data B/F 15-11-2022");
                          }
                          else
                          {
@@ -375,7 +375,7 @@ namespace projectforratlamandoffice
             headerRange2.Value = "Sales + payment report from 15-11-2022 -Ankit ji";
             headerRange2.Font.Bold = true;
             headerRange2.Font.Size = 18;
-            headerRange2.Interior.Color = System.Drawing.Color.Yellow;
+           // headerRange2.Interior.Color = System.Drawing.Color.Yellow;
 
             //string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
             List<string> states = new List<string>() { "U.P", "Rajasthan", "Bihar", "Punjab", "Odisha", "Chhatisgarh", "West bengal", "Madhya Pradesh", "Jharkhand", "Maharashtra", "Market", "Uttarakhand", "Assam", "Tripura" };
@@ -384,9 +384,10 @@ namespace projectforratlamandoffice
             {
                 if (states.Contains(listofstatewisenamesforankit[i].ToString().Trim()))
                 {
-                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Merge();
+                   
                     worksheet2.Cells[currowIndex, 1].Value = listofstatewisenamesforankit[i].ToString();
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].EntireColumn.Font.Bold = true;
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Merge();
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].HorizontalAlignment = XlHAlign.xlHAlignCenter;                    
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Cells.Font.Size = 20;
                     worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Font.Italic = true;
@@ -397,6 +398,8 @@ namespace projectforratlamandoffice
                     worksheet2.Cells[currowIndex+1, 3] = "Total Sales";
                     worksheet2.Cells[currowIndex+1, 4] = "Total Receipt";
                     worksheet2.Cells[currowIndex + 1, 5] = "Last payment Date";
+                    worksheet2.Range["A" + (currowIndex + 1).ToString() + ":E" + (currowIndex + 1).ToString()].Font.Bold = true;
+                    worksheet2.Range["A" + (currowIndex + 1).ToString() + ":E" + (currowIndex + 1).ToString()].Interior.Color = System.Drawing.Color.LightSeaGreen;
                     //  worksheet2.Range["A2:E2"].Font.Bold = true;
                     currowIndex += 2; // move to next row
 
@@ -418,270 +421,17 @@ namespace projectforratlamandoffice
                     worksheet2.Cells[currowIndex, 2].Value = finalvalues[6];
                     worksheet2.Cells[currowIndex, 3].Value = finalvalues[0];
                     worksheet2.Cells[currowIndex, 4].Value = finalvalues[3];
-
+                    worksheet2.Cells[currowIndex, 3].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                    worksheet2.Cells[currowIndex, 4].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                    worksheet2.Cells[currowIndex, 5].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
 
                     // worksheet2.Cells[rowIndex, colIndex + 4].Value = finalvalues[3];
                     currowIndex++; // move to next row
                 }
             }
-
-            // prepare file 
-            Excel.Workbook workbook1 = excel.Workbooks.Add();
-            
-            Excel.Workbook workbook3 = excel.Workbooks.Add();
-
-            // Set the worksheet names
-            Excel._Worksheet worksheet1 = (Excel.Worksheet)workbook1.ActiveSheet;
-            worksheet1.Name = "Office";
-           
-            Excel._Worksheet worksheet3 = (Excel.Worksheet)workbook3.ActiveSheet;
-            worksheet3.Name = "Harsheet";
-
-         
-
-
-
-
-
-
-
-
-
-
-
-            // Add headers to worksheet3
-            Excel.Range headerRange3 = worksheet3.Range["A1:D1"];
-            headerRange3.Merge();
-            headerRange3.Value = "Harsheet ji this week";
-            headerRange3.Font.Bold = true;
-            headerRange3.Font.Size = 18;
-            headerRange3.Interior.Color = System.Drawing.Color.Yellow;
-
-            worksheet3.Cells[2, 1] = "Name";
-            worksheet3.Cells[2, 2] = "Current Balance";
-            worksheet3.Cells[2, 3] = "Total Sales";
-            worksheet3.Cells[2, 4] = "Total Receipt";
-            worksheet3.Range["A2:D2"].Font.Bold = true;
-
-            // Import data into worksheet2
-            int rowofdestinationfiles = 3;
-            foreach (var item in data)
-            {
-                string key = item.Key;
-                List<object> values1 = item.Value;
-
-                // Set name value
-                worksheet2.Cells[rowofdestinationfiles, 1] = key;
-
-                // Set current balance value
-                worksheet2.Cells[rowofdestinationfiles, 2] = values1[6];
-
-                // Set total sales value
-                worksheet2.Cells[rowofdestinationfiles, 3] = values1[0];
-
-                // Set total receipt value
-                worksheet2.Cells[rowofdestinationfiles, 4] = values1[3];
-
-                rowofdestinationfiles++;
-            }
-
-            // Import data into worksheet3
-            rowofdestinationfiles = 3;
-            foreach (var item in data)
-            {
-                string key = item.Key;
-                List<object> values1 = item.Value;
-
-                // Set name value
-                worksheet3.Cells[rowofdestinationfiles, 1] = key;
-
-                // Set current balance value
-                worksheet3.Cells[rowofdestinationfiles, 2] = values1[6];
-
-                // Set total sales value
-                worksheet3.Cells[rowofdestinationfiles, 3] = values1[0];
-
-                // Set total receipt value
-                worksheet3.Cells[rowofdestinationfiles, 4] = values1[3];
-
-                rowofdestinationfiles++;
-            }
-
-            
-
-
-
-
-
-            // sort the source range 
-            int lastRow = range1.Row + range1.Rows.Count - 1;
-            int lastColumn = range1.Column + range1.Columns.Count - 1;
-
-            // Sort the first column in ascending order, starting from row 3
-            Excel.Range sortRange = sheet.Range[sheet.Cells[3, 1], sheet.Cells[lastRow - 1, lastColumn]];
-
-            // Define the sort keys (sort by column 1 ascending)
-            Excel.SortFields sortFields = sheet.Sort.SortFields;
-            Excel.SortField sortField1 = sortFields.Add(sortRange.Columns[1], Excel.XlSortOn.xlSortOnValues, Excel.XlSortOrder.xlAscending);
-
-            // Apply the sort
-            sheet.Sort.SetRange(sortRange);
-            sheet.Sort.Header = Excel.XlYesNoGuess.xlNo;
-            sheet.Sort.MatchCase = false;
-            sheet.Sort.Orientation = Excel.XlSortOrientation.xlSortColumns;
-            sheet.Sort.SortMethod = Excel.XlSortMethod.xlPinYin;
-            sheet.Sort.Apply();
-
-
-            // prepare all customers file 
-            string outputpathforoffice = @"C:\ratlamfile\officeNew-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-           // Excel.Application excelforofice = new Excel.Application();
-            Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
-            Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
-
-            sheetforoffice.Cells[1, 1].Value = "Name";
-            sheetforoffice.Cells[1, 2].Value = "C. Balance";
-            sheetforoffice.Cells[1, 3].Value = "L. Payment";
-            sheetforoffice.Cells[1, 4].Value = "L. Payment Date";
-            sheetforoffice.Cells[1, 5].Value = "Name";
-            sheetforoffice.Cells[1, 6].Value = "C. Balance";
-            sheetforoffice.Cells[1, 7].Value = "L. Payment";
-            sheetforoffice.Cells[1, 8].Value = "L. Payment Date";
-
-            int row =2 ;
-            int column = 1;
-            for (int i = 3; i <= rowindex - 1; i++)
-            {
-                string valueA = (string)range1.Cells[i, 1].Value;
-                if (range1.Cells[i, 11].Value != null && range1.Cells[i, 11].Value > 1000 && !valueA.ToLower().Contains("udaan")&&!valueA.ToLower().Contains("shop"))
-                {
-                    decimal valueB; // = (decima                                                                                                                                       l)range1.Cells[i, 11].Value; // take the value in second column and convert to decimal 
-                    string cellValue = range1.Cells[i, 11].NumberFormat.ToString();
-                    cellValue = cellValue.Replace("\"", "");
-                    // Check if the cell value contains the string "cr"
-                    if (cellValue.Contains("Cr"))
-                    {
-                        // Remove the "cr" from the cell value and convert it to a decimal
-                         valueB = (decimal)range1.Cells[i, 11].Value * -1;
-
-                        // Set the cell value to the new value
-                       // range1.Cells[i, 11].Value = valueB;
-                    }
-                    else
-                    {
-                        // Convert the cell value to a decimal
-                        valueB = (decimal)range1.Cells[i, 11].Value;
-
-                        // Set the cell value to the new value
-                      //  range1.Cells[i, 11].Value = valueB;
-                    }
-
-                    sheetforoffice.Cells[row, column].Value = valueA;
-                    sheetforoffice.Cells[row, ++column].Value = valueB;
-
-                    decimal valueC;
-                    if (range1.Cells[i, 10].Value == null)
-                    {
-                        valueC = 0; // set a default value if needed
-                        range1.Cells[i, 10].Value = "B/F 15/11/2022";
-                        sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 10].Value;
-                    }
-                    else
-                    {
-                        sheetforoffice.Cells[row, ++column].Value = valueC = (decimal)range1.Cells[i, 10].Value;
-                    }
-                    DateTime? valueD = range1.Cells[i, 8].Value as DateTime?;
-                    if (valueD == null)
-                    {
-                        range1.Cells[i, 8].Value = "B/F 15/11/2022";
-                        sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 8].Value;
-                    }
-                    else
-                    {
-                        sheetforoffice.Cells[row, ++column].Value = valueD;
-                    }
-
-                    //if (valueB > 1000) // if the value in second column ie current balance is greater than 1000
-                    //{
-                    column++;
-                    if (column > 8) //if the column number exceeds 6 then 
-                        {
-                            column = 1;  // revert back to column 1 
-                            row += 1;   // and change row 
-                        }                     
-                    
-                      
-                        
-                   // }
-                }
-            }
-
-            string fileContents = File.ReadAllText(@"C:\ratlamfile\newnames.txt");
-
-            // Split the file contents by colon and newline characters
-            string[] lines = fileContents.Split(new char[] { ':', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Create a dictionary to store the name mappings
-            Dictionary<string, string> nameMappings = new Dictionary<string, string>();
-
-            // Add the name mappings to the dictionary
-            for (int i = 0; i < lines.Length; i += 2)
-            {
-                string name = lines[i].Trim();
-                string replacement = lines[i + 1].Trim();
-                nameMappings[name] = replacement;
-            }
-
-            // Get the range of cells in column A starting from row 4
-          //  Excel.Range range = sheetforoffice.Range["A1", sheetforoffice.Cells[sheetforoffice.UsedRange.Rows.Count, "A"]];
-            Excel.Range range = sheetforoffice.UsedRange;
-            // Get the values in the range as a 2D array
-            object[,] values = range.Value;
-
-            // Replace the names in the array using the nameMappings dictionary
-            for (int i = 1; i <= values.GetLength(0); i++)
-            {
-                if (values[i, 1] != null)
-                {
-                    string name = values[i, 1].ToString().Trim();
-                    if (nameMappings.ContainsKey(name))
-                    {
-                        values[i, 1] = nameMappings[name];
-                    }
-                }
-                if (values[i, 5] != null)
-                {
-                    string name = values[i, 5].ToString().Trim();
-                    if (nameMappings.ContainsKey(name))
-                    {
-                        values[i, 5] = nameMappings[name];
-                    }
-                }
-            }
-
-            // Set the values in the range to the modified array
-            range.Value = values;
-            //sheetforoffice.Columns[1].ColumnWidth = 25;
-            //sheetforoffice.Columns[2].ColumnWidth = 8.25;
-            //sheetforoffice.Columns[3].ColumnWidth = 9.72;
-            //sheetforoffice.Columns[4].ColumnWidth = 9.56;
-            //sheetforoffice.Columns[5].ColumnWidth = 25;
-            //sheetforoffice.Columns[6].ColumnWidth = 8.25;
-            //sheetforoffice.Columns[7].ColumnWidth = 9.72;
-            //sheetforoffice.Columns[8].ColumnWidth = 9.56; ;
-
-
-            // Set the row height for a range of rows
-          //  Excel.Range rowRange = sheetforoffice.Range["59:" + sheetforoffice.Cells[sheetforoffice.Rows.Count, 1].End[Excel.XlDirection.xlUp].Row];
-          //  rowRange.RowHeight = 9.80;
-          //  rowRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-
-            sheetforoffice.Range["A:H"].EntireColumn.Font.Bold = true;
-            sheetforoffice.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
-            sheetforoffice.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
-            sheetforoffice.Range["F1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
-            sheetforoffice.Range["G1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00 ₹;[>=100000] ##\,##\,##0.00 ₹;##,##0.00 ₹";
-            Range rangeforoffice = sheetforoffice.UsedRange;
+            worksheet2.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            worksheet2.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            Range rangeforoffice = worksheet2.UsedRange;
             Borders borderforoffice = rangeforoffice.Borders;
             borderforoffice[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
             borderforoffice[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
@@ -693,16 +443,16 @@ namespace projectforratlamandoffice
             borderforoffice[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             borderforoffice[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             rangeforoffice.Borders.Color = Color.Black;
-            sheetforoffice.Columns["A:H"].AutoFit(); // after bold , now autofit , not before making bold  
-            rangeforoffice.Select();
-            sheetforoffice.UsedRange.Select();
-            workbookforoffice.SaveAs(outputpathforoffice);
-            workbookforoffice.Close();
+            worksheet2.Columns["A:H"].AutoFit(); // after bold , now autofit , not before making bold  
+           // rangeforoffice.Select();
+            worksheet2.UsedRange.Select();
+            workbook2.SaveAs(@"C:\ratlamfile\Ankit ji excel Report " + DateTime.Now.ToString("dd-MM-yyyy"));
+            workbook2.Close();
            // excelforofice.Quit();
             // CLEAN UP.
           //  System.Runtime.InteropServices.Marshal.ReleaseComObject(excelforofice);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbookforoffice);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheetforoffice);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook2);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet2);
 
         }
 
