@@ -275,7 +275,7 @@ namespace projectforratlamandoffice
             var keysToAdd = listofnames.Except(copydata.Keys);
             foreach (var key in keysToAdd)
             {
-                copydata.Add(key, new List<object> { "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", 0 });
+                copydata.Add(key, new List<object> { "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "Try Again", "0 ₹" });
             }
         }
 
@@ -284,11 +284,11 @@ namespace projectforratlamandoffice
 
             // Create a source dictionary to store data
             Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
-            
+
             // Loop through each cell in the used range starting from row 3
-            for (int startrow = 3; startrow <= rowindex-1; startrow++)
-            {               
-                decimal valueofcolumn11; 
+            for (int startrow = 3; startrow <= rowindex - 1; startrow++)
+            {
+                decimal valueofcolumn11;
                 string cellValue = range1.Cells[startrow, 11].NumberFormat.ToString();
                 cellValue = cellValue.Replace("\"", "");
                 //// Check if the cell value contains the string "cr"
@@ -303,36 +303,53 @@ namespace projectforratlamandoffice
                     // Convert the cell value to a decimal
                     valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value;
                 }
-             
+
                 // Get key value from first column
-                 string key = range1.Cells[startrow, 1].Value.ToString();
+                string key = range1.Cells[startrow, 1].Value.ToString();
 
                 // Loop through remaining columns and add values to dictionary
-               
-                        List<object> valuesinlist = new List<object>();
-                        for (int startcol = 3; startcol <= columnindex; startcol++)
+                List<object> valuesinlist = new List<object>();
+                for (int startcol = 3; startcol <= columnindex; startcol++)
+                {
+                    if (startcol == 3 || startcol == 6 || startcol == 7 || startcol == 11)
+                    {
+                        string value = range1.Cells[startrow, startcol].Value?.ToString();
+                        if (!string.IsNullOrEmpty(value))
                         {
                             if (startcol == 11)
-                             {
-                             string value = valueofcolumn11.ToString("N") + " ₹";
-                              valuesinlist.Add(value);
+                            {
+                                value = string.Format("{0:N} ₹", valueofcolumn11);
+                            }
+                            else
+                            {
+                                value = string.Format("{0:N} ₹", decimal.Parse(value));
+                            }
                         }
-                         else if (startcol != 5 && startcol != 9) // read every column except column 5 and column 9
-                         {
-                         object value = range1.Cells[startrow, startcol].Value;
-                         if (value == null || string.IsNullOrEmpty(value.ToString()))
-                         {
+                        else
+                        {
+                            value = "check data B/F 15-11-2022";
+                        }
+                        valuesinlist.Add(value);
+                    }
+                    else if (startcol != 5 && startcol != 9) // read every column except column 5 and column 9
+                    {
+                        object value = range1.Cells[startrow, startcol].Value;
+                        if (value == null || string.IsNullOrEmpty(value.ToString()))
+                        {
                             valuesinlist.Add("check data B/F 15-11-2022");
-                         }
-                         else
-                         {
+                        }
+                        else
+                        {
                             valuesinlist.Add(value.ToString());
-                         }
+                        }
                     }
                 }
-                        data.Add(key, valuesinlist);
-                
+                // Add the value of column 11 to the valuesinlist
+                valuesinlist.Add(string.Format("{0:N} ₹", valueofcolumn11));
+                data.Add(key, valuesinlist);
             }
+
+        
             // Sort the dictionary by key in alphabetical order
             data = data.OrderBy(d => d.Key).ToDictionary(d => d.Key, d => d.Value);
 
@@ -370,7 +387,7 @@ namespace projectforratlamandoffice
             Excel._Worksheet worksheet2 = (Excel.Worksheet)workbook2.ActiveSheet;
             worksheet2.Name = "Ankit";
             // Add headers to worksheet2
-            Excel.Range headerRange2 = worksheet2.Range["A1:G1"];
+            Excel.Range headerRange2 = worksheet2.Range["A1:E1"];
             headerRange2.Merge();
             headerRange2.Value = "Sales + payment report from 15-11-2022 -Ankit ji";
             headerRange2.Font.Bold = true;
@@ -429,6 +446,11 @@ namespace projectforratlamandoffice
                     currowIndex++; // move to next row
                 }
             }
+
+                
+
+
+
             worksheet2.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             worksheet2.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             Range rangeforoffice = worksheet2.UsedRange;
@@ -446,7 +468,7 @@ namespace projectforratlamandoffice
             worksheet2.Columns["A:H"].AutoFit(); // after bold , now autofit , not before making bold  
            // rangeforoffice.Select();
             worksheet2.UsedRange.Select();
-            workbook2.SaveAs(@"C:\ratlamfile\Ankit ji excel Report " + DateTime.Now.ToString("dd-MM-yyyy"));
+            workbook2.SaveAs(@"C:\ratlamfile\Ankit ji excel Report - " + DateTime.Now.ToString("dd-MM-yyyy"));
             workbook2.Close();
            // excelforofice.Quit();
             // CLEAN UP.
@@ -455,7 +477,7 @@ namespace projectforratlamandoffice
             System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet2);
 
         }
-
+      
 
         // for ankit 
         public void Method2()
@@ -514,7 +536,7 @@ namespace projectforratlamandoffice
 
             }
 
-            string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
+            string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam -" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
            // Excel.Application excel1 = new Excel.Application();
             Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheet3 = (Excel.Worksheet)workbook.ActiveSheet;
