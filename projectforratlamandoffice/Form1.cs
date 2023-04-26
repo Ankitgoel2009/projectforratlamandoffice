@@ -96,14 +96,12 @@ namespace projectforratlamandoffice
             // return instance of excel file by sending its path 
             wkb = Open(excel, selectedFile);
             sheet = wkb.Sheets[1];
-           // sheet.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
-          //  sheet.Range["G1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
            // sheet.Range["H1"].EntireColumn.NumberFormat = "DD/MM/YYYY";
             range1 = sheet.UsedRange; // returns range till grandtotal 
             rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
             Method1();
-           // Method2();
+            Method2();
             //  Thread t1 = new Thread(Method1);
             // Thread t2 = new Thread(Method2);
             //  Thread t3 = new Thread(method3);
@@ -389,7 +387,7 @@ namespace projectforratlamandoffice
             // Add headers to worksheet2
             Excel.Range headerRange2 = worksheet2.Range["A1:E1"];
             headerRange2.Merge();
-            headerRange2.Value = "Sales + payment report from 15-11-2022 -Ankit ji";
+            headerRange2.Value = "Sales + payment report Current Month -Ankit ji";
             headerRange2.Font.Bold = true;
             headerRange2.Font.Size = 18;
            // headerRange2.Interior.Color = System.Drawing.Color.Yellow;
@@ -417,7 +415,196 @@ namespace projectforratlamandoffice
                     worksheet2.Cells[currowIndex + 1, 5] = "Last payment Date";
                     worksheet2.Range["A" + (currowIndex + 1).ToString() + ":E" + (currowIndex + 1).ToString()].Font.Bold = true;
                     worksheet2.Range["A" + (currowIndex + 1).ToString() + ":E" + (currowIndex + 1).ToString()].Interior.Color = System.Drawing.Color.LightSeaGreen;
-                    //  worksheet2.Range["A2:E2"].Font.Bold = true;
+                    currowIndex += 2; // move to next row
+
+                }
+                else
+                {
+                    List<object> finalvalues = dataCopy[listofstatewisenamesforankit[i].ToString()];
+                    string stringValue = finalvalues[4].ToString();
+                    DateTime dateValue;
+                    if (DateTime.TryParse(stringValue, out dateValue)) // try to convert cell value to DateTime
+                    {
+                        worksheet2.Cells[currowIndex, 5].Value = dateValue.ToString("dd-MM-yyyy"); // format DateTime without time
+                    }
+                    else
+                    {
+                        worksheet2.Cells[currowIndex, 5].Value = stringValue; // use string value as it is
+                    }
+                    worksheet2.Cells[currowIndex, 1].Value = listofstatewisenamesforankit[i].ToString();
+                    worksheet2.Cells[currowIndex, 2].Value = finalvalues[6];
+                    worksheet2.Cells[currowIndex, 3].Value = finalvalues[0];
+                    worksheet2.Cells[currowIndex, 4].Value = finalvalues[3];
+                    worksheet2.Cells[currowIndex, 3].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                    worksheet2.Cells[currowIndex, 4].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                    worksheet2.Cells[currowIndex, 5].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+
+                    // worksheet2.Cells[rowIndex, colIndex + 4].Value = finalvalues[3];
+                    currowIndex++; // move to next row
+                }
+            }
+            
+            worksheet2.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            worksheet2.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            Range rangeforoffice = worksheet2.UsedRange;
+            Borders borderforoffice = rangeforoffice.Borders;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
+            borderforoffice.Color = Color.Black;
+            borderforoffice[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            borderforoffice[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            borderforoffice[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            borderforoffice[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
+            rangeforoffice.Borders.Color = Color.Black;
+            worksheet2.Columns["A:H"].AutoFit(); // after bold , now autofit , not before making bold  
+            worksheet2.UsedRange.Select();
+            workbook2.SaveAs(@"C:\ratlamfile\Ankit ji excel Report - " + DateTime.Now.ToString("dd-MM-yyyy"));
+            workbook2.Close();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook2);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet2);
+        }
+      
+
+        // for ankit 
+        public void Method2()
+        {
+            // Create a source dictionary to store data
+            Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
+
+            // Loop through each cell in the used range starting from row 3
+            for (int startrow = 3; startrow <= rowindex - 1; startrow++)
+            {
+                decimal valueofcolumn11;
+                string cellValue = range1.Cells[startrow, 11].NumberFormat.ToString();
+                cellValue = cellValue.Replace("\"", "");
+                //// Check if the cell value contains the string "cr"
+                if (cellValue.Contains("Cr"))
+                {
+                    // Remove the "cr" from the cell value and convert it to a decimal
+                    valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value * -1;
+
+                }
+                else
+                {
+                    // Convert the cell value to a decimal
+                    valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value;
+                }
+
+                // Get key value from first column
+                string key = range1.Cells[startrow, 1].Value.ToString();
+
+                // Loop through remaining columns and add values to dictionary
+                List<object> valuesinlist = new List<object>();
+                for (int startcol = 3; startcol <= columnindex; startcol++)
+                {
+                    if (startcol == 3 || startcol == 6 || startcol == 7 || startcol == 11)
+                    {
+                        string value = range1.Cells[startrow, startcol].Value?.ToString();
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            if (startcol == 11)
+                            {
+                                value = string.Format("{0:N} ₹", valueofcolumn11);
+                            }
+                            else
+                            {
+                                value = string.Format("{0:N} ₹", decimal.Parse(value));
+                            }
+                        }
+                        else
+                        {
+                            value = "check data B/F 15-11-2022";
+                        }
+                        valuesinlist.Add(value);
+                    }
+                    else if (startcol != 5 && startcol != 9) // read every column except column 5 and column 9
+                    {
+                        object value = range1.Cells[startrow, startcol].Value;
+                        if (value == null || string.IsNullOrEmpty(value.ToString()))
+                        {
+                            valuesinlist.Add("check data B/F 15-11-2022");
+                        }
+                        else
+                        {
+                            valuesinlist.Add(value.ToString());
+                        }
+                    }
+                }
+                // Add the value of column 11 to the valuesinlist
+                valuesinlist.Add(string.Format("{0:N} ₹", valueofcolumn11));
+                data.Add(key, valuesinlist);
+            }
+
+
+            // Sort the dictionary by key in alphabetical order
+            data = data.OrderBy(d => d.Key).ToDictionary(d => d.Key, d => d.Value);
+
+
+
+
+            // copy desired names into a list 
+            copydata("harshitjinames.txt");
+
+            // create a new dictionary so that the modifications will not reflect in orginal dictionary 
+            Dictionary<string, List<object>> dataCopy = new Dictionary<string, List<object>>(data);
+
+
+
+            Filter(dataCopy, list);
+
+            //upto here good 
+
+            // data which tells which names are in which state
+            var arr2 = GetObjArr(@"C:\ratlamfile\harshitstatewisenames.xlsx");
+            List<object> listofstatewisenamesforankit = new List<object>();
+            for (int i = 1; i <= arr2.GetLength(0); i++)
+            {
+                if (arr2[i, 1] != null && arr2[i, 2] == null)
+                {
+                    listofstatewisenamesforankit.Add(arr2[i, 1]);
+                }
+                if (arr2[i, 2] != null && arr2[i, 1] == null)
+                {
+                    listofstatewisenamesforankit.Add(arr2[i, 2]);
+                }
+            }
+
+            Excel.Workbook workbook2 = excel.Workbooks.Add();
+            Excel._Worksheet worksheet2 = (Excel.Worksheet)workbook2.ActiveSheet;
+            worksheet2.Name = "Ankit";
+            // Add headers to worksheet2
+            Excel.Range headerRange2 = worksheet2.Range["A1:E1"];
+            headerRange2.Merge();
+            headerRange2.Value = "Sales + payment report current month -Harsheet Ji";
+            headerRange2.Font.Bold = true;
+            headerRange2.Font.Size = 18;
+            // headerRange2.Interior.Color = System.Drawing.Color.Yellow;
+
+            //string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam-" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
+            List<string> states = new List<string>() { "U.P", "Rajasthan", "Bihar", "Punjab", "Odisha", "Chhatisgarh", "West bengal", "Madhya Pradesh", "Jharkhand", "Maharashtra", "Market", "Uttarakhand", "Assam", "Tripura" };
+            int currowIndex = 2; // starting row index
+            for (int i = 0; i < listofstatewisenamesforankit.Count; i++)
+            {
+                if (states.Contains(listofstatewisenamesforankit[i].ToString().Trim()))
+                {
+
+                    worksheet2.Cells[currowIndex, 1].Value = listofstatewisenamesforankit[i].ToString();
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].EntireColumn.Font.Bold = true;
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Merge(); // merge should come here only 
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Cells.Font.Size = 20;
+                    worksheet2.Range[worksheet2.Cells[currowIndex, 1], worksheet2.Cells[currowIndex, 5]].Font.Italic = true;
+
+
+                    worksheet2.Cells[currowIndex + 1, 1] = "Party Name";
+                    worksheet2.Cells[currowIndex + 1, 2] = "Current Balance";
+                    worksheet2.Cells[currowIndex + 1, 3] = "Total Sales";
+                    worksheet2.Cells[currowIndex + 1, 4] = "Total Receipt";
+                    worksheet2.Cells[currowIndex + 1, 5] = "Last payment Date";
+                    worksheet2.Range["A" + (currowIndex + 1).ToString() + ":E" + (currowIndex + 1).ToString()].Font.Bold = true;
+                    worksheet2.Range["A" + (currowIndex + 1).ToString() + ":E" + (currowIndex + 1).ToString()].Interior.Color = System.Drawing.Color.LightSeaGreen;
                     currowIndex += 2; // move to next row
 
                 }
@@ -447,10 +634,6 @@ namespace projectforratlamandoffice
                 }
             }
 
-                
-
-
-
             worksheet2.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             worksheet2.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             Range rangeforoffice = worksheet2.UsedRange;
@@ -466,129 +649,14 @@ namespace projectforratlamandoffice
             borderforoffice[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             rangeforoffice.Borders.Color = Color.Black;
             worksheet2.Columns["A:H"].AutoFit(); // after bold , now autofit , not before making bold  
-           // rangeforoffice.Select();
             worksheet2.UsedRange.Select();
-            workbook2.SaveAs(@"C:\ratlamfile\Ankit ji excel Report - " + DateTime.Now.ToString("dd-MM-yyyy"));
+            workbook2.SaveAs(@"C:\ratlamfile\Harsheet ji excel Report - " + DateTime.Now.ToString("dd-MM-yyyy"));
             workbook2.Close();
-           // excelforofice.Quit();
-            // CLEAN UP.
-          //  System.Runtime.InteropServices.Marshal.ReleaseComObject(excelforofice);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook2);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet2);
-
         }
-      
 
-        // for ankit 
-        public void Method2()
-        {
-            // listnew will contain all the data from the row 10 upto the last row excluding the final total row 
-            List<object[]> listnew = new List<object[]>();
-            for (int i = 10; i <= rowindex - 1; i++)
-            {
-                if (range1.Cells[i, 1].Text != "")
-                {
-                    if (range1.Cells[i, 2].Text != "" && range1.Cells[i, 3].Text == "")
-                    {
-                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "+ " + range1.Cells[i, 2].Text + " ₹" });
-                    } 
-                                                                                                                
-                    else if (range1.Cells[i, 2].Text == "" && range1.Cells[i, 3].Text != "")
-                    {
-                        listnew.Add(new object[] { range1.Cells[i, 1].Text, "- " + range1.Cells[i, 3].Text + " ₹" });
-                    }
-
-                }
-            }
-            // commented out because i started adding from element 10 and also loop stops before length -1 
-            // list.RemoveAt(list.Count - 1);
-            //  list.RemoveRange(0, 10);         
-
-
-            // 6. copy text file names to a variable called list 
-            copydata("ankitjinames.txt");
-
-            // filter from only index which conatins  names and add the balance 
-          //  Filter(listnew);
-
-            // names are  ready , now modify it 
-
-            Dictionary<object, object> dic1 = new Dictionary<object, object>();
-            for (int i = 0; i <= listnew.Count - 1; i++)
-            {
-                dic1.Add(listnew[i][0], listnew[i][1]);
-
-            }
-
-            // data which tells which names are in which state
-            var arr2 = GetObjArr(@"C:\ratlamfile\statewisenames.xlsx");
-            List<object> list1 = new List<object>();
-            for (int i = 1; i <= arr2.GetLength(0); i++)
-            {
-                if (arr2[i, 1] != null && arr2[i, 2] == null)
-                {
-                    list1.Add(arr2[i, 1]);
-                }
-                if (arr2[i, 2] != null && arr2[i, 1] == null)
-                {
-                    list1.Add(arr2[i, 2]);
-                }
-
-            }
-
-            string outputpath = @"C:\ratlamfile\Ankit_ji_Ratlam -" + DateTime.UtcNow.ToString("dd-MM-yyyy") + ".xlsx";
-           // Excel.Application excel1 = new Excel.Application();
-            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
-            Excel.Worksheet sheet3 = (Excel.Worksheet)workbook.ActiveSheet;
-
-            for (int i = 0; i < list1.Count; i++)
-            {
-                if (list1[i].ToString().Trim() == "U.P" || list1[i].ToString().Trim() == "Rajasthan" || list1[i].ToString().Trim() == "Bihar" || list1[i].ToString().Trim() == "Punjab" || list1[i].ToString().Trim() == "Odisha" || list1[i].ToString().Trim() == "Chhatisgarh" || list1[i].ToString().Trim() == "West bengal" || list1[i].ToString().Trim() == "Madhya Pradesh" || list1[i].ToString().Trim() == "Jharkhand" || list1[i].ToString().Trim() == "Maharashtra" || list1[i].ToString().Trim() == "Market" || list1[i].ToString().Trim() == "Uttarakhand" || list1[i].ToString().Trim() == "Assam" || list1[i].ToString().Trim() == "Tripura")
-                {
-                    //sheet.Cells[i + 1, 2].Value = dic1[list[i]];
-
-                    sheet3.Range[sheet3.Cells[i + 1, 1], sheet3.Cells[i + 1, 2]].EntireColumn.Font.Bold = true;
-                    sheet3.Range[sheet3.Cells[i + 1, 1], sheet3.Cells[i + 1, 2]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                    sheet3.Range[sheet3.Cells[i + 1, 1], sheet3.Cells[i + 1, 2]].Merge();
-                    sheet3.Range[sheet3.Cells[i + 1, 1], sheet3.Cells[i + 1, 2]].Cells.Font.Size = 20;
-                    sheet3.Range[sheet3.Cells[i + 1, 1], sheet3.Cells[i + 1, 2]].Font.Italic = true;
-
-                }
-                else
-                {
-                    sheet3.Cells[i + 1, 2].Value = dic1[list1[i]];
-                }
-
-                sheet3.Cells[i + 1, 1].Value = list1[i];
-            }
-            //  sheet1.Range["B1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0;##,##0.00";
-            sheet3.Columns["A:B"].AutoFit();
-            sheet3.Range["A1"].EntireColumn.Font.Bold = true;
-            sheet3.Range["B1"].EntireColumn.Font.Bold = true;
-
-            range1 = sheet3.UsedRange;
-            Borders border = range1.Borders;
-            border[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border[Excel.XlBordersIndex.xlEdgeTop].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border[Excel.XlBordersIndex.xlEdgeRight].LineStyle = Excel.XlLineStyle.xlContinuous;
-            border.Color = Color.Black;
-            border[Excel.XlBordersIndex.xlInsideVertical].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            border[Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            border[Excel.XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            border[Excel.XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlLineStyleNone;
-            range1.Borders.Color = Color.Black;
-            range1.Select();
-            sheet3.UsedRange.Select();
-            workbook.SaveAs(outputpath);
-            workbook.Close();
-          //  excel1.Quit();
-            // CLEAN UP.
-           // System.Runtime.InteropServices.Marshal.ReleaseComObject(excel1);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet3);
-          
-        }
+   
 
 
        // Excel.Range range3 = null;
