@@ -425,7 +425,8 @@ namespace projectforratlamandoffice
                     DateTime dateValue;
                     if (DateTime.TryParse(stringValue, out dateValue)) // try to convert cell value to DateTime
                     {
-                        worksheet2.Cells[currowIndex, 5].Value = dateValue.ToString("dd-MM-yyyy"); // format DateTime without time
+                        worksheet2.Cells[currowIndex, 5].Value = dateValue;
+                        worksheet2.Cells[currowIndex, 5].NumberFormat = "dd-mm-yyyy"; // explicitly set the cell format
                     }
                     else
                     {
@@ -446,6 +447,7 @@ namespace projectforratlamandoffice
             
             worksheet2.Range["C1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
             worksheet2.Range["D1"].EntireColumn.NumberFormat = @"[>=10000000]##\,##\,##\,##0.00;[>=100000] ##\,##\,##0.00;##,##0.00";
+            
             Range rangeforoffice = worksheet2.UsedRange;
             Borders borderforoffice = rangeforoffice.Borders;
             borderforoffice[Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Excel.XlLineStyle.xlContinuous;
@@ -615,7 +617,8 @@ namespace projectforratlamandoffice
                     DateTime dateValue;
                     if (DateTime.TryParse(stringValue, out dateValue)) // try to convert cell value to DateTime
                     {
-                        worksheet2.Cells[currowIndex, 5].Value = dateValue.ToString("dd-MM-yyyy"); // format DateTime without time
+                        worksheet2.Cells[currowIndex, 5].Value = dateValue;
+                        worksheet2.Cells[currowIndex, 5].NumberFormat = "dd-mm-yyyy"; // explicitly set the cell format
                     }
                     else
                     {
