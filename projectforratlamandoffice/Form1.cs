@@ -325,7 +325,7 @@ namespace projectforratlamandoffice
                         }
                         else
                         {
-                            value = "check data B/F 15-11-2022";
+                            value = "not found in current month";
                         }
                         valuesinlist.Add(value);
                     }
@@ -334,7 +334,7 @@ namespace projectforratlamandoffice
                         object value = range1.Cells[startrow, startcol].Value;
                         if (value == null || string.IsNullOrEmpty(value.ToString()))
                         {
-                            valuesinlist.Add("check data B/F 15-11-2022");
+                            valuesinlist.Add("not found in current month");
                         }
                         else
                         {
@@ -517,7 +517,7 @@ namespace projectforratlamandoffice
                         }
                         else
                         {
-                            value = "check data B/F 15-11-2022";
+                            value = "not found in current month";
                         }
                         valuesinlist.Add(value);
                     }
@@ -526,7 +526,7 @@ namespace projectforratlamandoffice
                         object value = range1.Cells[startrow, startcol].Value;
                         if (value == null || string.IsNullOrEmpty(value.ToString()))
                         {
-                            valuesinlist.Add("check data B/F 15-11-2022");
+                            valuesinlist.Add("not found in current month");
                         }
                         else
                         {
