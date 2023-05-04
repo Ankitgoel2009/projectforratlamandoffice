@@ -32,6 +32,8 @@ namespace projectforratlamandoffice
         {
 
         }
+        // code when the user presses Ok  
+        // step 2 
         void OpenKeywordsFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             OpenFileDialog fileDialog = sender as OpenFileDialog;
@@ -44,6 +46,7 @@ namespace projectforratlamandoffice
             return;
         }
 
+        // step 1 
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog choofdlog = new OpenFileDialog();
@@ -73,6 +76,7 @@ namespace projectforratlamandoffice
             }
         }
 
+        // step 4 
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)
         {
             Excel.Workbook book = excelInstance.Workbooks.Open(
@@ -89,6 +93,7 @@ namespace projectforratlamandoffice
         Excel._Worksheet sheet = null;
         Excel.Range range1 = null;
         int rowindex, columnindex;     
+        // step 3 
         void dowork()
         {
             excel = new Excel.Application();
@@ -115,96 +120,7 @@ namespace projectforratlamandoffice
             //  t2.Join();
             //  t3.Join();
 
-            //// Set up Chrome driver
-            //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
-            ///// add chromedriver to environment variables 
-            ///chromedriver -version  // check before 
-            /////cd "C:\Program Files\Google\Chrome\Application"
-            /// chrome.exe --remote-debugging-port=9222 --user-data-dir=D:\chromedata
-            ///
-            // Process proc = new Process();
-            // before copying below please note c:\ instaedof c 
-            //proc.StartInfo.FileName = @"C\Program Files\Google\Chrome\Application\chrome.exe";
-            // to avoid typing above query add path of chrome to environmane varibale 
-            //proc.StartInfo.Arguments = "--remote-debugging-port=9222 --user-data-dir=D:\\chromedata";
-            // proc.Start();
-
-            //   var options = new ChromeOptions();
-            //   options.DebuggerAddress= "127.0.0.1:9222";
-            //options.AddArguments("--profile-directory=Profile 1");
-            //options.AddArguments("--disable-extensions");
-            //options.AddArguments("--headless");
-            //options.AddArguments("--no-sandbox", "--disable-dev-shm-usage");
-            //   IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
-
-            // driver.Manage().Window.Maximize();
-            ////////// Navigate to Whatsapp web
-            //   driver.Navigate().GoToUrl("https://web.whatsapp.com/");
-            //IReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-            //// Find already opened window with Chrome
-            //string chromeWindow = "";
-            //foreach (string window in windowHandles)
-            //{
-            //    driver.SwitchTo().Window(window);
-            //    if (driver.Title.Contains("Google Chrome"))
-            //    {
-            //        chromeWindow = window;
-            //        break;
-            //    }
-            //}
-
-            //// Switch to Chrome window
-            //driver.SwitchTo().Window(chromeWindow);
-
-            //// Get all open tabs in Chrome window
-            //IReadOnlyCollection<string> tabHandles = driver.WindowHandles;
-
-            //// Find already opened tab of Whatsapp web
-            //string whatsappTab = "";
-            //foreach (string tab in tabHandles)
-            //{
-            //    driver.SwitchTo().Window(tab);
-            //    if (driver.Title.Contains("Whatsapp"))
-            //    {
-            //        whatsappTab = tab;
-            //        break;
-            //    }
-            //}
-
-            ////// Switch to Whatsapp tab
-            //driver.SwitchTo().Window(whatsappTab);
-            //// IWebElement whatsappTab = driver.FindElement(By.XPath("//title[contains(text(), 'whatsapp')]"));
-            //// Thread.Sleep(5000);
-            ////  whatsappTab.Click();
-            ////   Get list of contacts to send message to
-            //string[] contacts = { "Umesh Ji" };
-
-            ////// Loop through each contact
-            //foreach (string contact in contacts)
-            //{
-            //    //     Find contact in chat list
-            //    IWebElement contactElement = driver.FindElement(By.XPath($"//span[contains(text(), '{contact}')]"));
-            //    contactElement.Click();
-
-            //    // Click on attachment icon
-            //    IWebElement attachmentIcon = driver.FindElement(By.XPath("//div[@title='Attach']"));
-            //    attachmentIcon.Click();
-
-            //    // Select file to attach
-            //    IWebElement fileInput = driver.FindElement(By.XPath("//input[@accept='*']"));
-            //    fileInput.SendKeys(@"C:\Users\Public\ratlam.xlsx");
-
-            //    // Wait for file to upload
-            //    Thread.Sleep(5000);
-
-            //    // Click on send button
-            //    IWebElement sendButton = driver.FindElement(By.XPath("//span[@data-icon='send']"));
-            //    sendButton.Click();
-            //    // }
-
-            //    //  Close browser
-            //    driver.Quit();
+         
             wkb.Save();
             wkb.Close(true);
             excel.Quit();
@@ -466,8 +382,106 @@ namespace projectforratlamandoffice
             workbook2.Close();
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook2);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet2);
+
+            // attach this created file and send to whatsapp
+            // Set up Chrome driver
+            // find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
+            // add chromedriver to environment variables 
+            ///chromedriver -version  // check before 
+            /////cd "C:\Program Files\Google\Chrome\Application"
+            /// chrome.exe --remote-debugging-port=9222 --user-data-dir=D:\chromedata
+            ///
+             Process proc = new Process();
+            // before copying below please note c:\ instaed of c 
+             proc.StartInfo.FileName = @"C\Program Files\Google\Chrome\Application\chrome.exe";
+            // to avoid typing above query add path of chrome to environmane varibale 
+            //proc.StartInfo.Arguments = "--remote-debugging-port=9222 --user-data-dir=D:\\chromedata";
+            // proc.Start();
+
+            //   var options = new ChromeOptions();
+            //   options.DebuggerAddress= "127.0.0.1:9222";
+            //options.AddArguments("--profile-directory=Profile 1");
+            //options.AddArguments("--disable-extensions");
+            //options.AddArguments("--headless");
+            //options.AddArguments("--no-sandbox", "--disable-dev-shm-usage");
+            //   IWebDriver driver = new ChromeDriver(@"C:\Users\Umesh Aggarwal\Desktop\chromedriver_win32", options);
+
+            // driver.Manage().Window.Maximize();
+            ////////// Navigate to Whatsapp web
+            //   driver.Navigate().GoToUrl("https://web.whatsapp.com/");
+            //IReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+            //// Find already opened window with Chrome
+            //string chromeWindow = "";
+            //foreach (string window in windowHandles)
+            //{
+            //    driver.SwitchTo().Window(window);
+            //    if (driver.Title.Contains("Google Chrome"))
+            //    {
+            //        chromeWindow = window;
+            //        break;
+            //    }
+            //}
+
+            //// Switch to Chrome window
+            //driver.SwitchTo().Window(chromeWindow);
+
+            //// Get all open tabs in Chrome window
+            //IReadOnlyCollection<string> tabHandles = driver.WindowHandles;
+
+            //// Find already opened tab of Whatsapp web
+            //string whatsappTab = "";
+            //foreach (string tab in tabHandles)
+            //{
+            //    driver.SwitchTo().Window(tab);
+            //    if (driver.Title.Contains("Whatsapp"))
+            //    {
+            //        whatsappTab = tab;
+            //        break;
+            //    }
+            //}
+
+            ////// Switch to Whatsapp tab
+            //driver.SwitchTo().Window(whatsappTab);
+            //// IWebElement whatsappTab = driver.FindElement(By.XPath("//title[contains(text(), 'whatsapp')]"));
+            //// Thread.Sleep(5000);
+            ////  whatsappTab.Click();
+            ////   Get list of contacts to send message to
+            //string[] contacts = { "Umesh Ji" };
+
+            ////// Loop through each contact
+            //foreach (string contact in contacts)
+            //{
+            //    //     Find contact in chat list
+            //    IWebElement contactElement = driver.FindElement(By.XPath($"//span[contains(text(), '{contact}')]"));
+            //    contactElement.Click();
+
+            //    // Click on attachment icon
+            //    IWebElement attachmentIcon = driver.FindElement(By.XPath("//div[@title='Attach']"));
+            //    attachmentIcon.Click();
+
+            //    // Select file to attach
+            //    IWebElement fileInput = driver.FindElement(By.XPath("//input[@accept='*']"));
+            //    fileInput.SendKeys(@"C:\Users\Public\ratlam.xlsx");
+
+            //    // Wait for file to upload
+            //    Thread.Sleep(5000);
+
+            //    // Click on send button
+            //    IWebElement sendButton = driver.FindElement(By.XPath("//span[@data-icon='send']"));
+            //    sendButton.Click();
+            //    // }
+
+            //    //  Close browser
+            //    driver.Quit();
+
+
+
+
+
+
         }
-      
+
 
         // for ankit 
         public void Method2()
