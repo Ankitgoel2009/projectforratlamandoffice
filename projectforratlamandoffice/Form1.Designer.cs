@@ -34,7 +34,7 @@ namespace projectforratlamandoffice
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(36, 12);
+            this.button1.Location = new System.Drawing.Point(113, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(134, 47);
             this.button1.TabIndex = 0;
