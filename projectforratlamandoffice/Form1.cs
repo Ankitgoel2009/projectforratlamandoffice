@@ -133,7 +133,7 @@ namespace projectforratlamandoffice
 
         private object lockObject = new object();
 
-        // opens an excel and returns an objevt array 
+        // opens an excel and returns an object array 
         public object[,] GetObjArr(string filename)
         {
             lock (lockObject)
@@ -158,7 +158,7 @@ namespace projectforratlamandoffice
         }
 
 
-        // copydata function will drop the data in the ankitjinames.txt file into the list variable 
+        // copydata function will drop the data from the ankitjinames.txt file into the list variable 
 
         List<string> list = new List<string>();
         public void copydata(string nameoffile)
