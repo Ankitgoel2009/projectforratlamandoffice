@@ -348,7 +348,7 @@ namespace projectforratlamandoffice
                     if (range1.Cells[i, 10].Value == null)
                     {
                         valueC = 0; // set a default value if needed
-                        range1.Cells[i, 10].Value = "B/F 15/11/2022";
+                        range1.Cells[i, 10].Value = "Data UnFound";
                         sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 10].Value;
                     }
                     else
@@ -358,7 +358,7 @@ namespace projectforratlamandoffice
                     DateTime? valueD = range1.Cells[i, 8].Value as DateTime?;
                     if (valueD == null)
                     {
-                        range1.Cells[i, 8].Value = "B/F 15/11/2022";
+                        range1.Cells[i, 8].Value = "Data UnFound";
                         sheetforoffice.Cells[row, ++column].Value = range1.Cells[i, 8].Value;
                     }
                     else
