@@ -32,47 +32,60 @@ namespace projectforratlamandoffice
         {
 
         }
-        void OpenKeywordsFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ValidateSelectedFile(object sender, CancelEventArgs e)
         {
-            OpenFileDialog fileDialog = sender as OpenFileDialog;
-            selectedFile = System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName);
-            if (string.IsNullOrEmpty(selectedFile) || selectedFile.Contains(".lnk"))
+            var openFile = (OpenFileDialog)sender;
+            var fileName = FileUtils.GetFileNameWithoutExtension(openFile.FileName);
+
+            if (!FileUtils.IsValidFile(fileName))
             {
-                MessageBox.Show("Please select a valid Excel File");
+                ShowError("Please select a valid Excel file");
                 e.Cancel = true;
             }
-            return;
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            OpenFileDialog choofdlog = new OpenFileDialog();
-            choofdlog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            choofdlog.Multiselect = false;
-            choofdlog.ValidateNames = true;
-            choofdlog.DereferenceLinks = false; // Will return .lnk in shortcuts.
-            choofdlog.Filter = "Excel |*.xlsx";
-            choofdlog.FilterIndex = 1;
-            choofdlog.FileOk += new System.ComponentModel.CancelEventHandler(OpenKeywordsFileDialog_FileOk);
 
-            DialogResult result = choofdlog.ShowDialog();
-            if (result == DialogResult.OK)
+            var dialog = new OpenFileDialog()
             {
-                selectedFile = choofdlog.FileName;
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Filter = "Excel Files|*.xlsx",
+                ValidateNames = true,
+                DereferenceLinks = false
+            };
 
-                // Set cursor as hourglass
-                Cursor.Current = Cursors.WaitCursor;
-                dowork();
-                // Set cursor as default arrow
-                Cursor.Current = Cursors.Default;
+            dialog.FileOk += ValidateSelectedFile;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                selectedFile = dialog.FileName;
+                GenerateReport();
             }
-            else if (result == DialogResult.Cancel)
+            else
             {
-                // Handle the case when the user clicks the Cancel button
-                MessageBox.Show("You have cancelled the file selection.");
+                ShowError("File selection was cancelled");
             }
 
         }
 
+        private void GenerateReport()
+        {
+            Cursor.Current = Cursors.WaitCursor;
+
+            var workbook = ExcelUtils.OpenWorkbook(selectedFile);
+
+            var sheet = workbook.ActiveSheet;
+            ReportUtils.PopulateData(sheet);
+
+            ExcelUtils.SaveAndCloseWorkbook(workbook);
+
+            Cursor.Current = Cursors.Default;
+        }
+
+        private void ShowError(string message)
+        {
+            MessageBox.Show(message);
+        }
         public static Excel.Workbook Open(Excel.Application excelInstance, string fileName, bool readOnly = false, bool editable = true, bool updateLinks = true)
         {
             Excel.Workbook book = excelInstance.Workbooks.Open(
@@ -715,4 +728,54 @@ namespace projectforratlamandoffice
             }
         }
     }
+
+    // open and close excel files 
+    public static class ExcelUtils
+    {
+
+        public static Workbook OpenWorkbook(string filePath)
+        {
+            var excelApp = new Excel.Application();
+            return excelApp.Workbooks.Open(filePath);
+        }
+
+        public static void SaveAndCloseWorkbook(Workbook workbook)
+        {
+            workbook.Save();
+            workbook.Close();
+        }
+
+    }
+
+    // create reports 
+    public static class ReportUtils
+    {
+
+        public static void PopulateData(Worksheet sheet)
+        {
+            // Populate sheet with report data 
+        }
+
+    }
+
+    // return file 
+    public static class FileUtils
+    {
+
+        public static string GetFileNameWithoutExtension(string path)
+        {
+            return Path.GetFileNameWithoutExtension(path);
+        }
+
+        public static bool IsValidFile(string fileName)
+        {
+            return !string.IsNullOrEmpty(fileName) &&
+                   !fileName.Contains(".lnk");
+        }
+
+    }
+
+
+
+
 }
