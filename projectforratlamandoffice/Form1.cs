@@ -117,18 +117,7 @@ namespace projectforratlamandoffice
             columnindex = range1.Columns.Count;
             Method1();
            // Method2();
-            //  Thread t1 = new Thread(Method1);
-            // Thread t2 = new Thread(Method2);
-            //  Thread t3 = new Thread(method3);
-            //   t1.Start();
-            //   t2.Start();
-            //   t3.Start();
-
-
-            // wait for both threads to finish
-            //   t1.Join();
-            //  t2.Join();
-            //  t3.Join();
+         
 
             //// Set up Chrome driver
             //// find correct version of driver at https://sites.google.com/chromium.org/driver/downloads?authuser=0
