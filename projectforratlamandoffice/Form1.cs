@@ -144,9 +144,9 @@ namespace projectforratlamandoffice
             }
         }
 
-        public void Method1()
+        public  void Method1()
         {
-            // sort the source range 
+                     // sort the source range 
             int lastRow = range1.Row + range1.Rows.Count - 1;
             int lastColumn = range1.Column + range1.Columns.Count - 1;
             // Sort the first column in ascending order, starting from row 3
@@ -347,6 +347,83 @@ namespace projectforratlamandoffice
             range1 = sheet.UsedRange; // returns range till grandtotal 
             rowindex = range1.Rows.Count;
             columnindex = range1.Columns.Count;
+            // Create a source dictionary to store data
+            Dictionary<string, List<object>> data = new Dictionary<string, List<object>>();
+
+            // Loop through each cell in the used range starting from row 3
+            for (int startrow = 3; startrow <= rowindex - 1; startrow++)
+            {
+                decimal valueofcolumn11;
+                string cellValue = range1.Cells[startrow, 11].NumberFormat.ToString();
+              //  cellValue = cellValue.Replace("\"", "");
+                // Check if the cell value contains the string "cr"
+                if (cellValue.Contains("Cr"))
+                {
+                    // Remove the "cr" from the cell value and convert it to a decimal
+                    valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value * -1;
+
+                }
+                else
+                {
+                    // Convert the cell value to a decimal
+                    valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value;
+                }
+
+                // Get key value ie party name from first column
+                string key = range1.Cells[startrow, 1].Value.ToString();
+
+                // Loop through remaining columns and add values to dictionary
+                List<object> valuesinlist = new List<object>();
+                for (int startcol = 3; startcol <= columnindex; startcol++)
+                {
+                    // 3 is total sales , 6 is last sales amount , 7 is total receipts , 11 is closing balance 
+                    if (startcol == 3 || startcol == 6 || startcol == 7 || startcol == 11)
+                    {
+                        string value = range1.Cells[startrow, startcol].Value?.ToString();
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            if (startcol == 11)
+                            {
+                                value = string.Format("{0:N} ₹", valueofcolumn11);
+                            }
+                            else
+                            {
+                                value = string.Format("{0:N} ₹", decimal.Parse(value));
+                            }
+                        }
+                        else
+                        {
+                            value = "not found in current month";
+                        }
+                        valuesinlist.Add(value);
+                    }
+                    else if (startcol != 5 && startcol != 9) // read every column except column 5 and column 9
+                    {
+                        object value = range1.Cells[startrow, startcol].Value;
+                        if (value == null || string.IsNullOrEmpty(value.ToString()))
+                        {
+                            valuesinlist.Add("not found in current month");
+                        }
+                        else
+                        {
+                            valuesinlist.Add(value.ToString());
+                        }
+                    }
+                }
+                // Add the value of column 11 to the valuesinlist
+                valuesinlist.Add(string.Format("{0:N} ₹", valueofcolumn11));
+                data.Add(key, valuesinlist);
+            }
+
+
+            // Sort the dictionary by key in alphabetical order
+            data = data.OrderBy(d => d.Key).ToDictionary(d => d.Key, d => d.Value);
+
+
+
+
+
+
             Method1();
                     
             wkb.Save();
