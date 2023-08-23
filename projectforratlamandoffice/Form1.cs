@@ -241,7 +241,7 @@ namespace projectforratlamandoffice
                         }
                         else
                         {
-                            value = "not found in current month";
+                            value = "Before 24 july";
                         }
                         valuesinlist.Add(value);
                     }
@@ -250,7 +250,7 @@ namespace projectforratlamandoffice
                         object value = range1.Cells[startrow, startcol].Value;
                         if (value == null || string.IsNullOrEmpty(value.ToString()))
                         {
-                            valuesinlist.Add("not found in current month");
+                            valuesinlist.Add("before 24 july");
                         }
                         else
                         {
@@ -391,9 +391,9 @@ namespace projectforratlamandoffice
             /////cd "C:\Program Files\Google\Chrome\Application"
             /// chrome.exe --remote-debugging-port=9222 --user-data-dir=D:\chromedata
             ///
-             Process proc = new Process();
+           //  Process proc = new Process();
             // before copying below please note c:\ instaed of c 
-             proc.StartInfo.FileName = @"C\Program Files\Google\Chrome\Application\chrome.exe";
+           //  proc.StartInfo.FileName = @"C\Program Files\Google\Chrome\Application\chrome.exe";
             // to avoid typing above query add path of chrome to environmane varibale 
             //proc.StartInfo.Arguments = "--remote-debugging-port=9222 --user-data-dir=D:\\chromedata";
             // proc.Start();
@@ -531,7 +531,7 @@ namespace projectforratlamandoffice
                         }
                         else
                         {
-                            value = "not found in current month";
+                            value = "Before 24 july";
                         }
                         valuesinlist.Add(value);
                     }
@@ -540,7 +540,7 @@ namespace projectforratlamandoffice
                         object value = range1.Cells[startrow, startcol].Value;
                         if (value == null || string.IsNullOrEmpty(value.ToString()))
                         {
-                            valuesinlist.Add("not found in current month");
+                            valuesinlist.Add("Before 24 july");
                         }
                         else
                         {
