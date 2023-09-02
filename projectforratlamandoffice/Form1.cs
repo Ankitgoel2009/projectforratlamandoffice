@@ -275,22 +275,22 @@ namespace projectforratlamandoffice
             /// <summary>
             /// Reads data from an Excel file into a 2D array
             /// </summary>
-            public static async Task<object[,]> ReadExcelDataAsync(string filePath)
-            {
-                using (var excel = new Excel.Application())
-                {
-                    using (var workbook = excel.Workbooks.Open(filePath))
-                    {
-                        using (var worksheet = workbook.Sheets[1])
-                        {
-                            using (var range = worksheet.UsedRange)
-                            {
-                                return await Task.Run(() => range.Value);
-                            }
-                        }
-                    }
-                }
-            }
+            //public static async Task<object[,]> ReadExcelDataAsync(string filePath)
+            //{
+            //    using (var excel = new Excel.Application())
+            //    {
+            //        using (var workbook = excel.Workbooks.Open(filePath))
+            //        {
+            //            using (var worksheet = workbook.Sheets[1])
+            //            {
+            //                using (var range = worksheet.UsedRange)
+            //                {
+            //                    return await Task.Run(() => range.Value);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         // create reports 
@@ -311,20 +311,20 @@ namespace projectforratlamandoffice
                 // Loop through each cell in the used range starting from row 3
                 for (int startrow = 3; startrow <= rowindex - 1; startrow++)
                 {
-                    decimal valueofcolumn11;
-                    string cellValue = range1.Cells[startrow, 11].NumberFormat.ToString();
+                    decimal valueofcolumn11; // for current balance column which is column 11 
+                    string cellValue = range1.Cells[startrow, 11].NumberFormat.ToString(); // analyse the formating used 
                     //  cellValue = cellValue.Replace("\"", "");
                     // Check if the cell value contains the string "cr"
-                    if (cellValue.Contains("Cr"))
+                    if (cellValue.Contains("Cr"))  // if the formatting has the word CR
                     {
                         // Remove the "cr" from the cell value and convert it to a decimal
                         valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value * -1;
 
                     }
-                    else
+                    else // else it has something different which is DR in all cases 
                     {
                         // Convert the cell value to a decimal
-                        valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value;
+                        valueofcolumn11 = (decimal)range1.Cells[startrow, 11].Value; // store the value of row11 in variable 
                     }
 
                     // Get key value ie party name from first column
@@ -334,7 +334,7 @@ namespace projectforratlamandoffice
                     List<object> valuesinlist = new List<object>();
                     for (int startcol = 3; startcol <= columnindex; startcol++)
                     {
-                        // 3 is total sales , 6 is last sales amount , 7 is total receipts , 11 is closing balance 
+                        // 3 is total sales ,4 is last sale date, 6 is last sales amount , 7 is total receipts , 11 is closing balance 
                         if (startcol == 3 || startcol == 6 || startcol == 7 || startcol == 11)
                         {
                             string value = range1.Cells[startrow, startcol].Value?.ToString();
