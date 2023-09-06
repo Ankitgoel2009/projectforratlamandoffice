@@ -30,7 +30,7 @@ namespace projectforratlamandoffice
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            button1.Hide();
         }
         private void ValidateSelectedFile(object sender, CancelEventArgs e)
         {
@@ -446,6 +446,14 @@ namespace projectforratlamandoffice
             }
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            label1.Hide();
+            checkedListBox1.Hide();
+            button2.Hide();
+            button1.Show();
+            this.ActiveControl = button1;
+        }
     }
 
 
