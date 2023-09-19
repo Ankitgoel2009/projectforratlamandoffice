@@ -305,14 +305,13 @@ namespace projectforratlamandoffice
             Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
 
             // add date on first line 
-            sheetforoffice.Range[sheetforoffice.Cells[1, 1], sheetforoffice.Cells[1, 2]].EntireColumn.Font.Bold = true;
-            sheetforoffice.Range[sheetforoffice.Cells[ 1, 1], sheetforoffice.Cells[ 1, 2]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            sheetforoffice.Range[sheetforoffice.Cells[ 1, 1], sheetforoffice.Cells[ 1, 2]].Merge();
-            sheetforoffice.Range[sheetforoffice.Cells[ 1, 1], sheetforoffice.Cells[ 1, 2]].Cells.Font.Size = 20;
-            sheetforoffice.Range[sheetforoffice.Cells[1, 1], sheetforoffice.Cells[ 1, 2]].Font.Italic = true;
-
-
-
+            Excel.Range headerRange2 = sheetforoffice.Range["A1:H1"];
+            headerRange2.Merge();
+            headerRange2.Value = DateTime.UtcNow.ToString("dd-MM-yyyy");
+            headerRange2.Font.Bold = true;
+            headerRange2.Font.Size = 18;
+            headerRange2.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            headerRange2.Font.Italic = true;
 
             sheetforoffice.Cells[2, 1].Value = "Name";
             sheetforoffice.Cells[2, 2].Value = "C. Balance";
@@ -323,8 +322,10 @@ namespace projectforratlamandoffice
             sheetforoffice.Cells[2, 7].Value = "L. Payment";
             sheetforoffice.Cells[2, 8].Value = "L. Payment Date";
 
-            int row =2 ;
-            int column = 1;
+
+
+            int row =2 ; // read from row 2 
+            int column = 1; // read from column 1 
             for (int i = 3; i <= rowindex - 1; i++)
             {
                 string valueA = (string)range1.Cells[i, 1].Value;
