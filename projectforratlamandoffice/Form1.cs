@@ -304,14 +304,24 @@ namespace projectforratlamandoffice
             Excel.Workbook workbookforoffice = excel.Workbooks.Add(Type.Missing);
             Excel.Worksheet sheetforoffice = (Excel.Worksheet)workbookforoffice.ActiveSheet;
 
-            sheetforoffice.Cells[1, 1].Value = "Name";
-            sheetforoffice.Cells[1, 2].Value = "C. Balance";
-            sheetforoffice.Cells[1, 3].Value = "L. Payment";
-            sheetforoffice.Cells[1, 4].Value = "L. Payment Date";
-            sheetforoffice.Cells[1, 5].Value = "Name";
-            sheetforoffice.Cells[1, 6].Value = "C. Balance";
-            sheetforoffice.Cells[1, 7].Value = "L. Payment";
-            sheetforoffice.Cells[1, 8].Value = "L. Payment Date";
+            // add date on first line 
+            sheetforoffice.Range[sheetforoffice.Cells[1, 1], sheetforoffice.Cells[1, 2]].EntireColumn.Font.Bold = true;
+            sheetforoffice.Range[sheetforoffice.Cells[ 1, 1], sheetforoffice.Cells[ 1, 2]].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            sheetforoffice.Range[sheetforoffice.Cells[ 1, 1], sheetforoffice.Cells[ 1, 2]].Merge();
+            sheetforoffice.Range[sheetforoffice.Cells[ 1, 1], sheetforoffice.Cells[ 1, 2]].Cells.Font.Size = 20;
+            sheetforoffice.Range[sheetforoffice.Cells[1, 1], sheetforoffice.Cells[ 1, 2]].Font.Italic = true;
+
+
+
+
+            sheetforoffice.Cells[2, 1].Value = "Name";
+            sheetforoffice.Cells[2, 2].Value = "C. Balance";
+            sheetforoffice.Cells[2, 3].Value = "L. Payment";
+            sheetforoffice.Cells[2, 4].Value = "L. Payment Date";
+            sheetforoffice.Cells[2, 5].Value = "Name";
+            sheetforoffice.Cells[2, 6].Value = "C. Balance";
+            sheetforoffice.Cells[2, 7].Value = "L. Payment";
+            sheetforoffice.Cells[2, 8].Value = "L. Payment Date";
 
             int row =2 ;
             int column = 1;
