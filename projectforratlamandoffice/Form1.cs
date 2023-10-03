@@ -307,7 +307,7 @@ namespace projectforratlamandoffice
             // add date on first line 
             Excel.Range headerRange2 = sheetforoffice.Range["A1:H1"];
             headerRange2.Merge();
-            headerRange2.Value = DateTime.UtcNow.ToString("dd-MM-yyyy");
+            headerRange2.Value = DateTime.UtcNow.ToString("dd - MMMM - yyyy");
             headerRange2.Font.Bold = true;
             headerRange2.Font.Size = 18;
             headerRange2.HorizontalAlignment = XlHAlign.xlHAlignCenter;
